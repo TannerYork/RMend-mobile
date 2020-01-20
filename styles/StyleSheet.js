@@ -4,16 +4,25 @@ import Colors from '../constants/Colors';
 const styles = StyleSheet.create({
     container: {
       flex: 1,
-      paddingTop: 15,
-      backgroundColor: '#fff',
-      justifyContent: "center"
+      backgroundColor: '#fff'
+    },
+    title: {
+      color: Colors.mainText,
+      textAlign: "center",
+      fontSize: 80,
+      fontWeight: 'bold',
+      paddingTop: 130,
+      justifyContent: "center",
     },
     header: {
-        paddingTop: 15,
+        color: Colors.mainText,
         textAlign: "center",
+        fontSize: 60,
+        paddingTop: 130,
         justifyContent: "center",
-        fontSize: 40,
-        color: Colors.mainText
+    },
+    buttonContainer: {
+      margin: 25
     }
   });
 
