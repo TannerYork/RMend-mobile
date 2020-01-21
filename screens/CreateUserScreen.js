@@ -15,14 +15,9 @@ export default class SignInScreen extends React.Component {
   handleSubmit = values => {
     if (values.email.length > 0 && values.password.length > 0) {
       createUserWithEmailAndPassword(values.email, values.password).then((results) => {
-        if (results.error) {
-          alert(results.error);
-        } else {
-          this.props.navigation.navigate('SignIn');
-        }
-      }).catch((err) => {
-        alert(err.message);
-      })
+        if (results.error) alert(results.error);
+        if (!results.error) this.props.navigation.navigate('Camera');
+      }).catch((err) => { alert(err.message); })
     }
   }
 

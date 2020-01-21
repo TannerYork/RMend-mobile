@@ -15,7 +15,7 @@ export default class SignInScreen extends React.Component {
   handleSubmit = values => {
     if (values.email.length > 0 && values.password.length > 0) {
       signInWithEmailAndPassword(values.email, values.password).then(() => {
-        this.props.navigation.navigate('Report');
+        this.props.navigation.navigate('Camera');
       }).catch((err) => {
         alert(err.message);
       })
