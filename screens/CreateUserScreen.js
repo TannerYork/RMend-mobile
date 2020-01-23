@@ -32,6 +32,14 @@ export default class SignInScreen extends React.Component {
             {({ handleBlur, handleChange, handleSubmit, values, isValid, errors, touched }) => (
               <View>
                 <FormInput
+                  name="name"
+                  value={values.name}
+                  onBlur={handleBlur('name')}
+                  onChangeText={handleChange('name')}
+                  placeholder="Enter Name"
+                  autoCapitalize="none" />
+                <ErrorMessage errorValue={touched.name && errors.name} />
+                <FormInput
                   name="email"
                   value={values.email}
                   onBlur={handleBlur('email')}
@@ -78,6 +86,9 @@ export default class SignInScreen extends React.Component {
 }
 
 const validationSchema = Yup.object().shape({
+  name: Yup.string()
+    .label('Name')
+    .required('Please enter your full name'),
   email: Yup.string()
     .label('Email')
     .email('Enter a valid email')
