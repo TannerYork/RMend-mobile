@@ -10,10 +10,6 @@ export default class ReportScreen extends React.Component {
     createReport(location, details, magisterialDistrict, priority);
   }
 
-  goToCamera = () => {
-    this.props.navigation.navigate('Camera');
-  }
-
   handleSubmit = (values) => {
     console.log(values);
   }
@@ -35,20 +31,23 @@ export default class ReportScreen extends React.Component {
     } else {
       return (
         <View>
-          <TouchableOpacity style={styles.imagesPlaceholder}>
-            <Text style={{fontSize: 50, color: '#555'}}>Add Photo</Text>
-          </TouchableOpacity>
+          <Image 
+            style={styles.imagesPlaceholder} 
+            source={require("../../assets/images/image_placeholder.jpg")} />
         </View>
       )
     }
   }
 
   render() {
-    const photo = this.props.navigation.getParam('photo')
-    console.log(photo)
+    const { navigation } = this.props
+    console.log(this.props.navigation.state)
     return (
         <View style={styles.scrollContainer}>
-            <Header title="Photos" navTitleOne="Home" navTitleTwo="Next" {...this.props}/>
+            <Header title="Photos" {...this.props}
+              navTitleOne="Home" navTitleTwo="Next"
+              navActionOne={() => navigation.navigate('Camera')} 
+              navActionTwo={() => navigation.navigate('Location')}/>
             <InfoMessage message="Include a photo of the incident"/>
             <ScrollView 
               contentContainerStyle={styles.images} 

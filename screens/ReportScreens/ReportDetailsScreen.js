@@ -7,16 +7,20 @@ import Colors from '../../constants/Colors';
 export default class ReportDetailsScreen extends React.Component {
   
     render() {
-    return (
+      const { navigation } = this.props;
+      return (
         <ScrollView contentContainerStyle={styles.scrollContainer}>
-          <Header title="Details" navTitleOne="Home" navTitleTwo="Next" {...this.props}/>
+          <Header title="Details" {...this.props}
+            navTitleOne="Home" navTitleTwo="Next"
+            navActionOne={() => navigation.navigate('Camera')}
+            navActionTwo={() => navigation.navigate('Send')}/>
           <Text style={styles.header}>Incident Type</Text>
           <TouchableOpacity style={styles.selector}>
               <Text style={styles.selectorText}>Select the incident type</Text>
-              <MaterialIcons name="navigate-next" size={25} color="#888"/>
+              <MaterialIcons name="navigate-next" size={25} color="#FFF"/>
           </TouchableOpacity>
           <Text style={styles.header}>Details</Text>
-          <TextInput style={styles.details} placeholder="Enter a description of the incident" multiline/>
+          <TextInput style={styles.details} placeholder="Enter a description of the incident" placeholderTextColor = "#EEE" multiline/>
         </ScrollView>
       );
   }
@@ -31,20 +35,21 @@ const styles = StyleSheet.create({
         width: Dimensions.get('window').width, 
         fontSize: 25, color: Colors.mainText,
         paddingLeft: 10, paddingBottom: 5,
-        marginTop: 30
+        marginTop: 30, fontWeight: 'bold'
     },
     selector: {
         width: Dimensions.get('window').width, height: 75,
-        backgroundColor: '#DADADA',
+        backgroundColor: '#33C7FF',
         flexDirection: 'row', justifyContent: 'space-around',
         alignItems: 'center'
     },
     selectorText: {
-        fontSize: 20, color: '#888'
+        fontSize: 25, color: '#FFF'
     },
     details: {
         width: Dimensions.get('window').width, height: 100,
-        backgroundColor: '#DADADA', padding: 10
+        backgroundColor: '#33C7FF', padding: 10,
+        color: '#FFF', fontSize: 20
     }
 });
 

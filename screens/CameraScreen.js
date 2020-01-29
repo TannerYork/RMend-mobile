@@ -20,7 +20,6 @@ export default class CameraScreen extends React.Component {
     takePhoto = async () => {
         if (this.camera) {
             const photo = await this.camera.takePictureAsync({ quality: 1, base64: true, exif: true});
-            console.log(photo)
             this.props.navigation.navigate('Report', {photo: photo});
         } else {
             alert("Camera is not connected yet. Please give the camera a moment to connect")

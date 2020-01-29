@@ -6,9 +6,13 @@ import Header from '../../components/Header';
 export default class ReportLocationScreen extends React.Component {
   
     render() {
-    return (
+      const { navigation } = this.props
+      return (
         <ScrollView contentContainerStyle={styles.scrollContainer}>
-          <Header title="Location" navTitleOne="Home" navTitleTwo="Next" {...this.props}/>
+          <Header title="Location" {...this.props} 
+            navTitleOne="Home" navTitleTwo="Next"
+            navActionOne={() => navigation.navigate('Camera')}
+            navActionTwo={() => navigation.navigate('Details')}/>
           <TextInput style={styles.textInput} placeholder="Enter a location close to you"/>
           <TouchableOpacity style={styles.map}/>
         </ScrollView>

@@ -12,6 +12,13 @@ const ReportNavigator = createBottomTabNavigator({
     Location: ReportLocationScreen, 
     Details: ReportDetailsScreen, 
     Send: ReportSendScreen
+},{
+    tabBarOptions: {
+        style: {
+            borderTopWidth: 0,
+            height: 55
+        }
+    }
 });
 
 export default ReportNavigator

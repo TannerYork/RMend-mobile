@@ -6,9 +6,13 @@ export default class Header extends React.Component {
     render() {
         return (
             <View style={styles.header}>
-                <Button title={this.props.navTitleOne} style={styles.headerButton}/>
+                <Button title={this.props.navTitleOne} 
+                    style={styles.headerButton}
+                    onPress={this.props.navActionOne}/>
                 <Text style={styles.title}>{this.props.title}</Text>
-                <Button title={this.props.navTitleTwo} style={styles.headerButton}/>
+                <Button title={this.props.navTitleTwo} 
+                    style={styles.headerButton}
+                    onPress={this.props.navActionTwo}/>
             </View>
         );
     }
