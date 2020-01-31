@@ -46,7 +46,7 @@ export default class ReportScreen extends React.Component {
         <View style={styles.scrollContainer}>
             <Header title="Photos" {...this.props}
               navTitleOne="Home" navTitleTwo="Next"
-              navActionOne={() => navigation.navigate('Camera')} 
+              navActionOne={() => navigation.navigate('Home')} 
               navActionTwo={() => navigation.navigate('Location')}/>
             <InfoMessage message="Include a photo of the incident"/>
             <ScrollView 

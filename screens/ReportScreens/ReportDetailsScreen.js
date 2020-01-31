@@ -12,7 +12,7 @@ export default class ReportDetailsScreen extends React.Component {
         <ScrollView contentContainerStyle={styles.scrollContainer}>
           <Header title="Details" {...this.props}
             navTitleOne="Home" navTitleTwo="Next"
-            navActionOne={() => navigation.navigate('Camera')}
+            navActionOne={() => navigation.navigate('Home')}
             navActionTwo={() => navigation.navigate('Send')}/>
           <Text style={styles.header}>Incident Type</Text>
           <TouchableOpacity style={styles.selector}>

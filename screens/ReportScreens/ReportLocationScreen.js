@@ -11,7 +11,7 @@ export default class ReportLocationScreen extends React.Component {
         <ScrollView contentContainerStyle={styles.scrollContainer}>
           <Header title="Location" {...this.props} 
             navTitleOne="Home" navTitleTwo="Next"
-            navActionOne={() => navigation.navigate('Camera')}
+            navActionOne={() => navigation.navigate('Home')}
             navActionTwo={() => navigation.navigate('Details')}/>
           <TextInput style={styles.textInput} placeholder="Enter a location close to you"/>
           <TouchableOpacity style={styles.map}/>

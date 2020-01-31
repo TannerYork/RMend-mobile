@@ -13,7 +13,7 @@ export default class ReportSendScreen extends React.Component {
         <ScrollView contentContainerStyle={styles.scrollContainer}>
           <Header title="Send" {...this.props}
             navTitleOne="Home" navTitleTwo="Send"
-            navActionOne={() => navigation.navigate('Camera')}
+            navActionOne={() => navigation.navigate('Home')}
             navActionTwo={() => print('Send')}/>
           <Text style={styles.header}>Authority</Text>
           <Text style={styles.subHeader}>This report will be sent to:</Text>
