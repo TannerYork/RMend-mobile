@@ -84,8 +84,8 @@ export default class HomeScreen extends React.Component {
                             onPress={() => {
                                     if (swiper.state.index == 2) {
                                         swiper.scrollBy(-2)
-                                    } else {
-                                        this.refs.swiper.scrollBy(-1)
+                                    } else if (swiper.state.index != 0) {
+                                        swiper.scrollBy(-1)
                                     }
                                 }}>
                                 <AntDesign name='copy1' size={40} color={'#FFF'}/>
@@ -98,8 +98,8 @@ export default class HomeScreen extends React.Component {
                             onPress={() => {
                                 if (swiper.state.index == 0) {
                                     swiper.scrollBy(2)
-                                } else {
-                                    this.refs.swiper.scrollBy(1)
+                                } else if (swiper.state.index != 2) {
+                                    swiper.scrollBy(1)
                                 }
                             }}>
                                 <AntDesign name='smileo' size={40} color={'#FFF'}/>
