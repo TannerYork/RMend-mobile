@@ -12,10 +12,10 @@ export default function InfoMessage(props) {
 const styles = StyleSheet.create({
     infoMessage: {
         width: Dimensions.get('window').width, height: 50,
-        backgroundColor: '#E4E4E4',
+        backgroundColor: '#545454',
         alignItems: 'center', justifyContent: 'center'
     },
     text: {
-        fontSize:20, color: '#888'
+        fontSize:20, color: '#EEE'
     }
 })

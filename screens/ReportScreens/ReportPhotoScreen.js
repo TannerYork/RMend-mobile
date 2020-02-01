@@ -33,7 +33,7 @@ export default class ReportScreen extends React.Component {
         <View>
           <Image 
             style={styles.imagesPlaceholder} 
-            source={require("../../assets/images/image_placeholder.jpg")} />
+            source={require("../../assets/images/placeholder-dark.jpg")} />
         </View>
       )
     }
@@ -56,7 +56,7 @@ export default class ReportScreen extends React.Component {
               {this.renderImages()}
             </ScrollView>
             <TouchableOpacity style={styles.button}>
-              <Text style={{fontSize: 25}}>Add Photo</Text>
+              <Text style={{fontSize: 25, color: 'white'}}>Add Photo</Text>
             </TouchableOpacity>
         </View>
     );
@@ -67,7 +67,8 @@ const styles = StyleSheet.create({
   scrollContainer: {
     height: Dimensions.get('window').height,
     paddingTop: 20, paddingBottom: 80,
-    alignItems: 'center'
+    alignItems: 'center',
+    backgroundColor: '#222'
   },
   images: {
     height: 500, minWidth: Dimensions.get('window').width,
@@ -105,7 +106,7 @@ const styles = StyleSheet.create({
 
 ReportScreen.navigationOptions = {
   tabBarIcon: ({focused}) => (
-    <View style={{width: 50, height: 50, borderRadius: 42, justifyContent: 'center', alignItems: 'center', backgroundColor: focused ? '#33C7FF':'#FFE633'}}>
+    <View style={{width: 45, height: 45, borderRadius: 42, justifyContent: 'center', alignItems: 'center', backgroundColor: focused ? '#33C7FF':'#FFE633'}}>
       <Entypo name="camera" size={30} color={focused ? '#666': '#777'}/>
     </View>
   ),

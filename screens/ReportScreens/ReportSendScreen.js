@@ -19,7 +19,7 @@ export default class ReportSendScreen extends React.Component {
           <Text style={styles.subHeader}>This report will be sent to:</Text>
           <TouchableHighlight style={styles.authInfoWrapper}>
             <View style={styles.authInfo}>
-              <Image source={require('../../assets/images/image_placeholder.jpg')} style={styles.authInfoImage}/>
+              <Image source={require('../../assets/images/placeholder-dark.jpg')} style={styles.authInfoImage}/>
               <View>
                 <Text style={styles.authInfoText}>Barren County Road Department</Text>
                 <Text style={styles.authInfoType}>Council</Text>
@@ -47,10 +47,6 @@ export default class ReportSendScreen extends React.Component {
             <Text style={styles.inputLabel}>Address</Text>
             <TextInput style={styles.input} placeholder="Optional"/>
           </View>
-          <View style={styles.inputWrapperSmall}>
-            <Text style={styles.inputLabel}>Suburb</Text>
-            <TextInput style={styles.input} placeholder="Optional"/>
-          </View>
         </ScrollView>
       );
   }
@@ -59,7 +55,9 @@ export default class ReportSendScreen extends React.Component {
 const styles = StyleSheet.create({
     scrollContainer: {
       padding: 20,
-      alignItems: 'center'
+      alignItems: 'center',
+      backgroundColor: '#222',
+      height: Dimensions.get('window').height
     },
     header: {
       width: Dimensions.get('window').width,
@@ -74,7 +72,7 @@ const styles = StyleSheet.create({
     },
     authInfoWrapper: {
       width: Dimensions.get('window').width, height: 100,
-      backgroundColor: '#33C7FF',
+      backgroundColor: '#545454',
     },
     authInfo: {
       width: Dimensions.get('window').width, height: 100,
@@ -97,9 +95,9 @@ const styles = StyleSheet.create({
     },
     inputWrapper: {
       width: Dimensions.get('window').width, height: 75,
-      backgroundColor: '#33C7FF', flexDirection: 'row', 
+      backgroundColor: '#545454', flexDirection: 'row', 
       justifyContent: 'space-around', alignItems: 'center',
-      borderBottomColor: '#FFF', borderBottomWidth: 1
+      borderBottomColor: '#888', borderBottomWidth: 1
     },
     input: {
       width: 200, fontSize: 22, color: 'white',
@@ -110,15 +108,15 @@ const styles = StyleSheet.create({
     },
     inputWrapperSmall: {
       width: Dimensions.get('window').width, height: 60,
-      backgroundColor: '#33C7FF', flexDirection: 'row', 
+      backgroundColor: '#545454', flexDirection: 'row', 
       justifyContent: 'space-around', alignItems: 'center',
-      borderBottomColor: '#FFF', borderBottomWidth: 1
+      borderBottomColor: '#888', borderBottomWidth: 1
     }
 });
 
 ReportSendScreen.navigationOptions = {
   tabBarIcon: ({focused}) => (
-    <View style={{width: 50, height: 50, 
+    <View style={{width: 45, height: 45, 
                   borderRadius: 42, 
                   justifyContent: 'center', alignItems: 'center', 
                   backgroundColor: focused ? '#33C7FF':'#FFE633'}}>

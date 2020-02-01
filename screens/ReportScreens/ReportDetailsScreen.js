@@ -29,7 +29,9 @@ export default class ReportDetailsScreen extends React.Component {
 const styles = StyleSheet.create({
     scrollContainer: {
       padding: 20,
-      alignItems: 'center'
+      alignItems: 'center',
+      backgroundColor: '#222',
+      height: Dimensions.get('window').height
     },
     header: {
         width: Dimensions.get('window').width, 
@@ -39,7 +41,7 @@ const styles = StyleSheet.create({
     },
     selector: {
         width: Dimensions.get('window').width, height: 75,
-        backgroundColor: '#33C7FF',
+        backgroundColor: '#545454',
         flexDirection: 'row', justifyContent: 'space-around',
         alignItems: 'center'
     },
@@ -48,14 +50,14 @@ const styles = StyleSheet.create({
     },
     details: {
         width: Dimensions.get('window').width, height: 100,
-        backgroundColor: '#33C7FF', padding: 10,
+        backgroundColor: '#545454', padding: 10,
         color: '#FFF', fontSize: 20
     }
 });
 
 ReportDetailsScreen.navigationOptions = {
     tabBarIcon: ({focused}) => (
-        <View style={{width: 50, height: 50, borderRadius: 42, justifyContent: 'center', alignItems: 'center', backgroundColor: focused ? '#33C7FF':'#FFE633'}}>
+        <View style={{width: 45, height: 45, borderRadius: 42, justifyContent: 'center', alignItems: 'center', backgroundColor: focused ? '#33C7FF':'#FFE633'}}>
             <AntDesign name="profile" size={30} color={focused?"#777":'#666'} />
         </View>
     ),
