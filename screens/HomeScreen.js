@@ -1,13 +1,13 @@
 import React from 'react';
 import { Camera } from 'expo-camera';
 import * as Permissions from 'expo-permissions';
-import { StyleSheet, Button, View, Text, 
-        ActivityIndicator, TouchableOpacity, Dimensions } from 'react-native';
+import { StyleSheet, Button, View, Text, ActivityIndicator,
+         TouchableOpacity, Dimensions, TextInput } from 'react-native';
 import Swiper from 'react-native-swiper';
 import { AntDesign } from '@expo/vector-icons'
 
 export default class HomeScreen extends React.Component {
-    state = { hasPermission: null, type: Camera.Constants.Type.back, index: 1 };
+    state = { hasPermission: null, type: Camera.Constants.Type.back};
     camera = null
 
     async componentDidMount() {
@@ -56,16 +56,46 @@ export default class HomeScreen extends React.Component {
 
     renderProfile = () => {
         return (
-            <View style={{flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: 'black'}}>
-                <Text style={{fontSize: 60, color: 'white'}}>Profile</Text>
+            <View style={styles.container}>
+                <View style={styles.headerWrapper}>
+                    <Text style={styles.headerText}>Profile</Text>
+                </View>
+                <View style={styles.inputWrapper}>
+                    <Text style={styles.inputLabel}>Name</Text>
+                    <TextInput style={styles.input}/>
+                </View>
+                <View style={styles.inputWrapper}>
+                    <Text style={styles.inputLabel}>Email</Text>
+                    <TextInput style={styles.input}/>
+                </View>
+                <View style={styles.inputWrapper}>
+                    <Text style={styles.inputLabel}>Phone</Text>
+                    <TextInput style={styles.input}/>
+                </View>
+                <View style={styles.inputWrapper}>
+                    <Text style={styles.inputLabel}>Address</Text>
+                    <TextInput style={styles.input}/>
+                </View>
+                <View style={styles.inputWrapper}>
+                    <Text style={styles.inputLabel}>Postcode</Text>
+                    <TextInput style={styles.input}/>
+                </View>
+                <TouchableOpacity style={styles.button}>
+                    <Text style={{fontSize: 25, color: 'white'}}>Save</Text>
+                </TouchableOpacity>
+                <TouchableOpacity style={styles.button}>
+                    <Text style={{fontSize: 25, color: 'white'}}>Logout</Text>
+                </TouchableOpacity>
             </View>
         )
     }
 
     renderNearby = () => {
         return (
-            <View style={{flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: 'black'}}>
-                <Text style={{fontSize: 60, color: 'white'}}>Nearby</Text>
+            <View style={styles.container}>
+                <View style={styles.headerWrapper}>
+                    <Text style={styles.headerText}>Nearby</Text>
+                </View>
             </View>
         )
     }
@@ -74,7 +104,7 @@ export default class HomeScreen extends React.Component {
         const { swiper } = this.refs
         return (
             <View style={{flex:1}}>
-                <Swiper loop={false} index={this.state.index} ref="swiper">
+                <Swiper loop={false} index={1} ref="swiper">
                     {this.renderNearby()}
                     {this.renderCamera()}
                     {this.renderProfile()}
@@ -112,13 +142,17 @@ export default class HomeScreen extends React.Component {
 
 const styles = StyleSheet.create({
     container: {
-        flex: 1, flexDirection: 'column',
-        backgroundColor: 'transparent',
-        justifyContent: "center",
-        alignItems: 'center'
+        flex: 1, alignItems: 'center', 
+        backgroundColor: 'black'
     },
     captureButton: {
         width: 70, height: 70,
+        backgroundColor: '#F1F1F1', opacity: .8,
+        borderWidth: 5, borderRadius: 42,
+        borderColor: 'white', alignSelf: 'flex-end', 
+     },
+     homeNavButton: {
+        width: 50, height: 50,
         backgroundColor: '#F1F1F1', opacity: .8,
         borderWidth: 5, borderRadius: 42,
         borderColor: 'white', alignSelf: 'flex-end', 
@@ -127,5 +161,35 @@ const styles = StyleSheet.create({
         width: Dimensions.get('window').width, height: 50,
         flexDirection: 'row', justifyContent: 'space-around', 
         alignSelf: 'flex-end', position: 'absolute', bottom: 50,
+    },
+    headerWrapper: {
+        width: Dimensions.get('window').width, 
+        height: 140, justifyContent: 'flex-end',
+        backgroundColor: 'black', padding: 15
+    },
+    headerText: {
+        color: 'white', fontSize: 50,
+        fontWeight: 'bold'
+    },
+    inputWrapper: {
+        width: 350, height: 75, marginBottom: 20,
+        backgroundColor: '#222', flexDirection: 'row', 
+        justifyContent: 'space-around', alignItems: 'center',
+        borderColor: '#555', borderWidth: 1, borderRadius: 20,
+        padding: 20
+    },
+    input: {
+        width: 200, fontSize: 22, 
+        color: '#666', textAlign: 'right',
+    },
+    inputLabel: {
+        width: 100 , fontSize: 22, 
+        color: '#666',
+    },
+    button: {
+        width: 350, height: 50,
+        borderRadius: 42, borderWidth: 2, borderColor: '#E9E9E9',
+        justifyContent: 'center', alignItems: 'center',
+        marginTop: 20
     }
 });
