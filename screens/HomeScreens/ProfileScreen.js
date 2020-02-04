@@ -1,42 +1,44 @@
 import React from 'react';
 import { StyleSheet, View, Text, TextInput,
-         Dimensions, TouchableOpacity } from 'react-native'
+         Dimensions, TouchableOpacity , SafeAreaView} from 'react-native'
 import { ScrollView } from 'react-native-gesture-handler';
 
 export default class ProfileScreen extends React.Component {
     render() {
         return (
-            <ScrollView contentContainerStyle={styles.container}>
+            <SafeAreaView style={styles.container}>
                 <View style={styles.headerWrapper}>
                     <Text style={styles.headerText}>Profile</Text>
                 </View>
-                <View style={styles.inputWrapper}>
-                    <Text style={styles.inputLabel}>Name</Text>
-                    <TextInput style={styles.input}/>
-                </View>
-                <View style={styles.inputWrapper}>
-                    <Text style={styles.inputLabel}>Email</Text>
-                    <TextInput style={styles.input}/>
-                </View>
-                <View style={styles.inputWrapper}>
-                    <Text style={styles.inputLabel}>Phone</Text>
-                    <TextInput style={styles.input}/>
-                </View>
-                <View style={styles.inputWrapper}>
-                    <Text style={styles.inputLabel}>Address</Text>
-                    <TextInput style={styles.input}/>
-                </View>
-                <View style={styles.inputWrapper}>
-                    <Text style={styles.inputLabel}>Postcode</Text>
-                    <TextInput style={styles.input}/>
-                </View>
-                <TouchableOpacity style={styles.button}>
-                    <Text style={{fontSize: 25, color: 'white'}}>Save</Text>
-                </TouchableOpacity>
-                <TouchableOpacity style={styles.button}>
-                    <Text style={{fontSize: 25, color: 'white'}}>Logout</Text>
-                </TouchableOpacity>
-            </ScrollView>
+                <ScrollView contentContainerStyle={styles.content}>
+                    <View style={styles.inputWrapper}>
+                        <Text style={styles.inputLabel}>Name</Text>
+                        <TextInput style={styles.input}/>
+                    </View>
+                    <View style={styles.inputWrapper}>
+                        <Text style={styles.inputLabel}>Email</Text>
+                        <TextInput style={styles.input}/>
+                    </View>
+                    <View style={styles.inputWrapper}>
+                        <Text style={styles.inputLabel}>Phone</Text>
+                        <TextInput style={styles.input}/>
+                    </View>
+                    <View style={styles.inputWrapper}>
+                        <Text style={styles.inputLabel}>Address</Text>
+                        <TextInput style={styles.input}/>
+                    </View>
+                    <View style={styles.inputWrapper}>
+                        <Text style={styles.inputLabel}>Postcode</Text>
+                        <TextInput style={styles.input}/>
+                    </View>
+                    <TouchableOpacity style={styles.button}>
+                        <Text style={{fontSize: 25, color: 'white'}}>Save</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity style={styles.button}>
+                        <Text style={{fontSize: 25, color: 'white'}}>Logout</Text>
+                    </TouchableOpacity>
+                </ScrollView>
+            </SafeAreaView>
         )
     }
 }
@@ -49,11 +51,17 @@ const styles = StyleSheet.create({
     headerWrapper: {
         width: Dimensions.get('window').width, 
         height: 140, justifyContent: 'flex-end',
-        backgroundColor: 'black', padding: 15
+        backgroundColor: 'black', padding: 15,
+        position: 'absolute', top: 0, left: 0,
+        zIndex: 100
     },
     headerText: {
         color: 'white', fontSize: 50,
         fontWeight: 'bold'
+    },
+    content: {
+        height: Dimensions.get('window').height,
+        marginTop: 140,
     },
     inputWrapper: {
         width: 350, height: 65, marginBottom: 20,

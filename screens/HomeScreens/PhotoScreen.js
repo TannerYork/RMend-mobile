@@ -1,6 +1,7 @@
 import React from 'react';
 import { StyleSheet, View, Text, Dimensions,
         TouchableOpacity, Image } from 'react-native';
+import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
 
 export default class PhotoScreen extends React.Component {
     render() {
@@ -36,7 +37,7 @@ const styles = StyleSheet.create({
         fontWeight: 'bold'
     },
     image: {
-        width: 400, height: 400,
+        width: wp('90%'), height: hp('50%'),
         borderRadius: 20,
         marginTop: 20
     },
@@ -44,6 +45,6 @@ const styles = StyleSheet.create({
         width: 350, height: 60,
         borderRadius: 42,
         justifyContent: 'center', alignItems: 'center',
-        marginTop: 150, backgroundColor: '#ff6a30',
+        marginTop: hp('5%'), backgroundColor: '#ff6a30',
     }
 });

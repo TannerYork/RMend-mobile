@@ -1,5 +1,6 @@
 import React from 'react';
-import { ScrollView, Text, StyleSheet, Dimensions, TouchableOpacity, TextInput, View} from 'react-native';
+import { ScrollView, Text, StyleSheet, Dimensions, 
+        TouchableOpacity, TextInput, View, SafeAreaView} from 'react-native';
 import { MaterialIcons, AntDesign } from '@expo/vector-icons'
 import Header from '../../components/Header';
 import Colors from '../../constants/Colors';
@@ -9,7 +10,7 @@ export default class ReportDetailsScreen extends React.Component {
     render() {
       const { navigation } = this.props;
       return (
-        <ScrollView contentContainerStyle={styles.scrollContainer}>
+        <SafeAreaView style={styles.container}>
           <Header title="Details" {...this.props}
             navTitleOne="Home" navTitleTwo="Next"
             navActionOne={() => navigation.navigate('Home')}
@@ -21,16 +22,16 @@ export default class ReportDetailsScreen extends React.Component {
           </TouchableOpacity>
           <Text style={styles.header}>Details</Text>
           <TextInput style={styles.details} placeholder="Enter a description of the incident" placeholderTextColor = "#EEE" multiline/>
-        </ScrollView>
+        </SafeAreaView>
       );
   }
 }
 
 const styles = StyleSheet.create({
-    scrollContainer: {
+    container: {
       padding: 20,
       alignItems: 'center',
-      backgroundColor: '#222',
+      backgroundColor: '#000',
       height: Dimensions.get('window').height
     },
     header: {
@@ -41,7 +42,7 @@ const styles = StyleSheet.create({
     },
     selector: {
         width: Dimensions.get('window').width, height: 75,
-        backgroundColor: '#545454',
+        backgroundColor: '#333',
         flexDirection: 'row', justifyContent: 'space-around',
         alignItems: 'center'
     },
@@ -50,15 +51,15 @@ const styles = StyleSheet.create({
     },
     details: {
         width: Dimensions.get('window').width, height: 100,
-        backgroundColor: '#545454', padding: 10,
+        backgroundColor: '#333', padding: 10,
         color: '#FFF', fontSize: 20
     }
 });
 
 ReportDetailsScreen.navigationOptions = {
     tabBarIcon: ({focused}) => (
-        <View style={{width: 45, height: 45, borderRadius: 42, justifyContent: 'center', alignItems: 'center', backgroundColor: focused ? '#33C7FF':'#FFE633'}}>
-            <AntDesign name="profile" size={30} color={focused?"#777":'#666'} />
+        <View style={{width: 55, height: 55, borderRadius: 42, justifyContent: 'center', alignItems: 'center', backgroundColor: focused ? '#33C7FF':'#FFE633'}}>
+            <AntDesign name="profile" size={30} color={focused?"#FFF":'#666'} />
         </View>
     ),
     tabBarLabel:() => {return null},

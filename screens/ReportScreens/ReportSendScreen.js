@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, StyleSheet, ScrollView, View, Dimensions, Image } from 'react-native';
+import { Text, StyleSheet, ScrollView, View, Dimensions, Image, SafeAreaView } from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons';
 import Header from '../../components/Header';
 import { TouchableHighlight, TextInput } from 'react-native-gesture-handler';
@@ -10,54 +10,59 @@ export default class ReportSendScreen extends React.Component {
     render() {
       const { navigation } = this.props;
       return (
-        <ScrollView contentContainerStyle={styles.scrollContainer}>
+        <SafeAreaView style={styles.container}>
           <Header title="Send" {...this.props}
             navTitleOne="Home" navTitleTwo="Send"
             navActionOne={() => navigation.navigate('Home')}
             navActionTwo={() => print('Send')}/>
-          <Text style={styles.header}>Authority</Text>
-          <Text style={styles.subHeader}>This report will be sent to:</Text>
-          <TouchableHighlight style={styles.authInfoWrapper}>
-            <View style={styles.authInfo}>
-              <Image source={require('../../assets/images/placeholder-dark.jpg')} style={styles.authInfoImage}/>
-              <View>
-                <Text style={styles.authInfoText}>Barren County Road Department</Text>
-                <Text style={styles.authInfoType}>Council</Text>
+          <ScrollView style={styles.content}>
+            <Text style={styles.header}>Authority</Text>
+            <Text style={styles.subHeader}>This report will be sent to:</Text>
+            <TouchableHighlight style={styles.authInfoWrapper}>
+              <View style={styles.authInfo}>
+                <Image source={require('../../assets/images/placeholder-dark.jpg')} style={styles.authInfoImage}/>
+                <View>
+                  <Text style={styles.authInfoText}>Barren County Road Department</Text>
+                  <Text style={styles.authInfoType}>Council</Text>
+                </View>
               </View>
+            </TouchableHighlight>
+            <Text style={styles.warring}>If this is an emergency, please call emergency services.</Text>
+            <Text style={styles.header}>My Details</Text>
+            <Text style={styles.subHeader}>Required</Text>
+            <View style={styles.inputWrapper}>
+              <Text style={styles.inputLabel}>Name</Text>
+              <TextInput style={styles.input} placeholder="Required"/>
             </View>
-          </TouchableHighlight>
-          <Text style={styles.warring}>If this is an emergency, please call emergency services.</Text>
-          <Text style={styles.header}>My Details</Text>
-          <Text style={styles.subHeader}>Required</Text>
-          <View style={styles.inputWrapper}>
-            <Text style={styles.inputLabel}>Name</Text>
-            <TextInput style={styles.input} placeholder="Required"/>
-          </View>
-          <View style={styles.inputWrapper}>
-            <Text style={styles.inputLabel}>Email</Text>
-            <TextInput style={styles.input} placeholder="Required"/>
-          </View>
-          <View style={{height: 30}}></View>
-          <Text style={styles.subHeader}>Optional</Text>
-          <View style={styles.inputWrapperSmall}>
-            <Text style={styles.inputLabel}>Telephone</Text>
-            <TextInput style={styles.input} placeholder="Optional"/>
-          </View>
-          <View style={styles.inputWrapperSmall}>
-            <Text style={styles.inputLabel}>Address</Text>
-            <TextInput style={styles.input} placeholder="Optional"/>
-          </View>
-        </ScrollView>
+            <View style={styles.inputWrapper}>
+              <Text style={styles.inputLabel}>Email</Text>
+              <TextInput style={styles.input} placeholder="Required"/>
+            </View>
+            <View style={{height: 30}}></View>
+            <Text style={styles.subHeader}>Optional</Text>
+            <View style={styles.inputWrapperSmall}>
+              <Text style={styles.inputLabel}>Telephone</Text>
+              <TextInput style={styles.input} placeholder="Optional"/>
+            </View>
+            <View style={styles.inputWrapperSmall}>
+              <Text style={styles.inputLabel}>Address</Text>
+              <TextInput style={styles.input} placeholder="Optional"/>
+            </View>
+          </ScrollView>
+        </SafeAreaView>
       );
   }
 }
 
 const styles = StyleSheet.create({
-    scrollContainer: {
+    container: {
       padding: 20,
       alignItems: 'center',
-      backgroundColor: '#222',
+      backgroundColor: '#000',
       height: Dimensions.get('window').height
+    },
+    content: {
+      height: Dimensions.get('window').height,
     },
     header: {
       width: Dimensions.get('window').width,
@@ -67,12 +72,12 @@ const styles = StyleSheet.create({
     },
     subHeader: {
       width: Dimensions.get('window').width,
-      fontSize: 15, color: '#888', paddingLeft: 10,
+      fontSize: 15, color: '#444', paddingLeft: 10,
       paddingBottom: 10, fontFamily: 'Arial'
     },
     authInfoWrapper: {
       width: Dimensions.get('window').width, height: 100,
-      backgroundColor: '#545454',
+      backgroundColor: '#333',
     },
     authInfo: {
       width: Dimensions.get('window').width, height: 100,
@@ -90,14 +95,14 @@ const styles = StyleSheet.create({
     },
     warring: {
       width: 300, marginTop: 20,
-      color: '#888', paddingRight: 10,
+      color: '#444', paddingRight: 10,
       alignSelf: 'flex-start'
     },
     inputWrapper: {
       width: Dimensions.get('window').width, height: 75,
-      backgroundColor: '#545454', flexDirection: 'row', 
+      backgroundColor: '#333', flexDirection: 'row', 
       justifyContent: 'space-around', alignItems: 'center',
-      borderBottomColor: '#888', borderBottomWidth: 1
+      borderBottomColor: '#444', borderBottomWidth: 1
     },
     input: {
       width: 200, fontSize: 22, color: 'white',
@@ -108,19 +113,19 @@ const styles = StyleSheet.create({
     },
     inputWrapperSmall: {
       width: Dimensions.get('window').width, height: 60,
-      backgroundColor: '#545454', flexDirection: 'row', 
+      backgroundColor: '#333', flexDirection: 'row', 
       justifyContent: 'space-around', alignItems: 'center',
-      borderBottomColor: '#888', borderBottomWidth: 1
+      borderBottomColor: '#444', borderBottomWidth: 1
     }
 });
 
 ReportSendScreen.navigationOptions = {
   tabBarIcon: ({focused}) => (
-    <View style={{width: 45, height: 45, 
+    <View style={{width: 55, height: 55, 
                   borderRadius: 42, 
                   justifyContent: 'center', alignItems: 'center', 
                   backgroundColor: focused ? '#33C7FF':'#FFE633'}}>
-        <MaterialIcons name="send" size={30} color={focused?"#777":'#666'} />
+        <MaterialIcons name="send" size={30} color={focused?"#FFF":'#666'} />
     </View>
   ),
   tabBarLabel: () => {return null},

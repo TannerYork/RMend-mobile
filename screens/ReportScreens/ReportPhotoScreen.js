@@ -3,6 +3,7 @@ import {  StyleSheet, Text, Image, View, ScrollView, Dimensions, TouchableOpacit
 import { AntDesign, Entypo } from '@expo/vector-icons'
 import Header from '../../components/Header';
 import InfoMessage from '../../components/InfoMessage';
+import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
 
 export default class ReportScreen extends React.Component {
 
@@ -42,7 +43,7 @@ export default class ReportScreen extends React.Component {
   render() {
     const { navigation } = this.props
     return (
-        <View style={styles.scrollContainer}>
+        <View style={styles.container}>
             <Header title="Photos" {...this.props}
               navTitleOne="Home" navTitleTwo="Next"
               navActionOne={() => navigation.navigate('Home')} 
@@ -63,16 +64,17 @@ export default class ReportScreen extends React.Component {
 }
 
 const styles = StyleSheet.create({
-  scrollContainer: {
+  container: {
     height: Dimensions.get('window').height,
     paddingTop: 20, paddingBottom: 80,
     alignItems: 'center',
-    backgroundColor: '#222'
+    backgroundColor: '#000'
   },
   images: {
-    height: 500, minWidth: Dimensions.get('window').width,
-    marginTop: 50,
-    alignItems: 'center', justifyContent: 'center'
+    height: hp('55%'),
+    minWidth: Dimensions.get('window').width,
+    marginTop: hp('1%'),
+    alignItems: 'center', justifyContent: 'center',
   },
   image: {
     height: 400, width: 300,
@@ -93,7 +95,7 @@ const styles = StyleSheet.create({
     width: 350, height: 50,
     borderRadius: 42, borderWidth: 2, borderColor: '#E9E9E9',
     justifyContent: 'center', alignItems: 'center',
-    marginBottom: 40
+    marginBottom: hp('4%')
   },
   imagesPlaceholder: {
     height: 400, width: 350,
@@ -105,8 +107,8 @@ const styles = StyleSheet.create({
 
 ReportScreen.navigationOptions = {
   tabBarIcon: ({focused}) => (
-    <View style={{width: 45, height: 45, borderRadius: 42, justifyContent: 'center', alignItems: 'center', backgroundColor: focused ? '#33C7FF':'#FFE633'}}>
-      <Entypo name="camera" size={30} color={focused ? '#666': '#777'}/>
+    <View style={{width: 55, height: 55, borderRadius: 42, justifyContent: 'center', alignItems: 'center', backgroundColor: focused ? '#33C7FF':'#FFE633'}}>
+      <Entypo name="camera" size={30} color={focused ? '#FFF': '#777'}/>
     </View>
   ),
   tabBarLabel:() => {return null},

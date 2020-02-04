@@ -21,9 +21,9 @@ export default class Header extends React.Component {
 const styles = StyleSheet.create({
     header: {
         width: Dimensions.get('window').width, height: 50,
-        backgroundColor: '#222',
+        backgroundColor: '#000',
         flexDirection: "row", justifyContent: "space-around",
-        alignItems: 'center', marginTop: 11
+        alignItems: 'center',
     },
     title: {
         width: 200,

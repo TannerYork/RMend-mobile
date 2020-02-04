@@ -15,9 +15,9 @@ const ReportNavigator = createBottomTabNavigator({
 },{
     tabBarOptions: {
         style: {
-            borderTopWidth: 0,
-            height: 55,
-            backgroundColor: '#222'
+            borderTopWidth: 0.3,
+            height: 50,
+            backgroundColor: '#111'
         }
     }
 });
