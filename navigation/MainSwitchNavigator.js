@@ -1,15 +1,15 @@
 import { createSwitchNavigator } from 'react-navigation';
-import SignInScreen from '../screens/SignInScreen';
-import CreateUserScreen from '../screens/CreateUserScreen';
-import HomeScreen from '../screens/HomeScreen';
-import LoadingScreen from '../screens//LoadingScreen';
+import LoadingScreen from '../screens/LoadingScreen';
+import SignInScreen from '../screens/AuthScreens/SignInScreen';
+import CreateUserScreen from '../screens/AuthScreens/CreateUserScreen';
+import HomeNavigator from './HomeNavigator';
 import ReportNavigator from './ReportNavigator';
 
 const MainAppNavigator = createSwitchNavigator({
     Loading: {screen: LoadingScreen},
     SignIn: {screen: SignInScreen},
     CreateUser: {screen: CreateUserScreen},
-    Home: {screen: HomeScreen},
+    Home: HomeNavigator,
     Report: ReportNavigator,
 });
 

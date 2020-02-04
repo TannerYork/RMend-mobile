@@ -4,47 +4,39 @@ import { Formik } from 'formik';
 import { Button } from 'react-native-elements'
 import { SafeAreaView, View, Text } from 'react-native';
 
-
-import styles from '../styles/StyleSheet';
-import FormInput from '../components/FormInput'
-import FormButton from '../components/FormButton'
-import ErrorMessage from '../components/ErrorMessage';
-import { createUserWithEmailAndPassword } from '../config/FirebaseApp';
+import styles from '../../styles/StyleSheet';
+import FormInput from '../../components/FormInput'
+import FormButton from '../../components/FormButton'
+import ErrorMessage from '../../components/ErrorMessage';
+import { signInWithEmailAndPassword } from '../../config/FirebaseApp';
 
 export default class SignInScreen extends React.Component {
   handleSubmit = values => {
     if (values.email.length > 0 && values.password.length > 0) {
-      createUserWithEmailAndPassword(values.email, values.password).then((results) => {
-        if (results.error) alert(results.error);
-        if (!results.error) this.props.navigation.navigate('Camera');
-      }).catch((err) => { alert(err.message); })
+      signInWithEmailAndPassword(values.email, values.password).then(() => {
+        this.props.navigation.navigate('Camera');
+      }).catch((err) => {
+        alert(err.message);
+      })
     }
   }
 
   render = () => {
     return (
       <SafeAreaView style={styles.container}>
-          <Text style={styles.header}>Sign Up</Text>
+          <Text style={styles.header}>Sign In</Text>
           <Formik
-            initialValues={{ email: '', password: '', confirmPass: '' }}
+            initialValues={{ email: '', password: '' }}
             onSubmit={values => { this.handleSubmit(values)}}
             validationSchema={validationSchema}>
             {({ handleBlur, handleChange, handleSubmit, values, isValid, errors, touched }) => (
               <View>
                 <FormInput
-                  name="name"
-                  value={values.name}
-                  onBlur={handleBlur('name')}
-                  onChangeText={handleChange('name')}
-                  placeholder="Enter Name"
-                  autoCapitalize="none" />
-                <ErrorMessage errorValue={touched.name && errors.name} />
-                <FormInput
                   name="email"
                   value={values.email}
                   onBlur={handleBlur('email')}
                   onChangeText={handleChange('email')}
-                  placeholder="Enter email"
+                  placeholder="Enter Email"
                   autoCapitalize="none" />
                 <ErrorMessage errorValue={touched.email && errors.email} />
                 <FormInput
@@ -54,20 +46,12 @@ export default class SignInScreen extends React.Component {
                   onChangeText={handleChange('password')}
                   placeholder="Enter password"
                   secureTextEntry />
-                <ErrorMessage errorValue={touched.password && errors.password} />
-                <FormInput
-                  name="confirmPass"
-                  value={values.confirmPass}
-                  onBlur={handleBlur('confirmPass')}
-                  onChangeText={handleChange('confirmPass')}
-                  placeholder="Confrim Password"
-                  secureTextEntry />
-                <ErrorMessage errorValue={touched.confirmPass && errors.confirmPass} />
+                <ErrorMessage errorValue={touched.confirmPass && errors.confrimPass} />
                 <View style={styles.buttonContainer}>
                   <FormButton
                     buttonType="outline"
                     onPress={handleSubmit}
-                    title="CREATE"
+                    title="LOGIN"
                     buttonColor="#039BE5" 
                     disabled={!isValid} />
                 </View>
@@ -75,8 +59,8 @@ export default class SignInScreen extends React.Component {
             )}
           </Formik>
           <Button
-            title="Already have an account? Sign In"
-            onPress={() => this.props.navigation.navigate('SignIn')}
+            title="Don't have an account? Sign Up"
+            onPress={() => this.props.navigation.navigate('CreateUser')}
             titleStyle={{ color: '#F57C00' }}
             type="clear"
           />
@@ -86,9 +70,6 @@ export default class SignInScreen extends React.Component {
 }
 
 const validationSchema = Yup.object().shape({
-  name: Yup.string()
-    .label('Name')
-    .required('Please enter your full name'),
   email: Yup.string()
     .label('Email')
     .email('Enter a valid email')
@@ -96,13 +77,7 @@ const validationSchema = Yup.object().shape({
   password: Yup.string()
     .label('Password')
     .required()
-    .min(4, 'Password must have at least 4 characters '),
-  confirmPass: Yup.string()
-    .label('Confirm Password')
-    .required()
-    .test('passwords-match', 'Passwords must match ya fool', function(value) {
-      return this.parent.password === value;
-    })
+    .min(4, 'Password must have at least 4 characters ')
 })
 
 SignInScreen.navigationOptions = {
