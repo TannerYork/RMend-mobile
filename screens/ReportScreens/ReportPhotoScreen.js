@@ -102,7 +102,7 @@ export default class ReportScreen extends React.Component {
     if (this.state.images.length > 0) {
       return this.state.images.map((photo, index) => {
         return (
-          <View style={styles.imageWrapper}>
+          <View style={styles.imageWrapper} key={index}>
             <Image source={{ isStatic: true, uri: 'data:image/jpeg;base64,'+photo, }} style={styles.image}/>
             <View style={styles.imageDeleteContainer}>
                 <TouchableOpacity style={styles.imageDelete} onPress={() => this.removeImage(index)}>
@@ -135,7 +135,7 @@ export default class ReportScreen extends React.Component {
             <ScrollView 
               contentContainerStyle={styles.images} 
               horizontal={true} decelerationRate={0}
-              snapToInterval={310} snapToAlignment={"center"}>
+              snapToAlignment={"center"}>
               {this.renderImages()}
             </ScrollView>
             <TouchableOpacity style={styles.button} onPress={this.photoAlert}>
