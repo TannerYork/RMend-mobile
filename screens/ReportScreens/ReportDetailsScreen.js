@@ -31,11 +31,13 @@ class ReportDetailsScreen extends React.Component {
           navActionTwo={() => navigation.navigate('Send')}
         />
         <Text style={styles.header}>Incident Type</Text>
+        <Text style={styles.subHeader}>Required</Text>
         <TouchableOpacity style={styles.selector}>
           <Text style={styles.selectorText}>Select the incident type</Text>
           <MaterialIcons name="navigate-next" size={25} color="#FFF" />
         </TouchableOpacity>
         <Text style={styles.header}>Details</Text>
+        <Text style={styles.subHeader}>Optional</Text>
         <TextInput
           style={styles.details}
           placeholder="Enter a description of the incident"
@@ -61,6 +63,13 @@ const styles = StyleSheet.create({
     fontFamily: 'Arial-BoldMT',
     padding: wp('1%'),
     marginTop: hp('2%')
+  },
+  subHeader: {
+    width: wp('90%'),
+    fontSize: wp('4%'),
+    color: '#444',
+    marginBottom: hp('1%'),
+    fontFamily: 'Arial'
   },
   selector: {
     width: wp('90%'),
