@@ -5,7 +5,7 @@ import { MaterialIcons, AntDesign } from '@expo/vector-icons'
 import Header from '../../components/Header';
 import Colors from '../../constants/Colors';
  
-export default class ReportDetailsScreen extends React.Component {
+class ReportDetailsScreen extends React.Component {
   
     render() {
       const { navigation } = this.props;
@@ -64,3 +64,5 @@ ReportDetailsScreen.navigationOptions = {
     ),
     tabBarLabel:() => {return null},
 };
+
+export default ReportDetailsScreen;

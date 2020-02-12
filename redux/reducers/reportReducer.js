@@ -4,8 +4,9 @@ import {
   UPDATE_LOCATION,
   UPDATE_DETAILS,
   UPDATE_INFO,
-  REST_FORM
+  RESET_REPORT
 } from '../actions/types';
+import { actionTypes } from 'redux-form';
 
 const INITIAL_STATE = {
   images: [],
@@ -16,6 +17,10 @@ const INITIAL_STATE = {
 
 const reportReducer = (state = INITIAL_STATE, action) => {
   switch (action.type) {
+    case RESET_REPORT:
+      return {
+        ...INITIAL_STATE
+      };
     case ADD_IMAGE:
       return {
         ...state,
@@ -41,8 +46,6 @@ const reportReducer = (state = INITIAL_STATE, action) => {
         ...state,
         info: action.payload
       };
-    case REST_FORM:
-      return INITIAL_STATE;
     default:
       return state;
   }

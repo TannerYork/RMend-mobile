@@ -1,11 +1,11 @@
 import React from 'react';
 import { Text, StyleSheet, ScrollView, View, Dimensions, Image, SafeAreaView } from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons';
-import Header from '../../components/Header';
 import { TouchableHighlight, TextInput } from 'react-native-gesture-handler';
+import Header from '../../components/Header';
 import Colors from '../../constants/Colors';
 
-export default class ReportSendScreen extends React.Component {
+class ReportSendScreen extends React.Component {
   
     render() {
       const { navigation } = this.props;
@@ -130,3 +130,5 @@ ReportSendScreen.navigationOptions = {
   ),
   tabBarLabel: () => {return null},
 };
+
+export default ReportSendScreen;

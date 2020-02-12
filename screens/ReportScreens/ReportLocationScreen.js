@@ -4,7 +4,7 @@ import { ScrollView, StyleSheet, TouchableOpacity,
 import { MaterialIcons } from '@expo/vector-icons';
 import Header from '../../components/Header';
 
-export default class ReportLocationScreen extends React.Component {
+class ReportLocationScreen extends React.Component {
   
     render() {
       const { navigation } = this.props
@@ -47,3 +47,6 @@ ReportLocationScreen.navigationOptions = {
   ),
   tabBarLabel:() => {return null},
 };
+
+
+export default ReportLocationScreen;
