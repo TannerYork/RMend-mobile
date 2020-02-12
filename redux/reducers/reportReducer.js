@@ -6,13 +6,12 @@ import {
   UPDATE_INFO,
   RESET_REPORT
 } from '../actions/types';
-import { actionTypes } from 'redux-form';
 
 const INITIAL_STATE = {
   images: [],
-  location: '',
-  details: { type: '', details: '' },
-  info: { name: '', email: '', phoneNumber: '' }
+  location: null,
+  details: { type: 'Road Issue', details: null },
+  info: { name: null, email: null, phoneNumber: null }
 };
 
 const reportReducer = (state = INITIAL_STATE, action) => {

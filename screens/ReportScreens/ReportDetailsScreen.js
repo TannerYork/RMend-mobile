@@ -1,25 +1,22 @@
 import React from 'react';
-import {
-  ScrollView,
-  Text,
-  StyleSheet,
-  Dimensions,
-  TouchableOpacity,
-  TextInput,
-  View,
-  SafeAreaView
-} from 'react-native';
+import { Text, StyleSheet, TouchableOpacity, TextInput, View, SafeAreaView } from 'react-native';
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp
 } from 'react-native-responsive-screen';
+import { connect } from 'react-redux';
+import { updateDetials } from '../../redux/actions';
 import { MaterialIcons, AntDesign } from '@expo/vector-icons';
 import Header from '../../components/Header';
 import Colors from '../../constants/Colors';
 
 class ReportDetailsScreen extends React.Component {
   render() {
-    const { navigation } = this.props;
+    const {
+      navigation,
+      detials: { type, detials },
+      updateDetials
+    } = this.props;
     return (
       <SafeAreaView style={styles.container}>
         <Header
@@ -32,14 +29,22 @@ class ReportDetailsScreen extends React.Component {
         />
         <Text style={styles.header}>Incident Type</Text>
         <Text style={styles.subHeader}>Required</Text>
-        <TouchableOpacity style={styles.selector}>
-          <Text style={styles.selectorText}>Select the incident type</Text>
-          <MaterialIcons name="navigate-next" size={25} color="#FFF" />
-        </TouchableOpacity>
+        {!type && (
+          <TouchableOpacity style={styles.selector}>
+            <Text style={styles.selectorText}>Select the incident type</Text>
+            <MaterialIcons name="navigate-next" size={25} color="#FFF" />
+          </TouchableOpacity>
+        )}
+        {type && (
+          <TouchableOpacity style={styles.selector}>
+            <Text style={styles.selectorText}>{type}</Text>
+          </TouchableOpacity>
+        )}
         <Text style={styles.header}>Details</Text>
         <Text style={styles.subHeader}>Optional</Text>
         <TextInput
           style={styles.details}
+          onChangeText={text => updateDetials({ type: type, details: text })}
           placeholder="Enter a description of the incident"
           placeholderTextColor="#666"
           multiline
@@ -125,4 +130,10 @@ ReportDetailsScreen.navigationOptions = {
   }
 };
 
-export default ReportDetailsScreen;
+const mapStateToProps = ({ report }) => {
+  return {
+    detials: report.details
+  };
+};
+
+export default connect(mapStateToProps, { updateDetials })(ReportDetailsScreen);
