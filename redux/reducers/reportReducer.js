@@ -9,7 +9,7 @@ import {
 
 const INITIAL_STATE = {
   images: [],
-  location: null,
+  location: { latitude: 37.78825, longitude: -122.4324 },
   details: { type: 'Road Issue', details: null },
   info: { name: null, email: null, phoneNumber: null }
 };

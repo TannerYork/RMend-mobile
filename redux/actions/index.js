@@ -21,10 +21,10 @@ export const removeImage = imageIndex => dispatch => {
   });
 };
 
-export const updateLocation = (latitude, longitude) => dispatch => {
+export const updateLocation = location => dispatch => {
   dispatch({
     type: UPDATE_LOCATION,
-    payload: (latitude, longitude)
+    payload: location
   });
 };
 
