@@ -28,7 +28,7 @@ export const updateLocation = (latitude, longitude) => dispatch => {
   });
 };
 
-export const updateDetials = details => dispatch => {
+export const updateDetails = details => dispatch => {
   dispatch({
     type: UPDATE_DETAILS,
     payload: details

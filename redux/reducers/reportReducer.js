@@ -38,7 +38,7 @@ const reportReducer = (state = INITIAL_STATE, action) => {
     case UPDATE_DETAILS:
       return {
         ...state,
-        detials: action.payload
+        details: action.payload
       };
     case UPDATE_INFO:
       return {

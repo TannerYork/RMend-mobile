@@ -5,8 +5,8 @@ import {
   heightPercentageToDP as hp
 } from 'react-native-responsive-screen';
 import { connect } from 'react-redux';
-import { updateDetials } from '../../redux/actions';
-import { MaterialIcons, AntDesign } from '@expo/vector-icons';
+import { updateDetails } from '../../redux/actions';
+import { MaterialIcons } from '@expo/vector-icons';
 import Header from '../../components/Header';
 import Colors from '../../constants/Colors';
 
@@ -14,8 +14,8 @@ class ReportDetailsScreen extends React.Component {
   render() {
     const {
       navigation,
-      detials: { type, detials },
-      updateDetials
+      details: { type, details },
+      updateDetails
     } = this.props;
     return (
       <SafeAreaView style={styles.container}>
@@ -44,7 +44,7 @@ class ReportDetailsScreen extends React.Component {
         <Text style={styles.subHeader}>Optional</Text>
         <TextInput
           style={styles.details}
-          onChangeText={text => updateDetials({ type: type, details: text })}
+          onChangeText={text => updateDetails({ type: type, details: text })}
           placeholder="Enter a description of the incident"
           placeholderTextColor="#666"
           multiline
@@ -115,8 +115,8 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = ({ report }) => {
   return {
-    detials: report.details
+    details: report.details
   };
 };
 
-export default connect(mapStateToProps, { updateDetials })(ReportDetailsScreen);
+export default connect(mapStateToProps, { updateDetails })(ReportDetailsScreen);
