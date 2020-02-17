@@ -1,50 +1,65 @@
 import React from 'react';
-import { StyleSheet, View, Text, Dimensions,
-        TouchableOpacity, Image } from 'react-native';
-import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
+import { StyleSheet, View, Text, TouchableOpacity, Image, SafeAreaView } from 'react-native';
+import {
+  widthPercentageToDP as wp,
+  heightPercentageToDP as hp
+} from 'react-native-responsive-screen';
 
 export default class PhotoScreen extends React.Component {
-    render() {
-        const { navigate } = this.props.navigation
-        return (
-            <View style={styles.container}>
-                <View style={styles.headerWrapper}>
-                    <Text style={styles.headerText}>RMend</Text>
-                </View>
-                <Image source={require('../../assets/images/smiley_sun.png')} style={styles.image}/>
-                <TouchableOpacity style={styles.button} onPress={() => navigate('Report')}>
-                    <Text style={{fontSize: 40, color: 'white', fontWeight: 'bold'}}>Take Photo</Text>
-                </TouchableOpacity>
-            </View>
-        )
-    }
+  render() {
+    const { navigate } = this.props.navigation;
+    return (
+      <SafeAreaView style={styles.container}>
+        <View style={styles.headerWrapper}>
+          <Text style={styles.headerText}>RMend</Text>
+        </View>
+        <View style={styles.content}>
+          <Image source={require('../../assets/images/smiley_sun.png')} style={styles.image} />
+          <TouchableOpacity style={styles.button} onPress={() => navigate('Report')}>
+            <Text style={{ fontSize: wp('6%'), color: 'white', fontWeight: 'bold' }}>
+              Take Photo
+            </Text>
+          </TouchableOpacity>
+        </View>
+      </SafeAreaView>
+    );
+  }
 }
 
 const styles = StyleSheet.create({
-    container: {
-        flex: 1, alignItems: 'center', 
-        backgroundColor: 'black',
-        display: 'flex',
-        flexDirection: 'column'
-    },
-    headerWrapper: {
-        width: Dimensions.get('window').width, 
-        height: 140, justifyContent: 'flex-end',
-        backgroundColor: 'black', padding: 15
-    },
-    headerText: {
-        color: 'white', fontSize: 50,
-        fontWeight: 'bold'
-    },
-    image: {
-        width: wp('90%'), height: hp('50%'),
-        borderRadius: 20,
-        marginTop: 20
-    },
-    button: {
-        width: 350, height: 60,
-        borderRadius: 42,
-        justifyContent: 'center', alignItems: 'center',
-        marginTop: hp('5%'), backgroundColor: '#ff6a30',
-    }
+  container: {
+    flex: 1,
+    alignItems: 'center',
+    backgroundColor: 'black'
+  },
+  headerWrapper: {
+    width: wp('100%'),
+    height: hp('12%'),
+    justifyContent: 'flex-end',
+    backgroundColor: 'black',
+    padding: wp('1%')
+  },
+  headerText: {
+    color: 'white',
+    fontSize: wp('10%'),
+    fontWeight: 'bold'
+  },
+  content: {
+    marginTop: hp('5%'),
+    alignItems: 'center'
+  },
+  image: {
+    width: wp('90%'),
+    height: hp('50%'),
+    borderRadius: 20
+  },
+  button: {
+    width: wp('70%'),
+    height: hp('7%'),
+    borderRadius: 42,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginTop: hp('10%'),
+    backgroundColor: '#ff6a30'
+  }
 });
