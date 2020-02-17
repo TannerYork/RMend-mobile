@@ -16,7 +16,6 @@ import {
 } from 'react-native-responsive-screen';
 
 import Colors from '../../constants/Colors';
-import ErrorMessage from '../../components/ErrorMessage';
 import { signInWithEmailAndPassword } from '../../config/FirebaseApp';
 
 export default class SignInScreen extends React.Component {

@@ -15,7 +15,6 @@ import {
   heightPercentageToDP as hp
 } from 'react-native-responsive-screen';
 
-import ErrorMessage from '../../components/ErrorMessage';
 import Colors from '../../constants/Colors';
 import { createUserWithEmailAndPassword } from '../../config/FirebaseApp';
 
