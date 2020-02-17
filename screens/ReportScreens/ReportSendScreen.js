@@ -54,11 +54,11 @@ class ReportSendScreen extends React.Component {
           <Text style={styles.subHeader}>Optional</Text>
           <View style={styles.inputWrapperSmall}>
             <Text style={styles.inputLabelSmall}>Telephone</Text>
-            <TextInput style={styles.input} placeholder="Optional" />
+            <TextInput style={styles.inputSmall} placeholder="Optional" />
           </View>
           <View style={styles.inputWrapperSmall}>
             <Text style={styles.inputLabelSmall}>Address</Text>
-            <TextInput style={styles.input} placeholder="Optional" />
+            <TextInput style={styles.inputSmall} placeholder="Optional" />
           </View>
         </ScrollView>
       </SafeAreaView>
@@ -76,22 +76,23 @@ const styles = StyleSheet.create({
     alignItems: 'center'
   },
   header: {
-    width: wp('90%'),
-    fontSize: wp('8%'),
+    width: wp('100%'),
+    fontSize: wp('5%'),
     color: Colors.mainText,
     fontFamily: 'Arial-BoldMT',
-    padding: wp('1%'),
+    marginLeft: wp('5%'),
     marginTop: hp('2%')
   },
   subHeader: {
-    width: wp('90%'),
-    fontSize: wp('4%'),
+    width: wp('100%'),
+    fontSize: wp('3%'),
     color: '#444',
     marginBottom: hp('1%'),
+    marginLeft: wp('5%'),
     fontFamily: 'Arial'
   },
   authInfoWrapper: {
-    width: wp('90%'),
+    width: wp('100%'),
     height: hp('10%'),
     marginBottom: hp('3%'),
     backgroundColor: '#222',
@@ -100,19 +101,20 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     borderColor: '#555',
     borderWidth: 1,
-    borderRadius: 20,
+    borderLeftWidth: 0,
+    borderRightWidth: 0,
     padding: wp('1%')
   },
   authInfo: {
     width: wp('90%'),
-    height: hp('10%'),
+    height: hp('8%'),
     flexDirection: 'row',
     alignItems: 'center',
     borderRadius: 20
   },
   authInfoImage: {
-    width: hp('10%'),
-    height: hp('10%'),
+    width: hp('8%'),
+    height: hp('8%'),
     marginRight: wp('1%'),
     borderRadius: 20
   },
@@ -125,78 +127,59 @@ const styles = StyleSheet.create({
   },
   warring: {
     width: wp('50%'),
+    fontSize: wp('3%'),
     color: '#444',
     alignSelf: 'flex-start',
     marginLeft: wp('5%')
   },
   inputWrapper: {
-    width: wp('90%'),
+    width: wp('100%'),
     height: hp('8%'),
-    marginBottom: hp('2%'),
     backgroundColor: '#222',
     flexDirection: 'row',
     justifyContent: 'space-around',
     alignItems: 'center',
     borderColor: '#555',
     borderWidth: 1,
-    borderRadius: 20,
+    borderLeftWidth: 0,
+    borderRightWidth: 0,
     padding: wp('1%')
   },
   input: {
-    width: wp('50%'),
+    width: wp('70%'),
     fontSize: wp('4%'),
     color: '#666',
     textAlign: 'right'
   },
   inputLabel: {
     width: wp('20%'),
-    fontSize: wp('5%'),
+    fontSize: wp('4%'),
     color: '#666'
   },
   inputSmall: {
-    width: wp('50%'),
-    fontSize: wp('4%'),
-    color: 'white',
+    width: wp('70%'),
+    fontSize: wp('3%'),
+    color: '#666',
     textAlign: 'right'
   },
   inputLabelSmall: {
     width: wp('20%'),
-    fontSize: wp('4%'),
+    fontSize: wp('3%'),
     color: '#666'
   },
   inputWrapperSmall: {
-    width: wp('90%'),
+    width: wp('100%'),
     height: hp('7%'),
-    marginBottom: hp('2%'),
     backgroundColor: '#222',
     flexDirection: 'row',
     justifyContent: 'space-around',
     alignItems: 'center',
     borderColor: '#555',
     borderWidth: 1,
-    borderRadius: 20,
+    borderLeftWidth: 0,
+    borderRightWidth: 0,
     padding: wp('1%')
   }
 });
-
-ReportSendScreen.navigationOptions = {
-  tabBarIcon: ({ focused }) => (
-    <View
-      style={{
-        width: 55,
-        height: 55,
-        borderRadius: 42,
-        justifyContent: 'center',
-        alignItems: 'center',
-        backgroundColor: focused ? '#33C7FF' : '#FFE633'
-      }}
-    >
-      <MaterialIcons name="send" size={30} color={focused ? '#FFF' : '#666'} />
-    </View>
-  ),
-  tabBarLabel: () => {
-    return null;
-  }
-};
 
 export default ReportSendScreen;

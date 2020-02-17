@@ -62,23 +62,24 @@ const styles = StyleSheet.create({
     height: hp('100%')
   },
   header: {
-    width: wp('90%'),
-    fontSize: wp('8%'),
+    width: wp('100%'),
+    fontSize: wp('5%'),
     color: Colors.mainText,
     fontFamily: 'Arial-BoldMT',
     padding: wp('1%'),
     marginTop: hp('2%')
   },
   subHeader: {
-    width: wp('90%'),
-    fontSize: wp('4%'),
+    width: wp('100%'),
+    fontSize: wp('3%'),
     color: '#444',
     marginBottom: hp('1%'),
+    paddingLeft: '1%',
     fontFamily: 'Arial'
   },
   selector: {
-    width: wp('90%'),
-    height: hp('10%'),
+    width: wp('100%'),
+    height: hp('8%'),
     marginBottom: hp('3%'),
     backgroundColor: '#222',
     flexDirection: 'row',
@@ -86,7 +87,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     borderColor: '#555',
     borderWidth: 1,
-    borderRadius: 20,
+    borderRightWidth: 0,
+    borderLeftWidth: 0,
     padding: wp('1%')
   },
   selectorText: {
@@ -94,7 +96,7 @@ const styles = StyleSheet.create({
     color: '#FFF'
   },
   details: {
-    width: wp('90%'),
+    width: wp('100%'),
     height: hp('15%'),
     marginBottom: hp('2%'),
     backgroundColor: '#222',
@@ -103,32 +105,13 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     borderColor: '#555',
     borderWidth: 1,
-    borderRadius: 20,
+    borderRightWidth: 0,
+    borderLeftWidth: 0,
     padding: wp('5%'),
-    fontSize: wp('5%'),
+    fontSize: wp('4%'),
     color: '#666'
   }
 });
-
-ReportDetailsScreen.navigationOptions = {
-  tabBarIcon: ({ focused }) => (
-    <View
-      style={{
-        width: 55,
-        height: 55,
-        borderRadius: 42,
-        justifyContent: 'center',
-        alignItems: 'center',
-        backgroundColor: focused ? '#33C7FF' : '#FFE633'
-      }}
-    >
-      <AntDesign name="profile" size={30} color={focused ? '#FFF' : '#666'} />
-    </View>
-  ),
-  tabBarLabel: () => {
-    return null;
-  }
-};
 
 const mapStateToProps = ({ report }) => {
   return {

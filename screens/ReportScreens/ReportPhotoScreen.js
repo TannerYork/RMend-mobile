@@ -103,12 +103,13 @@ class ReportScreen extends React.Component {
         <ScrollView
           contentContainerStyle={styles.images}
           horizontal={true}
+          directionalLockEnabled={false}
           decelerationRate={0}
           snapToAlignment={'center'}
         >
           {images.length < 1 && (
             <View>
-              <Image style={styles.imagesPlaceholder} source={require(imagesPlaceholder)} />
+              <Image style={styles.image} source={require(imagesPlaceholder)} />
             </View>
           )}
           {images.map((photo, index) => {
@@ -120,7 +121,7 @@ class ReportScreen extends React.Component {
                 />
                 <View style={styles.imageDeleteContainer}>
                   <TouchableOpacity style={styles.imageDelete} onPress={() => removeImage(index)}>
-                    <AntDesign name="delete" size={25} color={'white'} />
+                    <AntDesign name="delete" size={wp('5%')} color={'white'} />
                   </TouchableOpacity>
                 </View>
               </View>
@@ -128,7 +129,7 @@ class ReportScreen extends React.Component {
           })}
         </ScrollView>
         <TouchableOpacity style={styles.button} onPress={this.photoAlert}>
-          <Text style={{ fontSize: 25, color: 'white' }}>Add Photo</Text>
+          <Text style={{ fontSize: wp('8%'), color: 'white' }}>Add Photo</Text>
         </TouchableOpacity>
       </SafeAreaView>
     );
@@ -144,28 +145,28 @@ const styles = StyleSheet.create({
     backgroundColor: '#000'
   },
   images: {
-    height: hp('55%'),
-    minWidth: Dimensions.get('window').width,
-    marginTop: hp('1%'),
+    height: hp('50%'),
+    minWidth: wp('100%'),
+    marginTop: hp('3%'),
     alignItems: 'center',
     justifyContent: 'center'
   },
   imageWrapper: {
-    height: 400,
-    width: 350,
+    height: hp('50%'),
+    width: wp('70%'),
     backgroundColor: '#333',
     borderRadius: 20,
     margin: 10,
     position: 'relative'
   },
   image: {
-    height: 400,
-    width: 350,
+    height: hp('50%'),
+    width: wp('70%'),
     borderRadius: 20
   },
   imageDelete: {
-    width: 40,
-    height: 40,
+    width: wp('10%'),
+    height: wp('10%'),
     backgroundColor: '#FF5733',
     borderRadius: 42,
     justifyContent: 'center',
@@ -173,50 +174,21 @@ const styles = StyleSheet.create({
   },
   imageDeleteContainer: {
     position: 'absolute',
-    right: -6,
-    top: -6,
+    right: wp('-2%'),
+    top: wp('-2%'),
     zIndex: 10
   },
   button: {
-    width: 350,
-    height: 50,
+    width: wp('70%'),
+    height: hp('8%'),
     borderRadius: 42,
     borderWidth: 2,
     borderColor: '#E9E9E9',
     justifyContent: 'center',
     alignItems: 'center',
     marginBottom: hp('15%')
-  },
-  imagesPlaceholder: {
-    height: 400,
-    width: 350,
-    backgroundColor: '#999',
-    borderRadius: 20,
-    margin: 10,
-    justifyContent: 'center',
-    alignItems: 'center'
   }
 });
-
-ReportScreen.navigationOptions = {
-  tabBarIcon: ({ focused }) => (
-    <View
-      style={{
-        width: 55,
-        height: 55,
-        borderRadius: 42,
-        justifyContent: 'center',
-        alignItems: 'center',
-        backgroundColor: focused ? '#33C7FF' : '#FFE633'
-      }}
-    >
-      <Entypo name="camera" size={30} color={focused ? '#FFF' : '#777'} />
-    </View>
-  ),
-  tabBarLabel: () => {
-    return null;
-  }
-};
 
 const mapStateToProps = ({ report }) => {
   return {

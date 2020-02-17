@@ -1,21 +1,28 @@
 import React from 'react';
-import { View, Text, StyleSheet, Button, Dimensions } from 'react-native';
+import { View, Text, StyleSheet, Dimensions } from 'react-native';
+import {
+  widthPercentageToDP as wp,
+  heightPercentageToDP as hp
+} from 'react-native-responsive-screen';
 
 export default function InfoMessage(props) {
-    return (
-        <View style={styles.infoMessage}>
-            <Text style={styles.text}>{props.message}</Text>
-        </View>
-    );
+  return (
+    <View style={styles.infoMessage}>
+      <Text style={styles.text}>{props.message}</Text>
+    </View>
+  );
 }
 
 const styles = StyleSheet.create({
-    infoMessage: {
-        width: Dimensions.get('window').width, height: 50,
-        backgroundColor: '#545454',
-        alignItems: 'center', justifyContent: 'center'
-    },
-    text: {
-        fontSize:20, color: '#EEE'
-    }
-})
+  infoMessage: {
+    width: Dimensions.get('window').width,
+    height: hp('5%'),
+    backgroundColor: '#545454',
+    alignItems: 'center',
+    justifyContent: 'center'
+  },
+  text: {
+    fontSize: wp('3%'),
+    color: '#EEE'
+  }
+});
