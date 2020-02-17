@@ -1,17 +1,46 @@
 import React from 'react';
-import { Text, StyleSheet, ScrollView, View, Dimensions, Image, SafeAreaView } from 'react-native';
+import { Text, StyleSheet, ScrollView, View, Alert, Image, SafeAreaView } from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons';
-import { TouchableHighlight, TextInput } from 'react-native-gesture-handler';
-import Header from '../../components/Header';
-import Colors from '../../constants/Colors';
+import { TouchableHighlight, TextInput, Directions } from 'react-native-gesture-handler';
+import { connect } from 'react-redux';
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp
 } from 'react-native-responsive-screen';
 
+import { updateInfo } from '../../redux/actions';
+import { firebaseApp } from '../../config/FirebaseApp';
+import validate from '../../redux/validate';
+import Header from '../../components/Header';
+import Colors from '../../constants/Colors';
+
 class ReportSendScreen extends React.Component {
+  componentWillMount() {
+    const user = firebaseApp.auth().currentUser;
+    this.props.updateInfo({
+      authority: 'Barren County Road Department',
+      name: user.displayName,
+      email: user.email
+    });
+    this.setState({ name: user.displayName, email: user.email });
+  }
+
+  sendReport = () => {
+    const { report } = this.props;
+    const errors = validate(report);
+    if (Object.values(errors).length > 0) {
+      Alert.alert(
+        'A Required Field Is Missing',
+        'Check that all the required fields have been provided.',
+        [{ text: 'Ok', style: 'cancel' }]
+      );
+    } else {
+      console.log(report);
+    }
+  };
+
   render() {
-    const { navigation } = this.props;
+    const { navigation, report, updateInfo } = this.props;
     return (
       <SafeAreaView style={styles.container}>
         <Header
@@ -20,7 +49,7 @@ class ReportSendScreen extends React.Component {
           navTitleOne="Home"
           navTitleTwo="Send"
           navActionOne={() => navigation.navigate('Home')}
-          navActionTwo={() => print('Send')}
+          navActionTwo={() => this.sendReport()}
         />
         <ScrollView contentContainerStyle={styles.content}>
           <Text style={styles.header}>Authority</Text>
@@ -44,27 +73,47 @@ class ReportSendScreen extends React.Component {
           <Text style={styles.subHeader}>Required</Text>
           <View style={styles.inputWrapper}>
             <Text style={styles.inputLabel}>Name</Text>
-            <TextInput style={styles.input} placeholder="Required" />
+            <TextInput
+              style={styles.input}
+              value={this.state.name}
+              onChangeText={text => updateInfo({ ...report.info, name: text })}
+              placeholder="Required"
+              editable={false}
+            />
           </View>
           <View style={styles.inputWrapper}>
             <Text style={styles.inputLabel}>Email</Text>
-            <TextInput style={styles.input} placeholder="Required" />
+            <TextInput
+              style={styles.input}
+              value={this.state.email}
+              onChangeText={text => updateInfo({ ...report.info, email: text })}
+              placeholder="Required"
+              editable={false}
+            />
           </View>
           <View style={{ height: 30 }}></View>
-          <Text style={styles.subHeader}>Optional</Text>
+          {/* <Text style={styles.subHeader}>Optional</Text>
           <View style={styles.inputWrapperSmall}>
             <Text style={styles.inputLabelSmall}>Telephone</Text>
-            <TextInput style={styles.inputSmall} placeholder="Optional" />
-          </View>
-          <View style={styles.inputWrapperSmall}>
-            <Text style={styles.inputLabelSmall}>Address</Text>
-            <TextInput style={styles.inputSmall} placeholder="Optional" />
-          </View>
+            <TextInput
+              style={styles.inputSmall}
+              onChangeText={text => updateInfo({ ...report.info, phoneNumber: text })}
+              placeholder="Optional"
+              editable={false}
+            />
+          </View> */}
         </ScrollView>
       </SafeAreaView>
     );
   }
 }
+
+const mapStateToProps = ({ report }) => {
+  return {
+    report: report
+  };
+};
+export default connect(mapStateToProps, { updateInfo })(ReportSendScreen);
 
 const styles = StyleSheet.create({
   container: {
@@ -181,5 +230,3 @@ const styles = StyleSheet.create({
     padding: wp('1%')
   }
 });
-
-export default ReportSendScreen;
