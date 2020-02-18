@@ -70,17 +70,16 @@ export default class NearbyScreen extends React.Component {
         )}
         {reports.length > 0 && (
           <FlatList
+            contentContainerStyle={styles.list}
             data={reports}
             renderItem={item => {
               const { details, images } = item.item;
               return (
-                <TouchableOpacity style={styles.reportWrapper}>
-                  <View style={styles.reportInfo}>
-                    <Image source={{ uri: images[0].imageUrl }} style={styles.reportImage} />
-                    <View>
-                      <Text style={styles.reportType}>{details.type}</Text>
-                      <Text style={styles.reportAuth}>{details.authority}</Text>
-                    </View>
+                <TouchableOpacity style={styles.reportInfo}>
+                  <Image source={{ uri: images[0].imageUrl }} style={styles.reportImage} />
+                  <View>
+                    <Text style={styles.reportType}>{details.type}</Text>
+                    <Text style={styles.reportAuth}>{details.authority}</Text>
                   </View>
                 </TouchableOpacity>
               );
@@ -96,14 +95,18 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: 'center',
-    backgroundColor: 'black'
+    backgroundColor: '#EEEE'
   },
   headerWrapper: {
     width: wp('100%'),
     height: hp('14%'),
     justifyContent: 'flex-end',
     backgroundColor: 'black',
-    padding: wp('1%')
+    padding: wp('1%'),
+    zIndex: 100,
+    position: 'absolute',
+    top: 0,
+    left: 0
   },
   headerText: {
     color: 'white',
@@ -114,7 +117,8 @@ const styles = StyleSheet.create({
     minHeight: hp('100%'),
     width: wp('97%'),
     backgroundColor: 'white',
-    alignItems: 'center'
+    alignItems: 'center',
+    marginTop: hp('14%')
   },
   emptyImage: {
     height: hp('30%'),
@@ -130,38 +134,52 @@ const styles = StyleSheet.create({
   emptyButton: {
     marginTop: hp('3%')
   },
-  reportWrapper: {
+  list: {
+    marginTop: hp('12%'),
     width: wp('100%'),
-    height: hp('30%'),
-    backgroundColor: '#222',
+    alignItems: 'center'
+  },
+  reportWrapper: {
+    width: wp('90%'),
+    height: hp('11%'),
+    backgroundColor: 'white',
+    borderRadius: wp('3%'),
+    marginTop: hp('1%'),
+    padding: wp('1%'),
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
-    borderColor: '#555',
-    borderWidth: 1,
-    borderLeftWidth: 0,
-    borderRightWidth: 0,
-    padding: wp('1%')
+    shadowColor: '#222',
+    shadowOpacity: 0.2,
+    shadowOffset: { width: 3, height: 3 },
+    elevation: 1
   },
   reportInfo: {
-    width: wp('90%'),
-    height: hp('30%'),
+    width: wp('70%'),
+    height: hp('13%'),
+    backgroundColor: 'white',
+    borderRadius: wp('3%'),
+    marginTop: hp('2%'),
+    paddingLeft: wp('15%'),
     flexDirection: 'row',
     alignItems: 'center',
-    borderRadius: 20
+    borderRadius: 20,
+    position: 'relative'
   },
   reportImage: {
-    width: hp('25%'),
-    height: hp('25%'),
-    marginRight: wp('1%'),
-    borderRadius: hp('5%')
+    width: hp('10%'),
+    height: hp('10%'),
+    marginRight: wp('5%'),
+    borderRadius: wp('3%'),
+    position: 'absolute',
+    left: wp('-5%')
   },
   reportType: {
-    fontSize: wp('10%'),
-    color: 'white'
+    fontSize: wp('5%'),
+    color: '#222'
   },
   reportAuth: {
-    fontSize: wp('4%'),
+    fontSize: wp('3%'),
     color: '#666'
   }
 });
