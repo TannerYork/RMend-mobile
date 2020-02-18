@@ -39,11 +39,10 @@ class ReportScreen extends React.Component {
     let result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
       allowsEditing: true,
-      quality: 1,
-      base64: true
+      quality: 1
     });
     if (!result.cancelled) {
-      addImage(result.base64);
+      addImage(result.uri);
     }
   };
 
@@ -56,7 +55,7 @@ class ReportScreen extends React.Component {
       base64: true
     });
     if (!result.cancelled) {
-      addImage(result.base64);
+      // addImage(result.base64);
     }
   };
 
@@ -112,13 +111,10 @@ class ReportScreen extends React.Component {
               <Image style={styles.image} source={require(imagesPlaceholder)} />
             </View>
           )}
-          {images.map((photo, index) => {
+          {images.map((image, index) => {
             return (
               <View style={styles.imageWrapper} key={index}>
-                <Image
-                  source={{ isStatic: true, uri: 'data:image/jpeg;base64,' + photo }}
-                  style={styles.image}
-                />
+                <Image source={{ isStatic: true, uri: image }} style={styles.image} />
                 <View style={styles.imageDeleteContainer}>
                   <TouchableOpacity style={styles.imageDelete} onPress={() => removeImage(index)}>
                     <AntDesign name="delete" size={wp('5%')} color={'white'} />

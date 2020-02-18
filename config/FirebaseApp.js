@@ -1,5 +1,6 @@
 import firebase from 'firebase';
 import '@firebase/firestore';
+import '@firebase/storage';
 import { FIREBASE_DEV_CONFIG } from './keys';
 
 export const firebaseApp = firebase.initializeApp(FIREBASE_DEV_CONFIG);
@@ -31,33 +32,62 @@ export const signOut = () => {
   firebaseApp.auth().signOut();
 };
 
-export const createReport = async (location, details, magisterialDistrict, priority) => {
+async function getBlobAsync(uri) {
+  // Why are we using XMLHttpRequest? See:
+  // https://github.com/expo/expo/issues/2402#issuecomment-443726662
+  const blob = await new Promise((resolve, reject) => {
+    const xhr = new XMLHttpRequest();
+    xhr.onload = function() {
+      resolve(xhr.response);
+    };
+    xhr.onerror = function(e) {
+      console.log(e);
+      reject(new TypeError('Network request failed'));
+    };
+    xhr.responseType = 'blob';
+    xhr.open('GET', uri, true);
+    xhr.send(null);
+  });
+  return blob;
+}
+
+export const createReport = async ({
+  images,
+  location: { latitude, longitude },
+  details,
+  info
+}) => {
   const date = new Date();
   const timestamp = date.toDateString();
   const data = {
-    sender: firebaseApp.auth().currentUser.displayName,
+    location: { latitude, longitude },
     timestamp: timestamp,
-    location: location,
-    details: details,
-    magisterialDistrict: magisterialDistrict,
-    priority: priority,
-    isBeingReviewed: false
+    isBeingReviewed: false,
+    details: { ...details, authority: info.authority },
+    senderInfo: { name: info.name, email: info.email }
   };
 
   try {
-    const messageRef = await firestore.collection('reports').add(data);
-    const photos = photos;
-    for (var i = 0; i < photos.length; i++) {
+    const messageRef = await firebaseApp
+      .firestore()
+      .collection('reports')
+      .add(data);
+    for (var i = 0; i < images.length; i++) {
       // Upload images to Cloud Storage
+      const blob = await getBlobAsync(images[i]);
       const filePath = `reports/${messageRef.id}/${messageRef.id}-initial-${i}`;
-      const fileSnapshot = await storage.ref(filePath).put(photos[i]);
+      const fileSnapshot = await firebaseApp
+        .storage()
+        .ref(filePath)
+        .put(blob);
+      blob.close();
 
       // Generate a public URL for the file
       const url = await fileSnapshot.ref.getDownloadURL();
       // Update the chat message placeholder with the real image
       messageRef.update({
         id: messageRef.id,
-        photos: firebase.firestore.FieldValue.arrayUnion({
+        images: firebase.firestore.FieldValue.arrayUnion({
           id: messageRef.id,
           imageUrl: url,
           imageUri: fileSnapshot.metadata.fullPath
@@ -65,6 +95,6 @@ export const createReport = async (location, details, magisterialDistrict, prior
       });
     }
   } catch (error) {
-    alert(error);
+    console.log(error);
   }
 };

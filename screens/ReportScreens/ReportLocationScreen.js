@@ -11,7 +11,7 @@ import * as Permissions from 'expo-permissions';
 
 import Header from '../../components/Header';
 import mapStyle from '../../constants/MapStyle';
-import { updateLocation } from '../../redux/actions';
+import { updateLocation, resetReport } from '../../redux/actions';
 import { object } from 'yup';
 
 class ReportLocationScreen extends React.Component {
@@ -40,7 +40,7 @@ class ReportLocationScreen extends React.Component {
   };
 
   render() {
-    const { navigation, location } = this.props;
+    const { navigation, location, resetReport } = this.props;
     return (
       <SafeAreaView style={styles.scrollContainer}>
         <Header
@@ -48,7 +48,10 @@ class ReportLocationScreen extends React.Component {
           {...this.props}
           navTitleOne="Home"
           navTitleTwo="Next"
-          navActionOne={() => navigation.navigate('Home')}
+          navActionOne={() => {
+            resetReport();
+            navigation.navigate('Home');
+          }}
           navActionTwo={() => navigation.navigate('Details')}
         />
         <View style={styles.inputWrapper}>
@@ -110,4 +113,4 @@ const mapStateToProps = ({ report }) => {
   };
 };
 
-export default connect(mapStateToProps, { updateLocation })(ReportLocationScreen);
+export default connect(mapStateToProps, { updateLocation, resetReport })(ReportLocationScreen);

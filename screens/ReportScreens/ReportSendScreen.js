@@ -1,15 +1,14 @@
 import React from 'react';
 import { Text, StyleSheet, ScrollView, View, Alert, Image, SafeAreaView } from 'react-native';
-import { MaterialIcons } from '@expo/vector-icons';
-import { TouchableHighlight, TextInput, Directions } from 'react-native-gesture-handler';
+import { TouchableHighlight, TextInput } from 'react-native-gesture-handler';
 import { connect } from 'react-redux';
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp
 } from 'react-native-responsive-screen';
 
-import { updateInfo } from '../../redux/actions';
-import { firebaseApp } from '../../config/FirebaseApp';
+import { updateInfo, resetReport } from '../../redux/actions';
+import { firebaseApp, createReport } from '../../config/FirebaseApp';
 import validate from '../../redux/validate';
 import Header from '../../components/Header';
 import Colors from '../../constants/Colors';
@@ -20,13 +19,14 @@ class ReportSendScreen extends React.Component {
     this.props.updateInfo({
       authority: 'Barren County Road Department',
       name: user.displayName,
-      email: user.email
+      email: user.email,
+      phoneNumber: user.phoneNumber
     });
-    this.setState({ name: user.displayName, email: user.email });
+    this.setState({ name: user.displayName, email: user.email, phoneNumber: user.phoneNumber });
   }
 
   sendReport = () => {
-    const { report } = this.props;
+    const { report, navigation, resetReport } = this.props;
     const errors = validate(report);
     if (Object.values(errors).length > 0) {
       Alert.alert(
@@ -35,12 +35,14 @@ class ReportSendScreen extends React.Component {
         [{ text: 'Ok', style: 'cancel' }]
       );
     } else {
-      console.log(report);
+      createReport(report);
+      resetReport();
+      navigation.navigate('Home');
     }
   };
 
   render() {
-    const { navigation, report, updateInfo } = this.props;
+    const { navigation, report, updateInfo, resetReport } = this.props;
     return (
       <SafeAreaView style={styles.container}>
         <Header
@@ -48,8 +50,20 @@ class ReportSendScreen extends React.Component {
           {...this.props}
           navTitleOne="Home"
           navTitleTwo="Send"
-          navActionOne={() => navigation.navigate('Home')}
-          navActionTwo={() => this.sendReport()}
+          navActionOne={() => {
+            resetReport();
+            navigation.navigate('Home');
+          }}
+          navActionTwo={() => {
+            Alert.alert(
+              "Are you sure you're ready to submit this report?",
+              'Make sure all fields are filled with as accurately as possible.',
+              [
+                { text: 'Yes', onPress: this.sendReport },
+                { text: 'Cancel', style: 'cancel' }
+              ]
+            );
+          }}
         />
         <ScrollView contentContainerStyle={styles.content}>
           <Text style={styles.header}>Authority</Text>
@@ -91,6 +105,16 @@ class ReportSendScreen extends React.Component {
               editable={false}
             />
           </View>
+          <View style={styles.inputWrapper}>
+            <Text style={styles.inputLabel}>Phone</Text>
+            <TextInput
+              style={styles.input}
+              value={this.state.phoneNumber}
+              onChangeText={text => updateInfo({ ...report.info, phoneNumber: text })}
+              placeholder="Optional"
+              editable={false}
+            />
+          </View>
           <View style={{ height: 30 }}></View>
           {/* <Text style={styles.subHeader}>Optional</Text>
           <View style={styles.inputWrapperSmall}>
@@ -113,7 +137,7 @@ const mapStateToProps = ({ report }) => {
     report: report
   };
 };
-export default connect(mapStateToProps, { updateInfo })(ReportSendScreen);
+export default connect(mapStateToProps, { updateInfo, resetReport })(ReportSendScreen);
 
 const styles = StyleSheet.create({
   container: {

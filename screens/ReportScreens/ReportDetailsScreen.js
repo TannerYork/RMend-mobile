@@ -5,7 +5,7 @@ import {
   heightPercentageToDP as hp
 } from 'react-native-responsive-screen';
 import { connect } from 'react-redux';
-import { updateDetails } from '../../redux/actions';
+import { updateDetails, resetReport } from '../../redux/actions';
 import { MaterialIcons } from '@expo/vector-icons';
 import Header from '../../components/Header';
 import Colors from '../../constants/Colors';
@@ -15,7 +15,8 @@ class ReportDetailsScreen extends React.Component {
     const {
       navigation,
       details: { type, details },
-      updateDetails
+      updateDetails,
+      resetReport
     } = this.props;
     return (
       <SafeAreaView style={styles.container}>
@@ -24,7 +25,10 @@ class ReportDetailsScreen extends React.Component {
           {...this.props}
           navTitleOne="Home"
           navTitleTwo="Next"
-          navActionOne={() => navigation.navigate('Home')}
+          navActionOne={() => {
+            resetReport();
+            navigation.navigate('Home');
+          }}
           navActionTwo={() => navigation.navigate('Send')}
         />
         <Text style={styles.header}>Incident Type</Text>
@@ -119,4 +123,4 @@ const mapStateToProps = ({ report }) => {
   };
 };
 
-export default connect(mapStateToProps, { updateDetails })(ReportDetailsScreen);
+export default connect(mapStateToProps, { updateDetails, resetReport })(ReportDetailsScreen);
