@@ -54,6 +54,7 @@ export default class NearbyScreen extends React.Component {
 
   render() {
     const reports = this.state.reports;
+    const { navigate } = this.props.navigation;
     return (
       <SafeAreaView style={styles.container}>
         <View style={styles.headerWrapper}>
@@ -75,7 +76,10 @@ export default class NearbyScreen extends React.Component {
             renderItem={item => {
               const { details, images } = item.item;
               return (
-                <TouchableOpacity style={styles.reportInfo}>
+                <TouchableOpacity
+                  style={styles.reportInfo}
+                  onPress={() => navigate('ReportInfo', { report: item.item })}
+                >
                   <Image source={{ uri: images[0].imageUrl }} style={styles.reportImage} />
                   <View>
                     <Text style={styles.reportType}>{details.type}</Text>
