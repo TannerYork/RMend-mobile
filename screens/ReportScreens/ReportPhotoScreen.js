@@ -55,7 +55,7 @@ class ReportScreen extends React.Component {
       base64: true
     });
     if (!result.cancelled) {
-      // addImage(result.base64);
+      addImage(result.uri);
     }
   };
 
