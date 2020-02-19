@@ -1,7 +1,7 @@
-import { createBottomTabNavigator } from 'react-navigation-tabs';
 import React from 'react';
 import { View, StyleSheet } from 'react-native';
 import { MaterialIcons, Entypo, AntDesign } from '@expo/vector-icons';
+import { createMaterialTopTabNavigator } from 'react-navigation-tabs';
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp
@@ -12,12 +12,12 @@ import ReportLocationScreen from '../screens/ReportScreens/ReportLocationScreen'
 import ReportDetailsScreen from '../screens/ReportScreens/ReportDetailsScreen';
 import ReportSendScreen from '../screens/ReportScreens/ReportSendScreen';
 
-const ReportNavigator = createBottomTabNavigator(
+const ReportNavigator = createMaterialTopTabNavigator(
   {
     Photo: {
       screen: ReportPhotoScreen,
       navigationOptions: {
-        tabBarIcon: ({ focused }) => (
+        tabBarLabel: ({ focused }) => (
           <View style={tabBarIcon(focused)}>
             <Entypo name="camera" size={wp('5%')} color={focused ? '#FFF' : '#777'} />
           </View>
@@ -27,7 +27,7 @@ const ReportNavigator = createBottomTabNavigator(
     Location: {
       screen: ReportLocationScreen,
       navigationOptions: {
-        tabBarIcon: ({ focused }) => (
+        tabBarLabel: ({ focused }) => (
           <View style={tabBarIcon(focused)}>
             <MaterialIcons name="location-on" size={wp('5%')} color={focused ? '#FFF' : '#666'} />
           </View>
@@ -37,7 +37,7 @@ const ReportNavigator = createBottomTabNavigator(
     Details: {
       screen: ReportDetailsScreen,
       navigationOptions: {
-        tabBarIcon: ({ focused }) => (
+        tabBarLabel: ({ focused }) => (
           <View style={tabBarIcon(focused)}>
             <AntDesign name="profile" size={wp('5%')} color={focused ? '#FFF' : '#666'} />
           </View>
@@ -47,7 +47,7 @@ const ReportNavigator = createBottomTabNavigator(
     Send: {
       screen: ReportSendScreen,
       navigationOptions: {
-        tabBarIcon: ({ focused }) => (
+        tabBarLabel: ({ focused }) => (
           <View style={tabBarIcon(focused)}>
             <MaterialIcons name="send" size={wp('5%')} color={focused ? '#FFF' : '#666'} />
           </View>
@@ -56,16 +56,18 @@ const ReportNavigator = createBottomTabNavigator(
     }
   },
   {
-    defaultNavigationOptions: {
-      tabBarLabel: () => {
-        return null;
-      }
-    },
+    backBehavior: 'order',
+    tabBarPosition: 'bottom',
+    swipeEnabled: false,
     tabBarOptions: {
+      indicatorStyle: {
+        display: 'none'
+      },
       style: {
         borderTopWidth: 0.3,
-        height: hp('8%'),
-        backgroundColor: '#111'
+        height: hp('10%'),
+        backgroundColor: '#111',
+        zIndex: 1000
       }
     }
   }

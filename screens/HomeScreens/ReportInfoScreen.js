@@ -12,13 +12,10 @@ import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp
 } from 'react-native-responsive-screen';
-import { AntDesign } from '@expo/vector-icons';
 import MapView, { PROVIDER_GOOGLE, Marker } from 'react-native-maps';
 import openMap from 'react-native-open-maps';
-import * as Permissions from 'expo-permissions';
-import mapStyle from '../constants/MapStyle';
-import Colors from '../constants/Colors';
-import Header from '../components/Header';
+import mapStyle from '../../constants/MapStyle';
+import Colors from '../../constants/Colors';
 
 export default class ReportInfoScreen extends React.Component {
   render() {
@@ -72,9 +69,12 @@ export default class ReportInfoScreen extends React.Component {
               scrollEnabled={false}
               zoomEnabled={false}
             >
-              <Marker coordinate={location} image={require('../assets/images/location_icon.jpg')} />
+              <Marker
+                coordinate={location}
+                image={require('../../assets/images/location_icon.jpg')}
+              />
             </MapView>
-            <TouchableOpacity style={styles.button} onPress={() => navigate('Home')}>
+            <TouchableOpacity style={styles.button} onPress={() => navigate('Nearby')}>
               <Text style={styles.buttonText}>Return</Text>
             </TouchableOpacity>
           </View>
@@ -191,6 +191,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     marginTop: hp('5%'),
+    marginBottom: hp('2%'),
     backgroundColor: '#ff6a30'
   },
   buttonText: {

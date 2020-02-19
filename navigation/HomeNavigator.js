@@ -8,30 +8,28 @@ import {
 } from 'react-native-responsive-screen';
 
 import NearbyScreen from '../screens/HomeScreens/NearbyScreen';
+import NearbyNavigator from '../navigation/NearbyNavigator';
 import PhotoScreen from '../screens/HomeScreens/PhotoScreen';
 import ProfileScreen from '../screens/HomeScreens/ProfileScreen';
 
 const HomeNavigator = createBottomTabNavigator(
   {
     Nearby: {
-      screen: NearbyScreen,
+      screen: NearbyNavigator,
       navigationOptions: {
         tabBarIcon: ({ focused }) => (
           <View
             style={{
-              width: wp('8%'),
-              height: wp('8%'),
+              width: wp('10%'),
+              height: wp('10%'),
               borderRadius: 42,
               justifyContent: 'center',
               alignItems: 'center'
             }}
           >
-            <AntDesign name="filetext1" size={wp('5%')} color={focused ? '#FFF' : '#666'} />
+            <AntDesign name="filetext1" size={wp('6%')} color={focused ? '#FFF' : '#666'} />
           </View>
-        ),
-        tabBarLabel: () => {
-          return null;
-        }
+        )
       }
     },
     Photo: {
@@ -40,9 +38,9 @@ const HomeNavigator = createBottomTabNavigator(
         tabBarIcon: ({ focused }) => (
           <View
             style={{
-              width: wp('12%'),
-              height: wp('12%'),
-              borderRadius: wp('6%'),
+              width: wp('15%'),
+              height: wp('15%'),
+              borderRadius: wp('8%'),
               justifyContent: 'center',
               alignItems: 'center',
               backgroundColor: focused ? '#ff6a30' : '#111'
@@ -50,10 +48,7 @@ const HomeNavigator = createBottomTabNavigator(
           >
             <Entypo name="camera" size={wp('7%')} color={focused ? '#FFF' : '#666'} />
           </View>
-        ),
-        tabBarLabel: () => {
-          return null;
-        }
+        )
       }
     },
     Profile: {
@@ -62,19 +57,16 @@ const HomeNavigator = createBottomTabNavigator(
         tabBarIcon: ({ focused }) => (
           <View
             style={{
-              width: wp('8%'),
-              height: wp('8%'),
+              width: wp('10%'),
+              height: wp('10%'),
               borderRadius: 42,
               justifyContent: 'center',
               alignItems: 'center'
             }}
           >
-            <AntDesign name="smileo" size={wp('5%')} color={focused ? '#FFF' : '#666'} />
+            <AntDesign name="smileo" size={wp('6%')} color={focused ? '#FFF' : '#666'} />
           </View>
-        ),
-        tabBarLabel: () => {
-          return null;
-        }
+        )
       }
     }
   },
@@ -84,8 +76,13 @@ const HomeNavigator = createBottomTabNavigator(
       showLabel: false,
       style: {
         borderTopWidth: 0.3,
-        height: hp('7%'),
+        height: hp('6%'),
         backgroundColor: '#111'
+      }
+    },
+    defaultNavigationOptions: {
+      tabBarLabel: () => {
+        return null;
       }
     }
   }
