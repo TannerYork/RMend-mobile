@@ -1,9 +1,10 @@
 import { StyleSheet, Text, Image, View, ScrollView, Alert, SafeAreaView } from 'react-native';
-import { ActionSheetIOS, Dimensions, TouchableOpacity, Permissions, Platform } from 'react-native';
+import { ActionSheetIOS, Dimensions, TouchableOpacity, Platform } from 'react-native';
 import { ActivityIndicator } from 'react-native';
 import { AntDesign, Entypo } from '@expo/vector-icons';
 import { connect } from 'react-redux';
 import * as ImagePicker from 'expo-image-picker';
+import * as Permissions from 'expo-permissions';
 import React from 'react';
 import {
   widthPercentageToDP as wp,
@@ -23,11 +24,10 @@ class ReportScreen extends React.Component {
   }
 
   getPermissionAsync = async () => {
-    if (Constants.platform.ios) {
-      const { status } = await Permissions.askAsync(Permissions.CAMERA_ROLL);
-      if (status !== 'granted') {
-        alert('Sorry, we need camera roll permissions to make this work!');
-      }
+    const { status } = await Permissions.askAsync(Permissions.CAMERA_ROLL);
+    const { captureStatus } = await Permissions.askAsync(Permissions.CAMERA);
+    if (status !== 'granted' && captureStatus !== 'granted') {
+      alert('Sorry, we need camera roll and camera permissions to make this work!');
     }
   };
 

@@ -55,9 +55,12 @@ export default class ReportInfoScreen extends React.Component {
               <Text style={styles.detailsText}>
                 {'This incident was reported by ' + senderInfo.name}
               </Text>
+              <Text style={styles.detailsText}>{'"' + details.details + '"'}</Text>
             </View>
             <Text style={styles.header}>Location</Text>
-            <Text style={styles.subHeader}>Location of the incident on google maps</Text>
+            <Text style={styles.subHeader}>
+              Location of the incident on google maps (click map to get directions)
+            </Text>
             <MapView
               provider={PROVIDER_GOOGLE}
               customMapStyle={mapStyle}

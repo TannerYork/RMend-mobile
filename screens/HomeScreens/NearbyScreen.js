@@ -102,7 +102,7 @@ const styles = StyleSheet.create({
   },
   headerWrapper: {
     width: wp('100%'),
-    height: hp('14%'),
+    height: hp('14.5%'),
     justifyContent: 'flex-end',
     backgroundColor: 'black',
     padding: wp('1%'),
