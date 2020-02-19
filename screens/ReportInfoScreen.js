@@ -14,6 +14,7 @@ import {
 } from 'react-native-responsive-screen';
 import { AntDesign } from '@expo/vector-icons';
 import MapView, { PROVIDER_GOOGLE, Marker } from 'react-native-maps';
+import openMap from 'react-native-open-maps';
 import * as Permissions from 'expo-permissions';
 import mapStyle from '../constants/MapStyle';
 import Colors from '../constants/Colors';
@@ -61,8 +62,12 @@ export default class ReportInfoScreen extends React.Component {
               provider={PROVIDER_GOOGLE}
               customMapStyle={mapStyle}
               initialRegion={{ ...location, latitudeDelta: 0.01, longitudeDelta: 0.01 }}
-              pointerEvents="none"
               style={styles.map}
+              onPress={() => openMap(location)}
+              pitchEnabled={false}
+              rotateEnabled={false}
+              scrollEnabled={false}
+              zoomEnabled={false}
             >
               <Marker coordinate={location} image={require('../assets/images/location_icon.jpg')} />
             </MapView>
