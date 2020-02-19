@@ -119,19 +119,18 @@ const styles = StyleSheet.create({
   content: {
     minHeight: hp('100%'),
     width: wp('97%'),
-    backgroundColor: 'white',
     alignItems: 'center',
     marginTop: hp('14%')
   },
   emptyImage: {
-    height: hp('30%'),
-    width: hp('30%'),
-    borderRadius: wp('10%'),
+    height: hp('40%'),
+    width: hp('40%'),
+    borderRadius: wp('50%'),
     marginTop: hp('15%')
   },
   emptyText: {
     marginTop: hp('5%'),
-    fontSize: wp('3%'),
+    fontSize: wp('4%'),
     color: '#888'
   },
   emptyButton: {
