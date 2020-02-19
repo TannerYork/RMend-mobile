@@ -144,21 +144,22 @@ const styles = StyleSheet.create({
     borderRadius: wp('5%')
   },
   images: {
-    height: hp('45%'),
+    height: hp('50%'),
     minWidth: wp('100%'),
     justifyContent: 'center',
     alignItems: 'center'
   },
   imageWrapper: {
-    height: hp('40%'),
-    width: wp('80%'),
+    height: hp('45%'),
+    width: wp('70%'),
     backgroundColor: '#333',
     borderRadius: 20,
-    position: 'relative'
+    position: 'relative',
+    marginRight: wp('2%')
   },
   image: {
-    height: hp('40%'),
-    width: wp('80%'),
+    height: hp('45%'),
+    width: wp('70%'),
     borderRadius: 20
   },
   imageDelete: {
