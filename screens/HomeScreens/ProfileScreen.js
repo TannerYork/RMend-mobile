@@ -163,7 +163,7 @@ const styles = StyleSheet.create({
     color: '#666'
   },
   buttons: {
-    marginTop: hp('8%'),
+    marginTop: hp('20%'),
     alignItems: 'center'
   },
   button: {
