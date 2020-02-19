@@ -37,7 +37,7 @@ async function loadResourcesAsync() {
     Asset.loadAsync([]),
     Font.loadAsync({
       ...Ionicons.font,
-      Roboto: require('./assets/fonts/Roboto-Regular.ttf')
+      'passion-one-regular': require('./assets/fonts/PassionOne-Regular.otf')
     })
   ]);
 }

@@ -1,15 +1,7 @@
 import React from 'react';
 import * as Yup from 'yup';
 import { Formik } from 'formik';
-import {
-  SafeAreaView,
-  View,
-  Text,
-  TextInput,
-  StyleSheet,
-  TouchableOpacity,
-  Button
-} from 'react-native';
+import { SafeAreaView, View, Text, TextInput, StyleSheet, TouchableOpacity } from 'react-native';
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp
@@ -84,13 +76,12 @@ export default class SignInScreen extends React.Component {
             </View>
           )}
         </Formik>
-        <Button
-          title="Don't have an account? Sign Up"
+        <TouchableOpacity
           onPress={() => this.props.navigation.navigate('CreateUser')}
-          titleStyle={{ color: Colors.mainText }}
-          style={{ marginTop: hp('2%') }}
-          type="clear"
-        />
+          style={styles.link}
+        >
+          <Text style={styles.linkText}>Don't have an account? Sign Up</Text>
+        </TouchableOpacity>
       </SafeAreaView>
     );
   };
@@ -124,8 +115,8 @@ const styles = StyleSheet.create({
   header: {
     color: Colors.mainText,
     textAlign: 'center',
-    fontSize: wp('20%'),
-    fontWeight: 'bold',
+    fontSize: wp('30%'),
+    fontFamily: 'passion-one-regular',
     paddingTop: hp('20%'),
     paddingBottom: hp('5%'),
     justifyContent: 'center'
@@ -165,6 +156,15 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginTop: hp('2%'),
     backgroundColor: '#ff6a30'
+  },
+  link: {
+    width: wp('100%'),
+    alignItems: 'center',
+    marginTop: hp('3%')
+  },
+  linkText: {
+    fontSize: wp('5%'),
+    color: Colors.mainText
   }
 });
 
