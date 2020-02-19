@@ -4,7 +4,6 @@ import {
   View,
   Text,
   SafeAreaView,
-  ScrollView,
   Image,
   TouchableOpacity,
   FlatList
@@ -64,7 +63,7 @@ export default class NearbyScreen extends React.Component {
           <View style={styles.content}>
             <Image
               style={styles.emptyImage}
-              source={require('../../assets/images/smiley_sun.png')}
+              source={require('../../assets/images/group_of_field_workers.png')}
             />
             <Text style={styles.emptyText}>Couldn't find any nearby reports at this time</Text>
           </View>
@@ -127,7 +126,7 @@ const styles = StyleSheet.create({
   emptyImage: {
     height: hp('30%'),
     width: hp('30%'),
-    borderRadius: wp('40%'),
+    borderRadius: wp('10%'),
     marginTop: hp('15%')
   },
   emptyText: {

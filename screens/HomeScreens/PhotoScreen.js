@@ -14,7 +14,10 @@ export default class PhotoScreen extends React.Component {
           <Text style={styles.headerText}>RMend</Text>
         </View>
         <View style={styles.content}>
-          <Image source={require('../../assets/images/smiley_sun.png')} style={styles.image} />
+          <Image
+            source={require('../../assets/images/group_of_field_workers.png')}
+            style={styles.image}
+          />
           <TouchableOpacity style={styles.button} onPress={() => navigate('Report')}>
             <Text style={{ fontSize: wp('6%'), color: 'white', fontWeight: 'bold' }}>
               Take Photo
@@ -51,7 +54,7 @@ const styles = StyleSheet.create({
   image: {
     width: wp('90%'),
     height: hp('50%'),
-    borderRadius: 20
+    borderRadius: wp('10%')
   },
   button: {
     width: wp('70%'),
