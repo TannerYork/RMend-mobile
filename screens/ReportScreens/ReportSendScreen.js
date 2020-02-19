@@ -1,5 +1,14 @@
 import React from 'react';
-import { Text, StyleSheet, ScrollView, View, Alert, Image, SafeAreaView } from 'react-native';
+import {
+  Text,
+  StyleSheet,
+  ScrollView,
+  View,
+  Alert,
+  Image,
+  SafeAreaView,
+  ActivityIndicator
+} from 'react-native';
 import { TouchableHighlight, TextInput } from 'react-native-gesture-handler';
 import { connect } from 'react-redux';
 import {
@@ -7,7 +16,7 @@ import {
   heightPercentageToDP as hp
 } from 'react-native-responsive-screen';
 
-import { updateInfo, resetReport } from '../../redux/actions';
+import { updateInfo, resetReport, startUpload } from '../../redux/actions';
 import { firebaseApp, createReport } from '../../config/FirebaseApp';
 import validate from '../../redux/validate';
 import Header from '../../components/Header';
@@ -25,8 +34,8 @@ class ReportSendScreen extends React.Component {
     this.setState({ name: user.displayName, email: user.email, phoneNumber: user.phoneNumber });
   }
 
-  sendReport = () => {
-    const { report, navigation, resetReport } = this.props;
+  sendReportAsync = async () => {
+    const { report, navigation, resetReport, startUpload } = this.props;
     const errors = validate(report);
     if (Object.values(errors).length > 0) {
       Alert.alert(
@@ -35,8 +44,9 @@ class ReportSendScreen extends React.Component {
         [{ text: 'Ok', style: 'cancel' }]
       );
     } else {
-      createReport(report);
-      resetReport();
+      startUpload();
+      await createReport(report);
+      await resetReport();
       navigation.navigate('Home');
     }
   };
@@ -45,6 +55,11 @@ class ReportSendScreen extends React.Component {
     const { navigation, report, updateInfo, resetReport } = this.props;
     return (
       <SafeAreaView style={styles.container}>
+        {report.isLoading && (
+          <View style={styles.loadingOverlay}>
+            <ActivityIndicator size="large" color="white" />
+          </View>
+        )}
         <Header
           title="Send"
           {...this.props}
@@ -59,7 +74,7 @@ class ReportSendScreen extends React.Component {
               "Are you sure you're ready to submit this report?",
               'Make sure all fields are filled with as accurately as possible.',
               [
-                { text: 'Yes', onPress: this.sendReport },
+                { text: 'Yes', onPress: this.sendReportAsync },
                 { text: 'Cancel', style: 'cancel' }
               ]
             );
@@ -137,9 +152,23 @@ const mapStateToProps = ({ report }) => {
     report: report
   };
 };
-export default connect(mapStateToProps, { updateInfo, resetReport })(ReportSendScreen);
+export default connect(mapStateToProps, { updateInfo, resetReport, startUpload })(ReportSendScreen);
 
 const styles = StyleSheet.create({
+  loadingOverlay: {
+    width: wp('100%'),
+    height: hp('100%'),
+    justifyContent: 'center',
+    backgroundColor: 'black',
+    alignItems: 'center',
+    opacity: 0.5,
+    position: 'absolute',
+    zIndex: 1000
+  },
+  loadingIcon: {
+    width: wp('50%'),
+    height: wp('50%')
+  },
   container: {
     backgroundColor: '#000',
     height: hp('100%')

@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Image, TextInput, View, SafeAreaView } from 'react-native';
+import { StyleSheet, Image, TextInput, View, SafeAreaView, ActivityIndicator } from 'react-native';
 import MapView, { PROVIDER_GOOGLE, Marker } from 'react-native-maps';
 import { connect } from 'react-redux';
 import {
@@ -21,14 +21,12 @@ class ReportLocationScreen extends React.Component {
 
   _getLocationAsync = async () => {
     let { status } = await Permissions.askAsync(Permissions.LOCATION);
-    console.log(status);
     if (status !== 'granted') {
       this.setState({
         errorMessage: 'Permission to access location was denied'
       });
     } else {
       let location = Location.getCurrentPositionAsync({});
-      console.log(location);
       const { latitude, longitude } = location.coords;
       this.props.updateLocation({ latitude, longitude });
     }
@@ -40,9 +38,14 @@ class ReportLocationScreen extends React.Component {
   };
 
   render() {
-    const { navigation, location, resetReport } = this.props;
+    const { navigation, location, resetReport, isLoading } = this.props;
     return (
       <SafeAreaView style={styles.scrollContainer}>
+        {isLoading && (
+          <View style={styles.loadingOverlay}>
+            <ActivityIndicator size="large" color="white" />
+          </View>
+        )}
         <Header
           title="Location"
           {...this.props}
@@ -76,7 +79,29 @@ class ReportLocationScreen extends React.Component {
   }
 }
 
+const mapStateToProps = ({ report }) => {
+  return {
+    location: report.location,
+    isLoading: report.isLoading
+  };
+};
+export default connect(mapStateToProps, { updateLocation, resetReport })(ReportLocationScreen);
+
 const styles = StyleSheet.create({
+  loadingOverlay: {
+    width: wp('100%'),
+    height: hp('100%'),
+    justifyContent: 'center',
+    backgroundColor: 'black',
+    alignItems: 'center',
+    opacity: 0.5,
+    position: 'absolute',
+    zIndex: 1000
+  },
+  loadingIcon: {
+    width: wp('50%'),
+    height: wp('50%')
+  },
   scrollContainer: {
     padding: 20,
     alignItems: 'center',
@@ -106,11 +131,3 @@ const styles = StyleSheet.create({
     color: '#666'
   }
 });
-
-const mapStateToProps = ({ report }) => {
-  return {
-    location: report.location
-  };
-};
-
-export default connect(mapStateToProps, { updateLocation, resetReport })(ReportLocationScreen);

@@ -1,5 +1,6 @@
 import { StyleSheet, Text, Image, View, ScrollView, Alert, SafeAreaView } from 'react-native';
 import { ActionSheetIOS, Dimensions, TouchableOpacity, Permissions, Platform } from 'react-native';
+import { ActivityIndicator } from 'react-native';
 import { AntDesign, Entypo } from '@expo/vector-icons';
 import { connect } from 'react-redux';
 import * as ImagePicker from 'expo-image-picker';
@@ -16,10 +17,6 @@ const imagesPlaceholder = '../../assets/images/placeholder-dark.jpg';
 
 class ReportScreen extends React.Component {
   state = { images: [], imageCount: 0, ready: false };
-
-  async componentWillUnmount() {
-    console.log('Unmount Report');
-  }
 
   componentDidMount() {
     this.getPermissionAsync();
@@ -84,9 +81,14 @@ class ReportScreen extends React.Component {
   };
 
   render() {
-    const { navigation, images, removeImage } = this.props;
+    const { navigation, images, removeImage, isLoading } = this.props;
     return (
       <SafeAreaView style={styles.container}>
+        {isLoading && (
+          <View style={styles.loadingOverlay}>
+            <ActivityIndicator size="large" color="white" />
+          </View>
+        )}
         <Header
           title="Photos"
           {...this.props}
@@ -132,7 +134,29 @@ class ReportScreen extends React.Component {
   }
 }
 
+const mapStateToProps = ({ report }) => {
+  return {
+    images: report.images,
+    isLoading: report.isLoading
+  };
+};
+export default connect(mapStateToProps, { addImage, removeImage, resetReport })(ReportScreen);
+
 const styles = StyleSheet.create({
+  loadingOverlay: {
+    width: wp('100%'),
+    height: hp('100%'),
+    justifyContent: 'center',
+    backgroundColor: 'black',
+    alignItems: 'center',
+    opacity: 0.5,
+    position: 'absolute',
+    zIndex: 1000
+  },
+  loadingIcon: {
+    width: wp('50%'),
+    height: wp('50%')
+  },
   container: {
     height: Dimensions.get('window').height,
     paddingTop: 20,
@@ -185,10 +209,3 @@ const styles = StyleSheet.create({
     marginBottom: hp('15%')
   }
 });
-
-const mapStateToProps = ({ report }) => {
-  return {
-    images: report.images
-  };
-};
-export default connect(mapStateToProps, { addImage, removeImage, resetReport })(ReportScreen);

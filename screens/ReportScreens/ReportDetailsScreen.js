@@ -1,5 +1,13 @@
 import React from 'react';
-import { Text, StyleSheet, TouchableOpacity, TextInput, View, SafeAreaView } from 'react-native';
+import {
+  Text,
+  StyleSheet,
+  TouchableOpacity,
+  TextInput,
+  View,
+  SafeAreaView,
+  ActivityIndicator
+} from 'react-native';
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp
@@ -16,10 +24,16 @@ class ReportDetailsScreen extends React.Component {
       navigation,
       details: { type, details },
       updateDetails,
-      resetReport
+      resetReport,
+      isLoading
     } = this.props;
     return (
       <SafeAreaView style={styles.container}>
+        {isLoading && (
+          <View style={styles.loadingOverlay}>
+            <ActivityIndicator size="large" color="white" />
+          </View>
+        )}
         <Header
           title="Details"
           {...this.props}
@@ -58,7 +72,29 @@ class ReportDetailsScreen extends React.Component {
   }
 }
 
+const mapStateToProps = ({ report }) => {
+  return {
+    details: report.details,
+    isLoading: report.isLoading
+  };
+};
+export default connect(mapStateToProps, { updateDetails, resetReport })(ReportDetailsScreen);
+
 const styles = StyleSheet.create({
+  loadingOverlay: {
+    width: wp('100%'),
+    height: hp('100%'),
+    justifyContent: 'center',
+    backgroundColor: 'black',
+    alignItems: 'center',
+    opacity: 0.5,
+    position: 'absolute',
+    zIndex: 1000
+  },
+  loadingIcon: {
+    width: wp('50%'),
+    height: wp('50%')
+  },
   container: {
     padding: 20,
     alignItems: 'center',
@@ -116,11 +152,3 @@ const styles = StyleSheet.create({
     color: '#666'
   }
 });
-
-const mapStateToProps = ({ report }) => {
-  return {
-    details: report.details
-  };
-};
-
-export default connect(mapStateToProps, { updateDetails, resetReport })(ReportDetailsScreen);

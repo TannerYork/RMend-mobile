@@ -4,14 +4,16 @@ import {
   UPDATE_LOCATION,
   UPDATE_DETAILS,
   UPDATE_INFO,
-  RESET_REPORT
+  RESET_REPORT,
+  START_UPLOAD
 } from '../actions/types';
 
 const INITIAL_STATE = {
   images: [],
   location: { latitude: 37.78825, longitude: -122.4324 },
   details: { type: 'Road Issue', details: null },
-  info: { name: null, email: null, phoneNumber: null }
+  info: { name: null, email: null, phoneNumber: null },
+  isLoading: false
 };
 
 const reportReducer = (state = INITIAL_STATE, action) => {
@@ -44,6 +46,11 @@ const reportReducer = (state = INITIAL_STATE, action) => {
       return {
         ...state,
         info: action.payload
+      };
+    case START_UPLOAD:
+      return {
+        ...state,
+        isLoading: true
       };
     default:
       return state;

@@ -4,7 +4,8 @@ import {
   UPDATE_LOCATION,
   UPDATE_DETAILS,
   UPDATE_INFO,
-  RESET_REPORT
+  RESET_REPORT,
+  START_UPLOAD
 } from './types';
 
 export const addImage = base64 => dispatch => {
@@ -47,4 +48,8 @@ export const resetReport = () => dispatch => {
     type: RESET_REPORT,
     payload: null
   });
+};
+
+export const startUpload = () => dispatch => {
+  dispatch({ type: START_UPLOAD });
 };
