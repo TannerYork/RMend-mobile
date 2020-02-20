@@ -100,35 +100,37 @@ class ReportSendScreen extends React.Component {
           </Text>
           <Text style={styles.header}>My Details</Text>
           <Text style={styles.subHeader}>Required</Text>
-          <View style={styles.inputWrapper}>
-            <Text style={styles.inputLabel}>Name</Text>
-            <TextInput
-              style={styles.input}
-              value={this.state.name}
-              onChangeText={text => updateInfo({ ...report.info, name: text })}
-              placeholder="Required"
-              editable={false}
-            />
-          </View>
-          <View style={styles.inputWrapper}>
-            <Text style={styles.inputLabel}>Email</Text>
-            <TextInput
-              style={styles.input}
-              value={this.state.email}
-              onChangeText={text => updateInfo({ ...report.info, email: text })}
-              placeholder="Required"
-              editable={false}
-            />
-          </View>
-          <View style={styles.inputWrapper}>
-            <Text style={styles.inputLabel}>Phone</Text>
-            <TextInput
-              style={styles.input}
-              value={this.state.phoneNumber}
-              onChangeText={text => updateInfo({ ...report.info, phoneNumber: text })}
-              placeholder="Optional"
-              editable={false}
-            />
+          <View style={styles.inputs}>
+            <View style={styles.inputWrapper}>
+              <Text style={styles.inputLabel}>Name</Text>
+              <TextInput
+                style={styles.input}
+                value={this.state.name}
+                onChangeText={text => updateInfo({ ...report.info, name: text })}
+                placeholder="Required"
+                editable={false}
+              />
+            </View>
+            <View style={styles.inputWrapper}>
+              <Text style={styles.inputLabel}>Email</Text>
+              <TextInput
+                style={styles.input}
+                value={this.state.email}
+                onChangeText={text => updateInfo({ ...report.info, email: text })}
+                placeholder="Required"
+                editable={false}
+              />
+            </View>
+            <View style={styles.inputWrapper}>
+              <Text style={styles.inputLabel}>Phone</Text>
+              <TextInput
+                style={styles.input}
+                value={this.state.phoneNumber}
+                onChangeText={text => updateInfo({ ...report.info, phoneNumber: text })}
+                placeholder="Optional"
+                editable={false}
+              />
+            </View>
           </View>
           <View style={{ height: 30 }}></View>
           {/* <Text style={styles.subHeader}>Optional</Text>
@@ -197,7 +199,7 @@ const styles = StyleSheet.create({
     width: wp('100%'),
     height: hp('10%'),
     marginBottom: hp('3%'),
-    backgroundColor: '#222',
+    backgroundColor: '#181818',
     flexDirection: 'row',
     justifyContent: 'space-around',
     alignItems: 'center',
@@ -234,17 +236,21 @@ const styles = StyleSheet.create({
     alignSelf: 'flex-start',
     marginLeft: wp('5%')
   },
+  inputs: {
+    width: wp('100%'),
+    backgroundColor: '#181818'
+  },
   inputWrapper: {
     width: wp('100%'),
     height: hp('8%'),
-    backgroundColor: '#222',
+    backgroundColor: 'transparent',
     flexDirection: 'row',
     justifyContent: 'space-around',
     alignItems: 'center',
     borderColor: '#555',
-    borderWidth: 1,
-    borderLeftWidth: 0,
-    borderRightWidth: 0,
+    borderBottomWidth: 1,
+    borderBottomStartRadius: wp('10%'),
+    borderBottomRightRadius: wp('10%'),
     padding: wp('1%')
   },
   input: {
