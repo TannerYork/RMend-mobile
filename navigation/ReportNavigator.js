@@ -1,7 +1,8 @@
 import React from 'react';
-import { View, StyleSheet } from 'react-native';
+import { View } from 'react-native';
 import { MaterialIcons, Entypo, AntDesign } from '@expo/vector-icons';
 import { createMaterialTopTabNavigator } from 'react-navigation-tabs';
+import { createStackNavigator } from 'react-navigation-stack';
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp
@@ -11,6 +12,8 @@ import ReportPhotoScreen from '../screens/ReportScreens/ReportPhotoScreen';
 import ReportLocationScreen from '../screens/ReportScreens/ReportLocationScreen';
 import ReportDetailsScreen from '../screens/ReportScreens/ReportDetailsScreen';
 import ReportSendScreen from '../screens/ReportScreens/ReportSendScreen';
+import ReportTypesScreen from '../screens/ReportScreens/ReportTypesScreen';
+import ReportTypeGroupsScreen from '../screens/ReportScreens/ReportTypeGroupsScreen';
 
 const ReportNavigator = createMaterialTopTabNavigator(
   {
@@ -56,7 +59,6 @@ const ReportNavigator = createMaterialTopTabNavigator(
     }
   },
   {
-    backBehavior: 'order',
     tabBarPosition: 'bottom',
     swipeEnabled: false,
     tabBarOptions: {
@@ -73,6 +75,40 @@ const ReportNavigator = createMaterialTopTabNavigator(
   }
 );
 
+const MainReportNavigator = createStackNavigator(
+  {
+    Report: {
+      screen: ReportNavigator,
+      navigationOptions: {
+        headerShown: false
+      }
+    },
+    ReportTypeGroups: {
+      screen: ReportTypeGroupsScreen,
+      navigationOptions: {
+        headerShown: true
+      }
+    },
+    ReportTypes: {
+      screen: ReportTypesScreen,
+      navigationOptions: {
+        headerShown: true,
+        headerTitle: 'Types'
+      }
+    }
+  },
+  {
+    backBehavior: 'order',
+    initialRoute: 'Report',
+    defaultNavigationOptions: {
+      headerStyle: {
+        backgroundColor: 'black'
+      },
+      headerTintColor: '#ff6a30'
+    }
+  }
+);
+
 const tabBarIcon = focused => {
   return {
     width: wp('10%'),
@@ -84,4 +120,4 @@ const tabBarIcon = focused => {
   };
 };
 
-export default ReportNavigator;
+export default MainReportNavigator;

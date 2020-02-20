@@ -7,11 +7,13 @@ import {
   RESET_REPORT,
   START_UPLOAD
 } from '../actions/types';
+import typeGroups from '../types';
 
 const INITIAL_STATE = {
   images: [],
   location: { latitude: 37.78825, longitude: -122.4324 },
-  details: { type: 'Road Issue', details: null },
+  details: { type: null, details: null, iconName: '' },
+  typeGroups: typeGroups,
   info: { name: null, email: null, phoneNumber: null },
   isLoading: false
 };

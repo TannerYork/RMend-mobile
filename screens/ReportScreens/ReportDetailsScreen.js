@@ -14,15 +14,15 @@ import {
 } from 'react-native-responsive-screen';
 import { connect } from 'react-redux';
 import { updateDetails, resetReport } from '../../redux/actions';
-import { MaterialIcons } from '@expo/vector-icons';
+import { MaterialIcons, Entypo } from '@expo/vector-icons';
 import Header from '../../components/Header';
 import Colors from '../../constants/Colors';
 
 class ReportDetailsScreen extends React.Component {
   render() {
     const {
-      navigation,
-      details: { type, details },
+      navigation: { navigate },
+      details: { type, details, iconName },
       updateDetails,
       resetReport,
       isLoading
@@ -41,28 +41,38 @@ class ReportDetailsScreen extends React.Component {
           navTitleTwo="Next"
           navActionOne={() => {
             resetReport();
-            navigation.navigate('Home');
+            navigate('Home');
           }}
-          navActionTwo={() => navigation.navigate('Send')}
+          navActionTwo={() => navigate('Send')}
         />
         <Text style={styles.header}>Incident Type</Text>
         <Text style={styles.subHeader}>Required</Text>
         {!type && (
-          <TouchableOpacity style={styles.selector}>
+          <TouchableOpacity
+            style={styles.mainSelector}
+            onPress={() => navigate('ReportTypeGroups')}
+          >
             <Text style={styles.selectorText}>Select the incident type</Text>
             <MaterialIcons name="navigate-next" size={25} color="#FFF" />
           </TouchableOpacity>
         )}
         {type && (
-          <TouchableOpacity style={styles.selector}>
+          <TouchableOpacity style={styles.selector} onPress={() => navigate('ReportTypeGroups')}>
+            <Entypo
+              name={iconName}
+              size={wp('6%')}
+              color="#ff6a30"
+              style={{ marginLeft: wp('2%') }}
+            />
             <Text style={styles.selectorText}>{type}</Text>
           </TouchableOpacity>
         )}
         <Text style={styles.header}>Details</Text>
         <Text style={styles.subHeader}>Optional</Text>
         <TextInput
+          value={details}
           style={styles.details}
-          onChangeText={text => updateDetails({ type: type, details: text })}
+          onChangeText={text => updateDetails({ type: type, details: text, iconName })}
           placeholder="Enter a description of the incident"
           placeholderTextColor="#666"
           multiline
@@ -117,11 +127,11 @@ const styles = StyleSheet.create({
     paddingLeft: '1%',
     fontFamily: 'Arial'
   },
-  selector: {
+  mainSelector: {
     width: wp('100%'),
     height: hp('8%'),
     marginBottom: hp('3%'),
-    backgroundColor: '#222',
+    backgroundColor: '#181818',
     flexDirection: 'row',
     justifyContent: 'space-around',
     alignItems: 'center',
@@ -131,15 +141,30 @@ const styles = StyleSheet.create({
     borderLeftWidth: 0,
     padding: wp('1%')
   },
+  selector: {
+    width: wp('100%'),
+    height: hp('8%'),
+    marginBottom: hp('3%'),
+    backgroundColor: '#181818',
+    flexDirection: 'row',
+    justifyContent: 'flex-start',
+    alignItems: 'center',
+    borderColor: '#555',
+    borderWidth: 1,
+    borderRightWidth: 0,
+    borderLeftWidth: 0,
+    padding: wp('1%')
+  },
   selectorText: {
-    fontSize: wp('6%'),
-    color: '#FFF'
+    fontSize: wp('5%'),
+    color: '#FFF',
+    marginLeft: wp('3%')
   },
   details: {
     width: wp('100%'),
     height: hp('15%'),
     marginBottom: hp('2%'),
-    backgroundColor: '#222',
+    backgroundColor: '#181818',
     flexDirection: 'row',
     justifyContent: 'space-around',
     alignItems: 'center',

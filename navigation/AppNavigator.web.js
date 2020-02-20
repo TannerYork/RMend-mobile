@@ -4,7 +4,7 @@ import { createSwitchNavigator } from 'react-navigation';
 import MainSwitchNavigator from './MainSwitchNavigator';
 
 const switchNavigator = createSwitchNavigator({
-  Main: MainSwitchNavigator,
+  Main: MainSwitchNavigator
 });
 switchNavigator.path = '';
 
