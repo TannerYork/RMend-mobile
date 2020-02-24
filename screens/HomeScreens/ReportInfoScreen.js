@@ -27,7 +27,7 @@ export default class ReportInfoScreen extends React.Component {
           <Text style={styles.titleText}>{details.type}</Text>
           <Text style={styles.titleSubText}>{details.authority}</Text>
         </View>
-        <ScrollView style={{ marginTop: hp('16%') }}>
+        <ScrollView>
           <View style={styles.info}>
             <Text style={styles.header}>Images</Text>
             <Text style={styles.subHeader}>Images of the incident and the surouding area</Text>
@@ -61,9 +61,15 @@ export default class ReportInfoScreen extends React.Component {
             <MapView
               provider={PROVIDER_GOOGLE}
               customMapStyle={mapStyle}
-              initialRegion={{ ...location, latitudeDelta: 0.01, longitudeDelta: 0.01 }}
+              initialRegion={{ ...location, latitudeDelta: 0.001, longitudeDelta: 0.001 }}
               style={styles.map}
-              onPress={() => openMap(location)}
+              onPress={() =>
+                openMap({
+                  ...location,
+                  zoom: 20,
+                  provider: 'google'
+                })
+              }
               pitchEnabled={false}
               rotateEnabled={false}
               scrollEnabled={false}
@@ -92,14 +98,11 @@ const styles = StyleSheet.create({
   },
   titleWrapper: {
     width: wp('100%'),
-    minHeight: hp('16%'),
+    minHeight: hp('14%'),
     justifyContent: 'flex-end',
     backgroundColor: 'black',
     padding: wp('1%'),
-    zIndex: 100,
-    position: 'absolute',
-    top: 0,
-    left: 0
+    zIndex: 100
   },
   titleText: {
     color: 'white',
