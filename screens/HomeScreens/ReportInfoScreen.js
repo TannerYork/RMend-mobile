@@ -92,7 +92,7 @@ const styles = StyleSheet.create({
   },
   titleWrapper: {
     width: wp('100%'),
-    height: hp('16%'),
+    minHeight: hp('16%'),
     justifyContent: 'flex-end',
     backgroundColor: 'black',
     padding: wp('1%'),
@@ -103,7 +103,7 @@ const styles = StyleSheet.create({
   },
   titleText: {
     color: 'white',
-    fontSize: wp('10%'),
+    fontSize: wp('9%'),
     fontWeight: 'bold'
   },
   titleSubText: {
