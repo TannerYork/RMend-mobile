@@ -96,7 +96,7 @@ export default class NearbyScreen extends React.Component {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
+    height: hp('100%'),
     alignItems: 'center',
     backgroundColor: '#EEEE'
   },
@@ -138,6 +138,7 @@ const styles = StyleSheet.create({
   },
   list: {
     marginTop: hp('12%'),
+    paddingBottom: hp('20%'),
     width: wp('100%'),
     alignItems: 'center'
   },
