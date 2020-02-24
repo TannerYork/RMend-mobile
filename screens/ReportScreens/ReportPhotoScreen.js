@@ -60,13 +60,13 @@ class ReportScreen extends React.Component {
     if (Platform.OS == 'android') {
       Alert.alert('Get a photo from...', '', [
         { text: 'Camera', onPress: () => this._takePhoto() },
-        { text: 'Take from Libary', onPress: () => this._pickImage() },
+        { text: 'Take from Library', onPress: () => this._pickImage() },
         { text: 'Cancel', style: 'cancel' }
       ]);
     } else {
       ActionSheetIOS.showActionSheetWithOptions(
         {
-          options: ['Cancel', 'Camera', 'Take from Libaray'],
+          options: ['Cancel', 'Camera', 'Take from Library'],
           cancelButtonIndex: 0
         },
         buttonIndex => {

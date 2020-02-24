@@ -33,7 +33,7 @@ export default class ProfileScreen extends React.Component {
     if (Object.values(errors).length > 0) {
       Alert.alert(
         'A Required Field Is Missing',
-        'Check that your have filled out the name and email, and that you hav eentered a valid email.',
+        'Check that your have filled out the name and email, and that you have entered a valid email.',
         [{ text: 'Ok', style: 'cancel' }]
       );
     } else {
