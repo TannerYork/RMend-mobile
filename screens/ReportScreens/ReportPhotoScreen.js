@@ -109,9 +109,13 @@ class ReportScreen extends React.Component {
           snapToAlignment={'center'}
         >
           {images.length < 1 && (
-            <View>
+            <TouchableOpacity
+              onPress={() => {
+                this.photoAlert();
+              }}
+            >
               <Image style={styles.image} source={require(imagesPlaceholder)} />
-            </View>
+            </TouchableOpacity>
           )}
           {images.map((image, index) => {
             return (
