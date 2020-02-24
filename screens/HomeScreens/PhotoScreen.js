@@ -57,7 +57,7 @@ const styles = StyleSheet.create({
     borderRadius: wp('10%')
   },
   button: {
-    width: wp('70%'),
+    width: wp('90%'),
     height: hp('7%'),
     borderRadius: 42,
     justifyContent: 'center',
