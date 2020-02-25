@@ -1,9 +1,10 @@
 import React from 'react';
-import { StyleSheet, View, Text, TouchableOpacity, Image, SafeAreaView } from 'react-native';
+import { StyleSheet, View, Text, TouchableOpacity, Image, SafeAreaView, Alert } from 'react-native';
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp
 } from 'react-native-responsive-screen';
+import { firebaseApp } from '../../config/FirebaseApp';
 
 export default class PhotoScreen extends React.Component {
   render() {
@@ -18,7 +19,16 @@ export default class PhotoScreen extends React.Component {
             source={require('../../assets/images/group_of_field_workers.png')}
             style={styles.image}
           />
-          <TouchableOpacity style={styles.button} onPress={() => navigate('Report')}>
+          <TouchableOpacity
+            style={styles.button}
+            onPress={() => {
+              if (firebaseApp.auth().currentUser != null) {
+                navigate('Report');
+              } else {
+                Alert.alert('You need to be signed in to report issues', '', [{ text: 'Okay' }]);
+              }
+            }}
+          >
             <Text style={{ fontSize: wp('6%'), color: 'white', fontWeight: 'bold' }}>
               Take Photo
             </Text>

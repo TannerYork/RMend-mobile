@@ -6,11 +6,13 @@ import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp
 } from 'react-native-responsive-screen';
+import { createStackNavigator } from 'react-navigation-stack';
 
-import NearbyScreen from '../screens/HomeScreens/NearbyScreen';
+import { firebaseApp } from '../config/FirebaseApp';
 import NearbyNavigator from '../navigation/NearbyNavigator';
 import PhotoScreen from '../screens/HomeScreens/PhotoScreen';
 import ProfileScreen from '../screens/HomeScreens/ProfileScreen';
+import AuthNavigator from './AuthNavigator';
 
 const HomeNavigator = createBottomTabNavigator(
   {
@@ -66,7 +68,13 @@ const HomeNavigator = createBottomTabNavigator(
           >
             <AntDesign name="smileo" size={wp('6%')} color={focused ? '#FFF' : '#666'} />
           </View>
-        )
+        ),
+        tabBarOnPress: ({ navigation, defaultHandler }) => {
+          defaultHandler();
+          if (firebaseApp.auth().currentUser === null) {
+            navigation.navigate('Auth');
+          }
+        }
       }
     }
   },
@@ -88,4 +96,19 @@ const HomeNavigator = createBottomTabNavigator(
   }
 );
 
-export default HomeNavigator;
+const MainHomeNavigator = createStackNavigator(
+  {
+    Home: HomeNavigator,
+    Auth: AuthNavigator
+  },
+  {
+    initialRoute: 'Home',
+    mode: 'modal',
+    defaultNavigationOptions: {
+      headerShown: false,
+      gesturesEnabled: false
+    }
+  }
+);
+
+export default MainHomeNavigator;

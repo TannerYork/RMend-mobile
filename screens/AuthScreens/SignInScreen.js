@@ -15,7 +15,7 @@ export default class SignInScreen extends React.Component {
     if (values.email.length > 0 && values.password.length > 0) {
       signInWithEmailAndPassword(values.email, values.password)
         .then(() => {
-          this.props.navigation.navigate('Home');
+          this.props.navigation.navigate('Home', { reloadInfo: true });
         })
         .catch(err => {
           alert(err.message);
@@ -26,7 +26,7 @@ export default class SignInScreen extends React.Component {
   render = () => {
     return (
       <SafeAreaView style={styles.container}>
-        <Text style={styles.header}>RMend</Text>
+        <Text style={styles.header}>Sign In</Text>
         <Formik
           initialValues={{ email: '', password: '' }}
           onSubmit={values => {
@@ -76,12 +76,12 @@ export default class SignInScreen extends React.Component {
             </View>
           )}
         </Formik>
-        <TouchableOpacity
+        {/* <TouchableOpacity
           onPress={() => this.props.navigation.navigate('CreateUser')}
           style={styles.link}
         >
           <Text style={styles.linkText}>Don't have an account? Sign Up</Text>
-        </TouchableOpacity>
+        </TouchableOpacity> */}
       </SafeAreaView>
     );
   };
@@ -104,18 +104,10 @@ const styles = StyleSheet.create({
     backgroundColor: '#000',
     alignContent: 'center'
   },
-  title: {
-    color: Colors.mainText,
-    textAlign: 'center',
-    fontSize: 80,
-    fontWeight: 'bold',
-    paddingTop: 130,
-    justifyContent: 'center'
-  },
   header: {
     color: Colors.mainText,
     textAlign: 'center',
-    fontSize: wp('30%'),
+    fontSize: wp('25%'),
     fontFamily: 'passion-one-regular',
     paddingTop: hp('20%'),
     paddingBottom: hp('5%'),
@@ -149,7 +141,7 @@ const styles = StyleSheet.create({
     color: '#666'
   },
   button: {
-    width: wp('70%'),
+    width: wp('90%'),
     height: hp('7%'),
     borderRadius: 42,
     justifyContent: 'center',

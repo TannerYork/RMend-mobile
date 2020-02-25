@@ -15,33 +15,51 @@ import {
 import { firebaseApp, signOut } from '../../config/FirebaseApp';
 
 export default class ProfileScreen extends React.Component {
+  state = { name: null, email: null, phone: null };
+  navigationListener = null;
+
   componentWillMount() {
-    const { displayName, email, phoneNumber } = firebaseApp.auth().currentUser;
-    this.setState({ name: displayName, email: email, phone: phoneNumber });
+    const { navigation } = this.props;
+    this.navigationListener = navigation.addListener('willFocus', () => {
+      if (firebaseApp.auth().currentUser != null) {
+        if (this.state.email == null) {
+          const { displayName, email, phoneNumber } = firebaseApp.auth().currentUser;
+          this.setState({ name: displayName, email: email, phone: phoneNumber });
+        }
+      }
+    });
+  }
+
+  componentWillUnmount() {
+    this.navigationListener.remove();
   }
 
   updateProfile = () => {
-    const { currentUser } = firebaseApp.auth();
-    const { name, email, phone } = this.state;
-    let errors = {};
-    if (!name) {
-      errors.name = 'Name is required';
-    }
-    if (!email) {
-      errors.email = 'Email is required';
-    }
-    if (Object.values(errors).length > 0) {
-      Alert.alert(
-        'A Required Field Is Missing',
-        'Check that your have filled out the name and email, and that you have entered a valid email.',
-        [{ text: 'Ok', style: 'cancel' }]
-      );
+    if (firebaseApp.auth().currentUser != null) {
+      const { currentUser } = firebaseApp.auth();
+      const { name, email, phone } = this.state;
+      let errors = {};
+      if (!name) {
+        errors.name = 'Name is required';
+      }
+      if (!email) {
+        errors.email = 'Email is required';
+      }
+      if (Object.values(errors).length > 0) {
+        Alert.alert(
+          'A Required Field Is Missing',
+          'Check that your have filled out the name and email, and that you have entered a valid email.',
+          [{ text: 'Ok', style: 'cancel' }]
+        );
+      } else {
+        currentUser.updateProfile({
+          displayName: name,
+          email: email,
+          phoneNumber: phone
+        });
+      }
     } else {
-      currentUser.updateProfile({
-        displayName: name,
-        email: email,
-        phoneNumber: phone
-      });
+      Alert.alert('You need to be signed in to report issues', '', [{ text: 'Okay' }]);
     }
   };
 
@@ -103,12 +121,18 @@ export default class ProfileScreen extends React.Component {
           </TouchableOpacity>
           <TouchableOpacity
             style={styles.button}
-            onPress={() => {
-              signOut();
-              navigate('SignIn');
+            onPress={async () => {
+              if (firebaseApp.auth().currentUser != null) {
+                await signOut();
+                this.setState({ name: null, email: null, phone: null });
+              } else {
+                navigate('Auth');
+              }
             }}
           >
-            <Text style={{ fontSize: wp('6%'), color: 'white', fontWeight: 'bold' }}>Logout</Text>
+            <Text style={{ fontSize: wp('6%'), color: 'white', fontWeight: 'bold' }}>
+              {firebaseApp.auth().currentUser != null ? 'Sign Out' : 'Sign In'}
+            </Text>
           </TouchableOpacity>
         </View>
       </SafeAreaView>

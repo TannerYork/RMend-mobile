@@ -10,16 +10,12 @@ export default class Loading extends React.Component {
   componentDidMount() {
     const listener = firebaseApp.auth().onAuthStateChanged(user => {
       listener();
-      this.props.navigation.navigate(user ? 'Home' : 'SignIn');
+      this.props.navigation.navigate('Home');
     });
   }
 
   render() {
-    return (
-      <View style={styles.container}>
-        <Image source={require('../assets/images/splash.png')} />
-      </View>
-    );
+    return <View style={styles.container}></View>;
   }
 }
 const styles = StyleSheet.create({
@@ -27,7 +23,8 @@ const styles = StyleSheet.create({
     width: wp('100%'),
     height: hp('100%'),
     justifyContent: 'center',
-    alignItems: 'center'
+    alignItems: 'center',
+    backgroundColor: 'black'
   },
   image: {
     flex: 1
