@@ -9,15 +9,16 @@ import {
 import { createStackNavigator } from 'react-navigation-stack';
 
 import { firebaseApp } from '../config/FirebaseApp';
-import NearbyNavigator from '../navigation/NearbyNavigator';
+import NearbyScreen from '../screens/HomeScreens/NearbyScreen';
 import PhotoScreen from '../screens/HomeScreens/PhotoScreen';
 import ProfileScreen from '../screens/HomeScreens/ProfileScreen';
+import ReportInfoScreen from '../screens/HomeScreens/ReportInfoScreen';
 import AuthNavigator from './AuthNavigator';
 
 const HomeNavigator = createBottomTabNavigator(
   {
     Nearby: {
-      screen: NearbyNavigator,
+      screen: NearbyScreen,
       navigationOptions: {
         tabBarIcon: ({ focused }) => (
           <View
@@ -99,7 +100,8 @@ const HomeNavigator = createBottomTabNavigator(
 const MainHomeNavigator = createStackNavigator(
   {
     Home: HomeNavigator,
-    Auth: AuthNavigator
+    Auth: AuthNavigator,
+    ReportInfo: ReportInfoScreen
   },
   {
     initialRoute: 'Home',

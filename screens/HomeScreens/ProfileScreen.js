@@ -22,10 +22,8 @@ export default class ProfileScreen extends React.Component {
     const { navigation } = this.props;
     this.navigationListener = navigation.addListener('willFocus', () => {
       if (firebaseApp.auth().currentUser != null) {
-        if (this.state.email == null) {
-          const { displayName, email, phoneNumber } = firebaseApp.auth().currentUser;
-          this.setState({ name: displayName, email: email, phone: phoneNumber });
-        }
+        const { displayName, email, phoneNumber } = firebaseApp.auth().currentUser;
+        this.setState({ name: displayName, email: email, phone: phoneNumber });
       }
     });
   }
@@ -38,11 +36,12 @@ export default class ProfileScreen extends React.Component {
     if (firebaseApp.auth().currentUser != null) {
       const { currentUser } = firebaseApp.auth();
       const { name, email, phone } = this.state;
+      const validEmailReg = /^([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z]{2,5})$/;
       let errors = {};
       if (!name) {
         errors.name = 'Name is required';
       }
-      if (!email) {
+      if (!email || email.match(validEmailReg) == null) {
         errors.email = 'Email is required';
       }
       if (Object.values(errors).length > 0) {
@@ -94,6 +93,18 @@ export default class ProfileScreen extends React.Component {
               style={styles.input}
               value={phone}
               onChangeText={text => this.setState({ phone: text })}
+              placeholder="Optional"
+              placeholderTextColor="#555"
+            />
+          </View>
+          <View style={styles.inputWrapper}>
+            <Text style={{ ...styles.inputLabel, width: wp('35%') }}>Authority Code</Text>
+            <TextInput
+              style={{ ...styles.input, width: wp('45%') }}
+              value={phone}
+              onChangeText={text => this.setState({ authCode: text })}
+              placeholder="Optional"
+              placeholderTextColor="#555"
             />
           </View>
           {/* <View style={styles.inputWrapper}>
@@ -187,7 +198,7 @@ const styles = StyleSheet.create({
     color: '#666'
   },
   buttons: {
-    marginTop: hp('20%'),
+    marginTop: hp('10%'),
     alignItems: 'center'
   },
   button: {
