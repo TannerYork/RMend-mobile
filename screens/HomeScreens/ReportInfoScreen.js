@@ -52,7 +52,9 @@ export default class ReportInfoScreen extends React.Component {
               <Text style={styles.detailsText}>
                 {'This incident was reported by ' + senderInfo.name}
               </Text>
-              <Text style={styles.detailsText}>{'"' + details.details + '"'}</Text>
+              <Text style={styles.detailsText}>
+                {details.details ? '"' + details.details + '"' : ''}
+              </Text>
             </View>
             <Text style={styles.header}>Location</Text>
             <Text style={styles.subHeader}>
