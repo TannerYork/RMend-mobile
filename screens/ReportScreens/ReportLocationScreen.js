@@ -12,7 +12,6 @@ import * as Permissions from 'expo-permissions';
 import Header from '../../components/Header';
 import mapStyle from '../../constants/MapStyle';
 import { updateLocation, resetReport } from '../../redux/actions';
-import { object } from 'yup';
 
 class ReportLocationScreen extends React.Component {
   componentWillMount() {
@@ -26,7 +25,7 @@ class ReportLocationScreen extends React.Component {
         errorMessage: 'Permission to access location was denied'
       });
     } else {
-      let location = Location.getCurrentPositionAsync({});
+      let location = await Location.getCurrentPositionAsync({});
       const { latitude, longitude } = location.coords;
       this.props.updateLocation({ latitude, longitude });
     }
