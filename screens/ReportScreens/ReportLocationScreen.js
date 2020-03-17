@@ -14,21 +14,20 @@ import mapStyle from '../../constants/MapStyle';
 import { updateLocation, resetReport } from '../../redux/actions';
 
 class ReportLocationScreen extends React.Component {
-  componentWillMount() {
+  state = { loaded: false };
+
+  componentDidMount() {
     this._getLocationAsync();
   }
 
   _getLocationAsync = async () => {
     let { status } = await Permissions.askAsync(Permissions.LOCATION);
-    if (status !== 'granted') {
-      this.setState({
-        errorMessage: 'Permission to access location was denied'
-      });
-    } else {
+    if (status === 'granted') {
       let location = await Location.getCurrentPositionAsync({});
       const { latitude, longitude } = location.coords;
       this.props.updateLocation({ latitude, longitude });
     }
+    this.setState({ loaded: true });
   };
 
   updateRegion = region => {
@@ -38,6 +37,7 @@ class ReportLocationScreen extends React.Component {
 
   render() {
     const { navigation, location, resetReport, isLoading } = this.props;
+    const { loaded } = this.state;
     return (
       <SafeAreaView style={styles.scrollContainer}>
         {isLoading && (
@@ -63,16 +63,21 @@ class ReportLocationScreen extends React.Component {
             placeholderTextColor="#666"
           />
         </View>
-        <MapView
-          provider={PROVIDER_GOOGLE}
-          customMapStyle={mapStyle}
-          initialRegion={{ ...location, latitudeDelta: 0.09, longitudeDelta: 0.09 }}
-          showsUserLocation={true}
-          onRegionChange={region => this.updateRegion(region)}
-          style={styles.map}
-        >
-          <Marker coordinate={location} image={require('../../assets/images/location_icon.jpg')} />
-        </MapView>
+        {loaded && (
+          <MapView
+            provider={PROVIDER_GOOGLE}
+            customMapStyle={mapStyle}
+            initialRegion={{ ...location, latitudeDelta: 0.09, longitudeDelta: 0.09 }}
+            showsUserLocation={true}
+            onRegionChange={region => this.updateRegion(region)}
+            style={styles.map}
+          >
+            <Marker
+              coordinate={location}
+              image={require('../../assets/images/location_icon.jpg')}
+            />
+          </MapView>
+        )}
       </SafeAreaView>
     );
   }
