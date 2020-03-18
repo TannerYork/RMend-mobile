@@ -9,14 +9,19 @@ import {
 
 import Colors from '../../constants/Colors';
 import { createUserWithEmailAndPassword } from '../../config/FirebaseApp';
+import { connect } from 'react-redux';
+import { userSignedIn } from '../../redux/actions';
 
-export default class SignInScreen extends React.Component {
+class CreateUserScreen extends React.Component {
   handleSubmit = values => {
     if (values.email.length > 0 && values.password.length > 0) {
       createUserWithEmailAndPassword(values.email, values.password)
         .then(results => {
           if (results.error) alert(results.error);
-          if (!results.error) this.props.navigation.navigate('Home', { reloadInfo: true });
+          if (!results.error) {
+            this.props.userSignedIn();
+            this.props.navigation.navigate('Home', { reloadInfo: true });
+          }
         })
         .catch(err => {
           alert(err.message);
@@ -120,6 +125,8 @@ export default class SignInScreen extends React.Component {
   };
 }
 
+export default connect(null, { userSignedIn })(CreateUserScreen);
+
 const validationSchema = Yup.object().shape({
   name: Yup.string()
     .label('Name')
@@ -202,6 +209,6 @@ const styles = StyleSheet.create({
   }
 });
 
-SignInScreen.navigationOptions = {
-  title: 'SignIn'
+CreateUserScreen.navigationOptions = {
+  title: 'CreateUser'
 };

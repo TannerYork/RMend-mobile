@@ -12,18 +12,22 @@ import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp
 } from 'react-native-responsive-screen';
-import { firebaseApp, signOut } from '../../config/FirebaseApp';
+import { firebaseApp, signOut, updateProfile } from '../../config/FirebaseApp';
+import { connect } from 'react-redux';
+import { getUserInfo, userSignedOut } from '../../redux/actions';
 
-export default class ProfileScreen extends React.Component {
-  state = { name: null, email: null, phone: null };
+class ProfileScreen extends React.Component {
+  state = { displayName: null, email: null, phoneNumber: null, authCode: '' };
   navigationListener = null;
 
-  componentWillMount() {
+  UNSAFE_componentWillMount() {
     const { navigation } = this.props;
-    this.navigationListener = navigation.addListener('willFocus', () => {
-      if (firebaseApp.auth().currentUser != null) {
-        const { displayName, email, phoneNumber } = firebaseApp.auth().currentUser;
-        this.setState({ name: displayName, email: email, phone: phoneNumber });
+    this.navigationListener = navigation.addListener('willFocus', async () => {
+      if (firebaseApp.auth().currentUser !== null) {
+        if (this.state.displayName === null) {
+          await this.props.getUserInfo();
+          this.setState(this.props.user);
+        }
       }
     });
   }
@@ -32,14 +36,13 @@ export default class ProfileScreen extends React.Component {
     this.navigationListener.remove();
   }
 
-  updateProfile = () => {
+  updateProfile = async () => {
     if (firebaseApp.auth().currentUser != null) {
-      const { currentUser } = firebaseApp.auth();
-      const { name, email, phone } = this.state;
+      const { displayName, email } = this.state;
       const validEmailReg = /^([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z]{2,5})$/;
       let errors = {};
-      if (!name) {
-        errors.name = 'Name is required';
+      if (!displayName) {
+        errors.displayName = 'Name is required';
       }
       if (!email || email.match(validEmailReg) == null) {
         errors.email = 'Email is required';
@@ -51,19 +54,17 @@ export default class ProfileScreen extends React.Component {
           [{ text: 'Ok', style: 'cancel' }]
         );
       } else {
-        currentUser.updateProfile({
-          displayName: name,
-          email: email,
-          phoneNumber: phone
-        });
+        await updateProfile(this.state);
+        await this.props.getUserInfo();
+        this.setState(this.props.user);
       }
     } else {
-      Alert.alert('You need to be signed in to report issues', '', [{ text: 'Okay' }]);
+      Alert.alert('You need to be signed in to update information', '', [{ text: 'Okay' }]);
     }
   };
 
   render() {
-    const { name, email, phone } = this.state;
+    const { displayName, email, phoneNumber, authCode } = this.state;
     const { navigate } = this.props.navigation;
     return (
       <SafeAreaView style={styles.container}>
@@ -75,8 +76,8 @@ export default class ProfileScreen extends React.Component {
             <Text style={styles.inputLabel}>Name</Text>
             <TextInput
               style={styles.input}
-              value={name}
-              onChangeText={text => this.setState({ name: text })}
+              value={displayName}
+              onChangeText={text => this.setState({ displayName: text })}
             />
           </View>
           <View style={styles.inputWrapper}>
@@ -91,8 +92,8 @@ export default class ProfileScreen extends React.Component {
             <Text style={styles.inputLabel}>Phone</Text>
             <TextInput
               style={styles.input}
-              value={phone}
-              onChangeText={text => this.setState({ phone: text })}
+              value={phoneNumber}
+              onChangeText={text => this.setState({ phoneNumber: text })}
               placeholder="Optional"
               placeholderTextColor="#555"
             />
@@ -101,7 +102,7 @@ export default class ProfileScreen extends React.Component {
             <Text style={{ ...styles.inputLabel, width: wp('35%') }}>Authority Code</Text>
             <TextInput
               style={{ ...styles.input, width: wp('45%') }}
-              value={phone}
+              value={authCode}
               onChangeText={text => this.setState({ authCode: text })}
               placeholder="Optional"
               placeholderTextColor="#555"
@@ -132,13 +133,13 @@ export default class ProfileScreen extends React.Component {
           </TouchableOpacity>
           <TouchableOpacity
             style={styles.button}
-            onPress={async () => {
+            onPress={() => {
               if (firebaseApp.auth().currentUser != null) {
-                await signOut();
-                this.setState({ name: null, email: null, phone: null });
-              } else {
-                navigate('Auth');
+                signOut();
+                this.props.userSignedOut();
+                this.setState({ displayName: null, email: null, phoneNumber: null, authCode: '' });
               }
+              navigate('Auth');
             }}
           >
             <Text style={{ fontSize: wp('6%'), color: 'white', fontWeight: 'bold' }}>
@@ -150,6 +151,12 @@ export default class ProfileScreen extends React.Component {
     );
   }
 }
+
+const mapStateToProps = ({ user }) => {
+  return { user };
+};
+
+export default connect(mapStateToProps, { getUserInfo, userSignedOut })(ProfileScreen);
 
 const styles = StyleSheet.create({
   container: {

@@ -5,8 +5,12 @@ import {
   UPDATE_DETAILS,
   UPDATE_INFO,
   RESET_REPORT,
-  START_UPLOAD
+  START_UPLOAD,
+  SIGN_IN,
+  SIGN_OUT,
+  GET_USER_INFO
 } from './types';
+import { firebaseApp } from '../../config/FirebaseApp.js';
 
 export const addImage = base64 => dispatch => {
   dispatch({
@@ -52,4 +56,20 @@ export const resetReport = () => dispatch => {
 
 export const startUpload = () => dispatch => {
   dispatch({ type: START_UPLOAD });
+};
+
+export const getUserInfo = () => async dispatch => {
+  const { displayName, email } = firebaseApp.auth().currentUser;
+  const idTokenResult = await firebaseApp.auth().currentUser.getIdTokenResult(true);
+  const authCode = await idTokenResult.claims.authCode;
+  dispatch({ type: GET_USER_INFO, payload: { displayName, email, authCode } });
+};
+
+export const userSignedIn = () => async dispatch => {
+  dispatch({ type: SIGN_IN });
+  dispatch(getUserInfo());
+};
+
+export const userSignedOut = () => dispatch => {
+  dispatch({ type: SIGN_OUT });
 };

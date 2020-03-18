@@ -6,15 +6,18 @@ import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp
 } from 'react-native-responsive-screen';
+import { connect } from 'react-redux';
+import { userSignedIn } from '../../redux/actions';
 
 import Colors from '../../constants/Colors';
 import { signInWithEmailAndPassword } from '../../config/FirebaseApp';
 
-export default class SignInScreen extends React.Component {
+class SignInScreen extends React.Component {
   handleSubmit = values => {
     if (values.email.length > 0 && values.password.length > 0) {
       signInWithEmailAndPassword(values.email, values.password)
-        .then(() => {
+        .then(async () => {
+          await this.props.userSignedIn();
           this.props.navigation.navigate('Home', { reloadInfo: true });
         })
         .catch(err => {
@@ -86,6 +89,8 @@ export default class SignInScreen extends React.Component {
     );
   };
 }
+
+export default connect(null, { userSignedIn })(SignInScreen);
 
 const validationSchema = Yup.object().shape({
   email: Yup.string()

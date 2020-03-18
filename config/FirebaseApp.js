@@ -1,6 +1,7 @@
 import firebase from 'firebase';
 import '@firebase/firestore';
 import '@firebase/storage';
+import '@firebase/functions';
 import { FIREBASE_DEV_CONFIG } from './keys';
 
 export const firebaseApp = firebase.initializeApp(FIREBASE_DEV_CONFIG);
@@ -50,6 +51,26 @@ async function getBlobAsync(uri) {
   });
   return blob;
 }
+
+export const updateProfile = async ({ displayName, email, authCode }) => {
+  const { currentUser } = firebaseApp.auth();
+  try {
+    await currentUser.updateProfile({ displayName });
+    await currentUser.updateEmail(email);
+    await updateAuthCode(authCode);
+
+    const user = await firebaseApp
+      .firestore()
+      .collection('users')
+      .doc(currentUser.uid);
+
+    if (user) {
+      await user.update({ displayName, email, authCode });
+    }
+  } catch (error) {
+    console.log(error);
+  }
+};
 
 export const createReport = async ({
   images,
@@ -105,8 +126,6 @@ export const updateAuthCode = async newAuthCode => {
   if (results.error) {
     console.log(results.error.message, results.error.stack);
     alert(results.error.message);
-  } else {
-    alert(results.result);
   }
 };
 
