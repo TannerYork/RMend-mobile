@@ -98,3 +98,25 @@ export const createReport = async ({
     console.log(error);
   }
 };
+
+export const updateAuthCode = async newAuthCode => {
+  const updateUserAuthCode = await firebaseApp.functions().httpsCallable('updateUserAuthCode');
+  const results = await updateUserAuthCode({ authCode: newAuthCode });
+  if (results.error) {
+    console.log(results.error.message, results.error.stack);
+    alert(results.error.message);
+  } else {
+    alert(results.result);
+  }
+};
+
+export const makeAdminFrom = async userId => {
+  const makeUserAdmin = await firebaseApp.functions().httpsCallable('makeUserAdmin');
+  const results = await makeUserAdmin({ userId });
+  if (results.error) {
+    console.log(results.error.message, results.error.stack);
+    alert(results.error.message);
+  } else {
+    alert(results.result);
+  }
+};
