@@ -18,7 +18,7 @@ class SignInScreen extends React.Component {
       signInWithEmailAndPassword(values.email, values.password)
         .then(async () => {
           await this.props.userSignedIn();
-          this.props.navigation.navigate('Home', { reloadInfo: true });
+          this.props.navigation.navigate('Home');
         })
         .catch(err => {
           alert(err.message);
@@ -29,7 +29,7 @@ class SignInScreen extends React.Component {
   render = () => {
     return (
       <SafeAreaView style={styles.container}>
-        <Text style={styles.header}>Sign In</Text>
+        <Text style={styles.header}>R.Mend</Text>
         <Formik
           initialValues={{ email: '', password: '' }}
           onSubmit={values => {
@@ -79,12 +79,12 @@ class SignInScreen extends React.Component {
             </View>
           )}
         </Formik>
-        {/* <TouchableOpacity
+        <TouchableOpacity
           onPress={() => this.props.navigation.navigate('CreateUser')}
           style={styles.link}
         >
           <Text style={styles.linkText}>Don't have an account? Sign Up</Text>
-        </TouchableOpacity> */}
+        </TouchableOpacity>
       </SafeAreaView>
     );
   };
@@ -107,14 +107,14 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#000',
-    alignContent: 'center'
+    alignItems: 'center',
+    justifyContent: 'center'
   },
   header: {
     color: Colors.mainText,
     textAlign: 'center',
     fontSize: wp('25%'),
     fontFamily: 'passion-one-regular',
-    paddingTop: hp('20%'),
     paddingBottom: hp('5%'),
     justifyContent: 'center'
   },

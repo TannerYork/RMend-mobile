@@ -1,35 +1,40 @@
 import { createStackNavigator } from 'react-navigation-stack';
+import { createSwitchNavigator } from 'react-navigation';
 import AuthScreen from '../screens/AuthScreens/AuthScreen';
 import SignInScreen from '../screens/AuthScreens/SignInScreen';
 import CreateUserScreen from '../screens/AuthScreens/CreateUserScreen';
 
-const AuthNavigator = createStackNavigator(
+const AuthNavigator = createSwitchNavigator(
   {
-    Auth: {
-      screen: AuthScreen
-    },
+    // Only used for stack navigaton when auth is promted from profile screen
+    // Auth: {
+    //   screen: AuthScreen
+    // },
     SignIn: {
-      screen: SignInScreen,
-      navigationOptions: {
-        headerShown: true
-      }
+      screen: SignInScreen
+      // Only used for stack navigaton when auth is promted from profile screen
+      // navigationOptions: {
+      //   headerShown: true
+      // }
     },
     CreateUser: {
-      screen: CreateUserScreen,
-      navigationOptions: {
-        headerShown: true
-      }
+      screen: CreateUserScreen
+      // Only used for stack navigaton when auth is promted from profile screen
+      // navigationOptions: {
+      //   headerShown: true
+      // }
     }
   },
   {
     initialRoute: 'SignIn',
     mode: 'card',
     defaultNavigationOptions: {
-      headerStyle: {
-        backgroundColor: 'black',
-        borderBottomColor: 'black'
-      },
-      headerShown: false
+      // Only used for stack navigaton when auth is promted from profile screen
+      // headerStyle: {
+      //   backgroundColor: 'black',
+      //   borderBottomColor: 'black'
+      // },
+      // headerShown: false
     }
   }
 );

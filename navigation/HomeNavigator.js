@@ -13,7 +13,6 @@ import NearbyScreen from '../screens/HomeScreens/NearbyScreen';
 import PhotoScreen from '../screens/HomeScreens/PhotoScreen';
 import ProfileScreen from '../screens/HomeScreens/ProfileScreen';
 import ReportInfoScreen from '../screens/HomeScreens/ReportInfoScreen';
-import AuthNavigator from './AuthNavigator';
 
 const HomeNavigator = createBottomTabNavigator(
   {
@@ -100,7 +99,6 @@ const HomeNavigator = createBottomTabNavigator(
 const MainHomeNavigator = createStackNavigator(
   {
     Home: HomeNavigator,
-    Auth: AuthNavigator,
     ReportInfo: ReportInfoScreen
   },
   {

@@ -10,7 +10,13 @@ export default class Loading extends React.Component {
   componentDidMount() {
     const listener = firebaseApp.auth().onAuthStateChanged(user => {
       listener();
-      this.props.navigation.navigate('Home');
+      if (user) {
+        this.props.navigation.navigate('Home');
+      } else {
+        // Only used for stack navigaton when authentication is promted from profile screen
+        // this.props.navigation.navigate('Auth');
+        this.props.navigation.navigate('SignIn');
+      }
     });
   }
 

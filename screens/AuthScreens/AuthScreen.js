@@ -12,9 +12,10 @@ export default class AuthScreen extends React.Component {
     const { navigation } = this.props;
     return (
       <SafeAreaView style={styles.container}>
-        <TouchableOpacity style={styles.close} onPress={() => navigation.navigate('Profile')}>
+        {/* Only used when authentication is promtend from profile screen not from loading the app */}
+        {/* <TouchableOpacity style={styles.close} onPress={() => navigation.navigate('Profile')}>
           <AntDesign name="close" size={wp('10%')} color="white" />
-        </TouchableOpacity>
+        </TouchableOpacity> */}
         <Text style={styles.header}>R.Mend</Text>
         <View style={styles.buttons}>
           <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('SignIn')}>
@@ -33,10 +34,9 @@ export default class AuthScreen extends React.Component {
 
 const styles = StyleSheet.create({
   container: {
-    height: hp('100%'),
-    width: wp('100%'),
+    flex: 1,
     backgroundColor: 'black',
-    justifyContent: 'space-around',
+    justifyContent: 'center',
     alignItems: 'center'
   },
   header: {
@@ -44,7 +44,6 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     fontSize: wp('25%'),
     fontFamily: 'passion-one-regular',
-    paddingBottom: hp('5%'),
     justifyContent: 'center'
   },
   buttons: {

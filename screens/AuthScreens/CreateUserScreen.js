@@ -20,7 +20,7 @@ class CreateUserScreen extends React.Component {
           if (results.error) alert(results.error);
           if (!results.error) {
             this.props.userSignedIn();
-            this.props.navigation.navigate('Home', { reloadInfo: true });
+            this.props.navigation.navigate('Home');
           }
         })
         .catch(err => {
@@ -32,7 +32,7 @@ class CreateUserScreen extends React.Component {
   render = () => {
     return (
       <SafeAreaView style={styles.container}>
-        <Text style={styles.header}>Registure</Text>
+        <Text style={styles.header}>R.Mend</Text>
         <Formik
           initialValues={{ email: '', password: '', confirmPass: '' }}
           onSubmit={values => {
@@ -114,12 +114,12 @@ class CreateUserScreen extends React.Component {
             </View>
           )}
         </Formik>
-        {/* <TouchableOpacity
+        <TouchableOpacity
           onPress={() => this.props.navigation.navigate('SignIn')}
           style={styles.link}
         >
-          <Text style={styles.linkText}>Don't have an account? Sign Up</Text>
-        </TouchableOpacity> */}
+          <Text style={styles.linkText}>Already have an account? Sign In</Text>
+        </TouchableOpacity>
       </SafeAreaView>
     );
   };
@@ -151,6 +151,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#000',
+    justifyContent: 'center',
     alignContent: 'center'
   },
   header: {
@@ -158,8 +159,6 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     fontSize: wp('25%'),
     fontFamily: 'passion-one-regular',
-    marginTop: hp('7%'),
-    marginBottom: hp('5%'),
     justifyContent: 'center'
   },
   form: {
