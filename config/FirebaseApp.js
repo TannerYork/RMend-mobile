@@ -52,12 +52,14 @@ async function getBlobAsync(uri) {
   return blob;
 }
 
-export const updateProfile = async ({ displayName, email, authCode }) => {
+export const updateProfile = async ({ displayName, email, authCode }, shouldUpdateAuthCode) => {
   const { currentUser } = firebaseApp.auth();
   try {
     await currentUser.updateProfile({ displayName });
     await currentUser.updateEmail(email);
-    await updateAuthCode(authCode);
+    if (shouldUpdateAuthCode) {
+      await updateAuthCode(authCode);
+    }
 
     const user = await firebaseApp
       .firestore()

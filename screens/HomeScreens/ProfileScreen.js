@@ -36,10 +36,39 @@ class ProfileScreen extends React.Component {
     this.navigationListener.remove();
   }
 
+  signUserOut = () => {
+    signOut();
+    this.props.userSignedOut();
+    this.setState({ displayName: null, email: null, phoneNumber: null, authCode: '' });
+    // Auth when authentication is prompted from profile screen
+    // this.props.navigation.navigate('Auth')
+    this.props.navigation.navigate('SignIn');
+  };
+
+  handleSignInOutPress = () => {
+    const { navigate } = this.props.navigation;
+    if (firebaseApp.auth().currentUser != null) {
+      this.signUserOut();
+    }
+    navigate('Auth');
+  };
+
+  updateProfileAlert = () => {
+    Alert.alert('Are you sure you want to make these changes?', 'Changes can be made latter.', [
+      {
+        text: 'Cancel',
+        style: 'cancel',
+        onPress: () => this.setState(this.props.user)
+      },
+      { text: 'Ok', onPress: () => this.updateProfile() }
+    ]);
+  };
+
   updateProfile = async () => {
     if (firebaseApp.auth().currentUser != null) {
       const { displayName, email } = this.state;
       const validEmailReg = /^([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z]{2,5})$/;
+      const shouldUpdateAuthCode = this.props.user.authCode == this.state.authCode ? false : true;
       let errors = {};
       if (!displayName) {
         errors.displayName = 'Name is required';
@@ -54,9 +83,26 @@ class ProfileScreen extends React.Component {
           [{ text: 'Ok', style: 'cancel' }]
         );
       } else {
-        await updateProfile(this.state);
-        await this.props.getUserInfo();
-        this.setState(this.props.user);
+        if (shouldUpdateAuthCode) {
+          await Alert.alert(
+            'Sign Out Required',
+            'Updating your authority code requires you to sign out.',
+            [
+              { text: 'Cancel', style: 'cancel', onPress: () => this.setState(this.props.user) },
+              {
+                text: 'Ok',
+                onPress: async () => {
+                  await updateProfile(this.state, true);
+                  this.signUserOut();
+                }
+              }
+            ]
+          );
+        } else {
+          await updateProfile(this.state, false);
+          await this.props.getUserInfo();
+          this.setState(this.props.user);
+        }
       }
     } else {
       Alert.alert('You need to be signed in to update information', '', [{ text: 'Okay' }]);
@@ -65,7 +111,6 @@ class ProfileScreen extends React.Component {
 
   render() {
     const { displayName, email, phoneNumber, authCode } = this.state;
-    const { navigate } = this.props.navigation;
     return (
       <SafeAreaView style={styles.container}>
         <View style={styles.headerWrapper}>
@@ -88,7 +133,7 @@ class ProfileScreen extends React.Component {
               onChangeText={text => this.setState({ email: text })}
             />
           </View>
-          <View style={styles.inputWrapper}>
+          {/* <View style={styles.inputWrapper}>
             <Text style={styles.inputLabel}>Phone</Text>
             <TextInput
               style={styles.input}
@@ -97,7 +142,7 @@ class ProfileScreen extends React.Component {
               placeholder="Optional"
               placeholderTextColor="#555"
             />
-          </View>
+          </View> */}
           <View style={styles.inputWrapper}>
             <Text style={{ ...styles.inputLabel, width: wp('35%') }}>Authority Code</Text>
             <TextInput
@@ -114,34 +159,12 @@ class ProfileScreen extends React.Component {
           </View> */}
         </View>
         <View style={styles.buttons}>
-          <TouchableOpacity
-            style={styles.button}
-            onPress={() => {
-              Alert.alert(
-                'Are you sure you want to make these changes?',
-                'Changes can be made latter.',
-                [
-                  { text: 'Cancel', style: 'cancel' },
-                  { text: 'Ok', onPress: () => this.updateProfile() }
-                ]
-              );
-            }}
-          >
+          <TouchableOpacity style={styles.button} onPress={() => this.updateProfileAlert()}>
             <Text style={{ fontSize: wp('6%'), color: 'white', fontWeight: 'bold' }}>
               Save Changes
             </Text>
           </TouchableOpacity>
-          <TouchableOpacity
-            style={styles.button}
-            onPress={() => {
-              if (firebaseApp.auth().currentUser != null) {
-                signOut();
-                this.props.userSignedOut();
-                this.setState({ displayName: null, email: null, phoneNumber: null, authCode: '' });
-              }
-              navigate('Auth');
-            }}
-          >
+          <TouchableOpacity style={styles.button} onPress={() => this.handleSignInOutPress()}>
             <Text style={{ fontSize: wp('6%'), color: 'white', fontWeight: 'bold' }}>
               {firebaseApp.auth().currentUser != null ? 'Sign Out' : 'Sign In'}
             </Text>
