@@ -37,15 +37,19 @@ class ReportLocationScreen extends React.Component {
         this.updateReportsCounty(latitude, longitude);
     };
 
-    updateReportsCounty = (latitude, longitude) => {
+    updateReportsCounty = async (latitude, longitude) => {
         const coordinate = point([longitude, latitude]);
-        featureEach(currentAuthJSON, feature => {
+        var found = false;
+        await featureEach(currentAuthJSON, feature => {
             if (booleanContains(feature, coordinate)) {
+                found = true;
                 const county = feature.properties.NAME;
                 this.props.updateCounty(county);
-                return;
             }
         });
+        if (!found) {
+            this.props.updateCounty('');
+        }
     };
 
     render() {

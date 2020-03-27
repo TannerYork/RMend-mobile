@@ -6,7 +6,8 @@ import {
     TextInput,
     View,
     SafeAreaView,
-    ActivityIndicator
+    ActivityIndicator,
+    Alert
 } from 'react-native';
 import {
     widthPercentageToDP as wp,
@@ -20,18 +21,32 @@ import Header from '../../components/Header';
 import Colors from '../../constants/Colors';
 
 class ReportDetailsScreen extends React.Component {
-    state = { loaded: false, county: '', issueGroups: [] };
+    state = { county: '', issueGroups: [] };
     navigationListener = null;
 
     componentDidMount() {
         const { navigation } = this.props;
         navigation.addListener('willFocus', async () => {
             if (this.state.county != this.props.county) {
-                const issueGroups = await getIssueGroups(this.props.county);
-                this.setState({ loaded: true, county: this.props.county, issueGroups });
+                await this.getIssueTypes();
             }
         });
     }
+
+    getIssueTypes = async () => {
+        const issueGroups = await getIssueGroups(this.props.county);
+        if (issueGroups.length == 0) {
+            Alert.alert(
+                'Failed to load incidents',
+                'Their was an issue loading incidents in your location. Please check your connection or if your county is using R.Menda and try agian',
+                [
+                    { text: 'Ok', onPress: this.getIssueTypes },
+                    { text: 'Cancel', style: 'cancel' }
+                ]
+            );
+        }
+        this.setState({ county: this.props.county, issueGroups });
+    };
 
     render() {
         const {
