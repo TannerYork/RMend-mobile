@@ -6,7 +6,7 @@ import {
 } from 'react-native-responsive-screen';
 import { connect } from 'react-redux';
 import { Entypo } from '@expo/vector-icons';
-import { updateDetails } from '../../redux/actions';
+import { updateDetails, updateAuthority } from '../../redux/actions';
 
 class ReportTypesScreen extends React.Component {
   render() {
@@ -14,38 +14,47 @@ class ReportTypesScreen extends React.Component {
       navigation: {
         navigate,
         state: {
-          params: { types, iconName }
+          params: { types, iconName, authority }
         }
       },
       details,
-      updateDetails
+      updateDetails,
+      updateAuthority
     } = this.props;
     return (
       <SafeAreaView style={styles.container}>
-        <FlatList
-          contentContainerStyle={styles.list}
-          data={types}
-          renderItem={item => {
-            const type = item.item;
-            return (
-              <TouchableOpacity
-                style={styles.selector}
-                onPress={() => {
-                  updateDetails({ ...details, type, iconName });
-                  navigate('Report');
-                }}
-              >
-                <Entypo
-                  name={iconName}
-                  size={wp('7%')}
-                  color="#ff6a30"
-                  style={{ marginLeft: wp('2%') }}
-                />
-                <Text style={styles.selectorText}>{type}</Text>
-              </TouchableOpacity>
-            );
-          }}
-        />
+        {authority && (
+          <FlatList
+            contentContainerStyle={styles.list}
+            data={types}
+            renderItem={item => {
+              const type = item.item;
+              return (
+                <TouchableOpacity
+                  style={styles.selector}
+                  onPress={() => {
+                    updateAuthority(authority);
+                    updateDetails({ ...details, type, iconName });
+                    navigate('Report');
+                  }}
+                >
+                  <Entypo
+                    name={iconName}
+                    size={wp('7%')}
+                    color="#ff6a30"
+                    style={{ marginLeft: wp('2%') }}
+                  />
+                  <Text style={styles.selectorText}>{type}</Text>
+                </TouchableOpacity>
+              );
+            }}
+          />
+        )}
+        {!authority && (
+          <View style={styles.placeholder}>
+            <Text>Location Required for Issue Types</Text>
+          </View>
+        )}
       </SafeAreaView>
     );
   }
@@ -57,9 +66,14 @@ const mapStateToProps = ({ report }) => {
   };
 };
 
-export default connect(mapStateToProps, { updateDetails })(ReportTypesScreen);
+export default connect(mapStateToProps, { updateDetails, updateAuthority })(ReportTypesScreen);
 
 const styles = StyleSheet.create({
+  placeholder: {
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center'
+  },
   container: {
     padding: 20,
     alignItems: 'center',
