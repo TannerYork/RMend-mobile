@@ -2,9 +2,11 @@ import firebase from 'firebase';
 import '@firebase/firestore';
 import '@firebase/storage';
 import '@firebase/functions';
+import * as geofirex from 'geofirex';
 import { FIREBASE_DEV_CONFIG } from './keys';
 
 export const firebaseApp = firebase.initializeApp(FIREBASE_DEV_CONFIG);
+export const geo = geofirex.init(firebase);
 
 export const createUserWithEmailAndPassword = async (email, password, userName) => {
     try {
@@ -42,7 +44,6 @@ async function getBlobAsync(uri) {
             resolve(xhr.response);
         };
         xhr.onerror = function(e) {
-            console.log(e);
             reject(new TypeError('Network request failed'));
         };
         xhr.responseType = 'blob';
@@ -83,12 +84,14 @@ export const createReport = async ({
 }) => {
     const date = new Date();
     const timestamp = date.toDateString();
+    const geoPoint = geo.point(latitude, longitude);
     const data = {
         location: { latitude, longitude },
         timestamp: timestamp,
         details: { ...details, authority: name },
         senderInfo,
-        authCode
+        authCode,
+        geoData: geoPoint.data
     };
 
     try {
