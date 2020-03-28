@@ -99,7 +99,7 @@ class ReportDetailsScreen extends React.Component {
                 {details.type && (
                     <TouchableOpacity
                         style={styles.selector}
-                        onPress={() => navigate('ReportTypeGroups')}
+                        onPress={() => navigate('ReportTypeGroups', { issueGroups })}
                     >
                         <Entypo
                             name={details.iconName}
