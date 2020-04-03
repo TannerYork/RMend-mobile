@@ -4,7 +4,7 @@ import { Formik } from 'formik';
 import { SafeAreaView, View, Text, TouchableOpacity, TextInput, StyleSheet } from 'react-native';
 import {
   widthPercentageToDP as wp,
-  heightPercentageToDP as hp
+  heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
 
 import Colors from '../../constants/Colors';
@@ -13,17 +13,17 @@ import { connect } from 'react-redux';
 import { userSignedIn } from '../../redux/actions';
 
 class CreateUserScreen extends React.Component {
-  handleSubmit = values => {
+  handleSubmit = (values) => {
     if (values.email.length > 0 && values.password.length > 0) {
       createUserWithEmailAndPassword(values.email, values.password)
-        .then(results => {
+        .then((results) => {
           if (results.error) alert(results.error);
           if (!results.error) {
             this.props.userSignedIn();
             this.props.navigation.navigate('Home');
           }
         })
-        .catch(err => {
+        .catch((err) => {
           alert(err.message);
         });
     }
@@ -35,7 +35,7 @@ class CreateUserScreen extends React.Component {
         <Text style={styles.header}>R.Mend</Text>
         <Formik
           initialValues={{ email: '', password: '', confirmPass: '' }}
-          onSubmit={values => {
+          onSubmit={(values) => {
             this.handleSubmit(values);
           }}
           validationSchema={validationSchema}
@@ -128,9 +128,7 @@ class CreateUserScreen extends React.Component {
 export default connect(null, { userSignedIn })(CreateUserScreen);
 
 const validationSchema = Yup.object().shape({
-  name: Yup.string()
-    .label('Name')
-    .required('Please enter your full name'),
+  name: Yup.string().label('Name').required('Please enter your full name'),
   email: Yup.string()
     .label('Email')
     .email('Enter a valid email')
@@ -142,9 +140,9 @@ const validationSchema = Yup.object().shape({
   confirmPass: Yup.string()
     .label('Confirm Password')
     .required()
-    .test('passwords-match', 'Passwords must match ya fool', function(value) {
+    .test('passwords-match', 'Passwords must match ya fool', function (value) {
       return this.parent.password === value;
-    })
+    }),
 });
 
 const styles = StyleSheet.create({
@@ -152,17 +150,17 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#000',
     justifyContent: 'center',
-    alignContent: 'center'
+    alignContent: 'center',
   },
   header: {
     color: Colors.mainText,
     textAlign: 'center',
     fontSize: wp('25%'),
     fontFamily: 'passion-one-regular',
-    justifyContent: 'center'
+    justifyContent: 'center',
   },
   form: {
-    alignItems: 'center'
+    alignItems: 'center',
   },
   inputWrapper: {
     width: wp('90%'),
@@ -175,18 +173,18 @@ const styles = StyleSheet.create({
     borderColor: '#555',
     borderWidth: 1,
     borderRadius: 20,
-    padding: wp('2%')
+    padding: wp('2%'),
   },
   input: {
     width: wp('62%'),
     fontSize: wp('4%'),
     color: '#666',
-    textAlign: 'right'
+    textAlign: 'right',
   },
   inputLabel: {
     width: wp('23%'),
     fontSize: wp('5%'),
-    color: '#666'
+    color: '#666',
   },
   button: {
     width: wp('90%'),
@@ -195,19 +193,19 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     marginTop: hp('2%'),
-    backgroundColor: '#ff6a30'
+    backgroundColor: '#ff6a30',
   },
   link: {
     width: wp('100%'),
     alignItems: 'center',
-    marginTop: hp('3%')
+    marginTop: hp('3%'),
   },
   linkText: {
     fontSize: wp('5%'),
-    color: Colors.mainText
-  }
+    color: Colors.mainText,
+  },
 });
 
 CreateUserScreen.navigationOptions = {
-  title: 'CreateUser'
+  title: 'CreateUser',
 };

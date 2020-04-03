@@ -3,7 +3,7 @@ import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import Colors from '../constants/Colors';
 import {
   widthPercentageToDP as wp,
-  heightPercentageToDP as hp
+  heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
 
 export default class Header extends React.Component {
@@ -30,21 +30,21 @@ const styles = StyleSheet.create({
     backgroundColor: '#000',
     flexDirection: 'row',
     justifyContent: 'space-around',
-    alignItems: 'center'
+    alignItems: 'center',
   },
   title: {
     width: wp('40%'),
     fontSize: wp('5%'),
     color: '#EEE',
-    textAlign: 'center'
+    textAlign: 'center',
   },
   headerButton: {
-    width: wp('15%')
+    width: wp('15%'),
   },
   headerButtonText: {
     fontSize: wp('4%'),
     color: '#FFF',
     textAlign: 'center',
-    color: Colors.mainText
-  }
+    color: Colors.mainText,
+  },
 });

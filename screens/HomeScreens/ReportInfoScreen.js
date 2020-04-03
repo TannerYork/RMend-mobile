@@ -6,11 +6,11 @@ import {
   ScrollView,
   Image,
   Text,
-  TouchableOpacity
+  TouchableOpacity,
 } from 'react-native';
 import {
   widthPercentageToDP as wp,
-  heightPercentageToDP as hp
+  heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
 import MapView, { PROVIDER_GOOGLE, Marker } from 'react-native-maps';
 import openMap from 'react-native-open-maps';
@@ -69,7 +69,7 @@ export default class ReportInfoScreen extends React.Component {
                 openMap({
                   ...location,
                   zoom: 20,
-                  provider: 'google'
+                  provider: 'google',
                 })
               }
               pitchEnabled={false}
@@ -96,7 +96,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: 'center',
-    backgroundColor: 'black'
+    backgroundColor: 'black',
   },
   titleWrapper: {
     width: wp('100%'),
@@ -104,21 +104,21 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-end',
     backgroundColor: 'black',
     padding: wp('1%'),
-    zIndex: 100
+    zIndex: 100,
   },
   titleText: {
     color: 'white',
     fontSize: wp('9%'),
-    fontWeight: 'bold'
+    fontWeight: 'bold',
   },
   titleSubText: {
     fontSize: wp('5%'),
     color: '#444',
-    fontFamily: 'Arial'
+    fontFamily: 'Arial',
   },
   info: {
     width: wp('100%'),
-    alignItems: 'center'
+    alignItems: 'center',
   },
   header: {
     width: wp('80%'),
@@ -126,7 +126,7 @@ const styles = StyleSheet.create({
     color: Colors.mainText,
     fontFamily: 'Arial-BoldMT',
     marginLeft: wp('5%'),
-    marginTop: hp('2%')
+    marginTop: hp('2%'),
   },
   subHeader: {
     width: wp('80%'),
@@ -134,7 +134,7 @@ const styles = StyleSheet.create({
     color: '#444',
     marginBottom: hp('1%'),
     marginLeft: wp('5%'),
-    fontFamily: 'Arial'
+    fontFamily: 'Arial',
   },
   details: {
     width: wp('80%'),
@@ -142,25 +142,25 @@ const styles = StyleSheet.create({
     backgroundColor: '#212834',
     borderRadius: wp('5%'),
     borderColor: '#555',
-    borderWidth: 1
+    borderWidth: 1,
   },
   detailsText: {
     fontSize: wp('5%'),
     color: '#888',
     padding: wp('3%'),
-    fontFamily: 'Arial'
+    fontFamily: 'Arial',
   },
   map: {
     height: hp('30%'),
     width: wp('80%'),
     backgroundColor: '#545454',
-    borderRadius: wp('5%')
+    borderRadius: wp('5%'),
   },
   images: {
     height: hp('50%'),
     minWidth: wp('100%'),
     justifyContent: 'center',
-    alignItems: 'center'
+    alignItems: 'center',
   },
   imageWrapper: {
     height: hp('45%'),
@@ -168,12 +168,12 @@ const styles = StyleSheet.create({
     backgroundColor: '#333',
     borderRadius: 20,
     position: 'relative',
-    marginRight: wp('2%')
+    marginRight: wp('2%'),
   },
   image: {
     height: hp('45%'),
     width: wp('70%'),
-    borderRadius: 20
+    borderRadius: 20,
   },
   imageDelete: {
     width: wp('10%'),
@@ -181,13 +181,13 @@ const styles = StyleSheet.create({
     backgroundColor: '#FF5733',
     borderRadius: 42,
     justifyContent: 'center',
-    alignItems: 'center'
+    alignItems: 'center',
   },
   imageDeleteContainer: {
     position: 'absolute',
     right: wp('-2%'),
     top: wp('-2%'),
-    zIndex: 10
+    zIndex: 10,
   },
   button: {
     width: wp('80%'),
@@ -197,11 +197,11 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginTop: hp('5%'),
     marginBottom: hp('2%'),
-    backgroundColor: '#ff6a30'
+    backgroundColor: '#ff6a30',
   },
   buttonText: {
     fontSize: wp('6%'),
     color: 'white',
-    fontWeight: 'bold'
-  }
+    fontWeight: 'bold',
+  },
 });

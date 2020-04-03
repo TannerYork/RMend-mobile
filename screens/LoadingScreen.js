@@ -2,13 +2,13 @@ import React from 'react';
 import { View, Image, StyleSheet } from 'react-native';
 import {
   widthPercentageToDP as wp,
-  heightPercentageToDP as hp
+  heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
 import { firebaseApp } from '../config/FirebaseApp';
 
 export default class Loading extends React.Component {
   componentDidMount() {
-    const listener = firebaseApp.auth().onAuthStateChanged(user => {
+    const listener = firebaseApp.auth().onAuthStateChanged((user) => {
       listener();
       if (user) {
         this.props.navigation.navigate('Home');
@@ -30,9 +30,9 @@ const styles = StyleSheet.create({
     height: hp('100%'),
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: 'black'
+    backgroundColor: 'black',
   },
   image: {
-    flex: 1
-  }
+    flex: 1,
+  },
 });

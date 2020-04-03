@@ -37,8 +37,8 @@ async function loadResourcesAsync() {
     Asset.loadAsync([]),
     Font.loadAsync({
       ...Ionicons.font,
-      'passion-one-regular': require('./assets/fonts/PassionOne-Regular.otf')
-    })
+      'passion-one-regular': require('./assets/fonts/PassionOne-Regular.otf'),
+    }),
   ]);
 }
 
@@ -53,6 +53,6 @@ function handleFinishLoading(setLoadingComplete) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff'
-  }
+    backgroundColor: '#fff',
+  },
 });

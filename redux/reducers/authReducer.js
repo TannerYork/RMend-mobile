@@ -5,7 +5,7 @@ const INITIAL_STATE = {
   displayName: null,
   email: null,
   phoneNumber: '',
-  authCode: null
+  authCode: null,
 };
 
 const authReducer = (state = INITIAL_STATE, action) => {

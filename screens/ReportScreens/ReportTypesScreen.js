@@ -2,7 +2,7 @@ import React from 'react';
 import { Text, StyleSheet, TouchableOpacity, SafeAreaView, FlatList } from 'react-native';
 import {
   widthPercentageToDP as wp,
-  heightPercentageToDP as hp
+  heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
 import { connect } from 'react-redux';
 import { Entypo } from '@expo/vector-icons';
@@ -14,12 +14,12 @@ class ReportTypesScreen extends React.Component {
       navigation: {
         navigate,
         state: {
-          params: { types, iconName, authority }
-        }
+          params: { types, iconName, authority },
+        },
       },
       details,
       updateDetails,
-      updateAuthority
+      updateAuthority,
     } = this.props;
     return (
       <SafeAreaView style={styles.container}>
@@ -27,7 +27,7 @@ class ReportTypesScreen extends React.Component {
           <FlatList
             contentContainerStyle={styles.list}
             data={types}
-            renderItem={item => {
+            renderItem={(item) => {
               const type = item.item;
               return (
                 <TouchableOpacity
@@ -62,7 +62,7 @@ class ReportTypesScreen extends React.Component {
 
 const mapStateToProps = ({ report }) => {
   return {
-    details: report.details
+    details: report.details,
   };
 };
 
@@ -72,13 +72,13 @@ const styles = StyleSheet.create({
   placeholder: {
     display: 'flex',
     justifyContent: 'center',
-    alignItems: 'center'
+    alignItems: 'center',
   },
   container: {
     padding: 20,
     alignItems: 'center',
     backgroundColor: '#000',
-    height: hp('100%')
+    height: hp('100%'),
   },
   selector: {
     width: wp('100%'),
@@ -90,15 +90,15 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     borderBottomStartRadius: wp('10%'),
     borderBottomRightRadius: wp('10%'),
-    padding: wp('1%')
+    padding: wp('1%'),
   },
   selectorText: {
     fontSize: wp('5%'),
     color: '#FFF',
-    marginLeft: wp('3%')
+    marginLeft: wp('3%'),
   },
   list: {
     marginTop: hp('2%'),
-    backgroundColor: '#181818'
-  }
+    backgroundColor: '#181818',
+  },
 });

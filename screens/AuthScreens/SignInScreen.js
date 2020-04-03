@@ -4,7 +4,7 @@ import { Formik } from 'formik';
 import { SafeAreaView, View, Text, TextInput, StyleSheet, TouchableOpacity } from 'react-native';
 import {
   widthPercentageToDP as wp,
-  heightPercentageToDP as hp
+  heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
 import { connect } from 'react-redux';
 import { userSignedIn } from '../../redux/actions';
@@ -13,14 +13,14 @@ import Colors from '../../constants/Colors';
 import { signInWithEmailAndPassword } from '../../config/FirebaseApp';
 
 class SignInScreen extends React.Component {
-  handleSubmit = values => {
+  handleSubmit = (values) => {
     if (values.email.length > 0 && values.password.length > 0) {
       signInWithEmailAndPassword(values.email, values.password)
         .then(async () => {
           await this.props.userSignedIn();
           this.props.navigation.navigate('Home');
         })
-        .catch(err => {
+        .catch((err) => {
           alert(err.message);
         });
     }
@@ -32,7 +32,7 @@ class SignInScreen extends React.Component {
         <Text style={styles.header}>R.Mend</Text>
         <Formik
           initialValues={{ email: '', password: '' }}
-          onSubmit={values => {
+          onSubmit={(values) => {
             this.handleSubmit(values);
           }}
           validationSchema={validationSchema}
@@ -100,7 +100,7 @@ const validationSchema = Yup.object().shape({
   password: Yup.string()
     .label('Password')
     .required()
-    .min(4, 'Password must have at least 4 characters ')
+    .min(4, 'Password must have at least 4 characters '),
 });
 
 const styles = StyleSheet.create({
@@ -108,7 +108,7 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#000',
     alignItems: 'center',
-    justifyContent: 'center'
+    justifyContent: 'center',
   },
   header: {
     color: Colors.mainText,
@@ -116,10 +116,10 @@ const styles = StyleSheet.create({
     fontSize: wp('25%'),
     fontFamily: 'passion-one-regular',
     paddingBottom: hp('5%'),
-    justifyContent: 'center'
+    justifyContent: 'center',
   },
   form: {
-    alignItems: 'center'
+    alignItems: 'center',
   },
   inputWrapper: {
     width: wp('90%'),
@@ -132,18 +132,18 @@ const styles = StyleSheet.create({
     borderColor: '#555',
     borderWidth: 1,
     borderRadius: 20,
-    padding: wp('2%')
+    padding: wp('2%'),
   },
   input: {
     width: wp('62%'),
     fontSize: wp('4%'),
     color: '#666',
-    textAlign: 'right'
+    textAlign: 'right',
   },
   inputLabel: {
     width: wp('23%'),
     fontSize: wp('5%'),
-    color: '#666'
+    color: '#666',
   },
   button: {
     width: wp('90%'),
@@ -152,19 +152,19 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     marginTop: hp('2%'),
-    backgroundColor: '#ff6a30'
+    backgroundColor: '#ff6a30',
   },
   link: {
     width: wp('100%'),
     alignItems: 'center',
-    marginTop: hp('3%')
+    marginTop: hp('3%'),
   },
   linkText: {
     fontSize: wp('5%'),
-    color: Colors.mainText
-  }
+    color: Colors.mainText,
+  },
 });
 
 SignInScreen.navigationOptions = {
-  title: 'SignIn'
+  title: 'SignIn',
 };

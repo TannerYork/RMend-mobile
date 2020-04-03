@@ -2,7 +2,7 @@ import React from 'react';
 import { View, Text, StyleSheet, Dimensions } from 'react-native';
 import {
   widthPercentageToDP as wp,
-  heightPercentageToDP as hp
+  heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
 
 export default function InfoMessage(props) {
@@ -19,10 +19,10 @@ const styles = StyleSheet.create({
     height: hp('5%'),
     backgroundColor: '#545454',
     alignItems: 'center',
-    justifyContent: 'center'
+    justifyContent: 'center',
   },
   text: {
     fontSize: wp('3%'),
-    color: '#EEE'
-  }
+    color: '#EEE',
+  },
 });

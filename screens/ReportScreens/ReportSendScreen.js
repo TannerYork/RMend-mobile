@@ -7,13 +7,13 @@ import {
     Alert,
     Image,
     SafeAreaView,
-    ActivityIndicator
+    ActivityIndicator,
 } from 'react-native';
 import { TouchableHighlight, TextInput } from 'react-native-gesture-handler';
 import { connect } from 'react-redux';
 import {
     widthPercentageToDP as wp,
-    heightPercentageToDP as hp
+    heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
 
 import { updateSenderInfo, resetReport, startUpload } from '../../redux/actions';
@@ -28,7 +28,7 @@ class ReportSendScreen extends React.Component {
         this.props.updateSenderInfo({
             name: user.displayName,
             email: user.email,
-            phoneNumber: user.phoneNumber
+            phoneNumber: user.phoneNumber,
         });
         this.setState({ name: user.displayName, email: user.email, phoneNumber: user.phoneNumber });
     }
@@ -74,7 +74,7 @@ class ReportSendScreen extends React.Component {
                             'Make sure all fields are filled with as accurately as possible.',
                             [
                                 { text: 'Yes', onPress: this.sendReportAsync },
-                                { text: 'Cancel', style: 'cancel' }
+                                { text: 'Cancel', style: 'cancel' },
                             ]
                         );
                     }}
@@ -118,7 +118,7 @@ class ReportSendScreen extends React.Component {
                             <TextInput
                                 style={styles.input}
                                 value={this.state.name}
-                                onChangeText={text => updateInfo({ ...report.info, name: text })}
+                                onChangeText={(text) => updateInfo({ ...report.info, name: text })}
                                 placeholder="Required"
                                 editable={false}
                             />
@@ -128,7 +128,7 @@ class ReportSendScreen extends React.Component {
                             <TextInput
                                 style={styles.input}
                                 value={this.state.email}
-                                onChangeText={text => updateInfo({ ...report.info, email: text })}
+                                onChangeText={(text) => updateInfo({ ...report.info, email: text })}
                                 placeholder="Required"
                                 editable={false}
                             />
@@ -138,7 +138,7 @@ class ReportSendScreen extends React.Component {
                             <TextInput
                                 style={styles.input}
                                 value={this.state.phoneNumber}
-                                onChangeText={text =>
+                                onChangeText={(text) =>
                                     updateInfo({ ...report.info, phoneNumber: text })
                                 }
                                 placeholder="Optional"
@@ -165,7 +165,7 @@ class ReportSendScreen extends React.Component {
 
 const mapStateToProps = ({ report }) => {
     return {
-        report: report
+        report: report,
     };
 };
 export default connect(mapStateToProps, { updateSenderInfo, resetReport, startUpload })(
@@ -181,19 +181,19 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         opacity: 0.5,
         position: 'absolute',
-        zIndex: 1000
+        zIndex: 1000,
     },
     loadingIcon: {
         width: wp('50%'),
-        height: wp('50%')
+        height: wp('50%'),
     },
     container: {
         backgroundColor: '#000',
-        height: hp('100%')
+        height: hp('100%'),
     },
     content: {
         height: hp('100%'),
-        alignItems: 'center'
+        alignItems: 'center',
     },
     header: {
         width: wp('100%'),
@@ -201,7 +201,7 @@ const styles = StyleSheet.create({
         color: Colors.mainText,
         fontFamily: 'Arial-BoldMT',
         marginLeft: wp('5%'),
-        marginTop: hp('2%')
+        marginTop: hp('2%'),
     },
     subHeader: {
         width: wp('100%'),
@@ -209,7 +209,7 @@ const styles = StyleSheet.create({
         color: '#444',
         marginBottom: hp('1%'),
         marginLeft: wp('5%'),
-        fontFamily: 'Arial'
+        fontFamily: 'Arial',
     },
     authInfoWrapper: {
         width: wp('100%'),
@@ -223,38 +223,38 @@ const styles = StyleSheet.create({
         borderWidth: 1,
         borderLeftWidth: 0,
         borderRightWidth: 0,
-        padding: wp('1%')
+        padding: wp('1%'),
     },
     authInfo: {
         width: wp('90%'),
         height: hp('8%'),
         flexDirection: 'row',
         alignItems: 'center',
-        borderRadius: 20
+        borderRadius: 20,
     },
     authInfoImage: {
         width: hp('8%'),
         height: hp('8%'),
         marginRight: wp('1%'),
-        borderRadius: 20
+        borderRadius: 20,
     },
     authInfoText: {
         fontSize: wp('4%'),
-        color: 'white'
+        color: 'white',
     },
     authInfoType: {
-        color: '#666'
+        color: '#666',
     },
     warring: {
         width: wp('50%'),
         fontSize: wp('3%'),
         color: '#444',
         alignSelf: 'flex-start',
-        marginLeft: wp('5%')
+        marginLeft: wp('5%'),
     },
     inputs: {
         width: wp('100%'),
-        backgroundColor: '#181818'
+        backgroundColor: '#181818',
     },
     inputWrapper: {
         width: wp('100%'),
@@ -267,29 +267,29 @@ const styles = StyleSheet.create({
         borderBottomWidth: 1,
         borderBottomStartRadius: wp('10%'),
         borderBottomRightRadius: wp('10%'),
-        padding: wp('1%')
+        padding: wp('1%'),
     },
     input: {
         width: wp('70%'),
         fontSize: wp('4%'),
         color: '#666',
-        textAlign: 'right'
+        textAlign: 'right',
     },
     inputLabel: {
         width: wp('20%'),
         fontSize: wp('4%'),
-        color: '#666'
+        color: '#666',
     },
     inputSmall: {
         width: wp('70%'),
         fontSize: wp('3%'),
         color: '#666',
-        textAlign: 'right'
+        textAlign: 'right',
     },
     inputLabelSmall: {
         width: wp('20%'),
         fontSize: wp('3%'),
-        color: '#666'
+        color: '#666',
     },
     inputWrapperSmall: {
         width: wp('100%'),
@@ -302,6 +302,6 @@ const styles = StyleSheet.create({
         borderWidth: 1,
         borderLeftWidth: 0,
         borderRightWidth: 0,
-        padding: wp('1%')
-    }
+        padding: wp('1%'),
+    },
 });

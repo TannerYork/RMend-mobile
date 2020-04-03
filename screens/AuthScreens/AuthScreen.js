@@ -3,7 +3,7 @@ import { StyleSheet, SafeAreaView, Text, TouchableOpacity, Image, View } from 'r
 import { AntDesign } from '@expo/vector-icons';
 import {
   widthPercentageToDP as wp,
-  heightPercentageToDP as hp
+  heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
 import Colors from '../../constants/Colors';
 
@@ -37,17 +37,17 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: 'black',
     justifyContent: 'center',
-    alignItems: 'center'
+    alignItems: 'center',
   },
   header: {
     color: Colors.mainText,
     textAlign: 'center',
     fontSize: wp('25%'),
     fontFamily: 'passion-one-regular',
-    justifyContent: 'center'
+    justifyContent: 'center',
   },
   buttons: {
-    alignItems: 'center'
+    alignItems: 'center',
   },
   button: {
     width: wp('90%'),
@@ -56,11 +56,11 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     marginTop: hp('2%'),
-    backgroundColor: '#ff6a30'
+    backgroundColor: '#ff6a30',
   },
   close: {
     position: 'absolute',
     top: hp('5%'),
-    left: wp('2%')
-  }
+    left: wp('2%'),
+  },
 });

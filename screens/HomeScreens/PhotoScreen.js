@@ -2,7 +2,7 @@ import React from 'react';
 import { StyleSheet, View, Text, TouchableOpacity, Image, SafeAreaView, Alert } from 'react-native';
 import {
   widthPercentageToDP as wp,
-  heightPercentageToDP as hp
+  heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
 import { firebaseApp } from '../../config/FirebaseApp';
 
@@ -43,28 +43,28 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: 'center',
-    backgroundColor: 'black'
+    backgroundColor: 'black',
   },
   headerWrapper: {
     width: wp('100%'),
     height: hp('12%'),
     justifyContent: 'flex-end',
     backgroundColor: 'black',
-    padding: wp('1%')
+    padding: wp('1%'),
   },
   headerText: {
     color: 'white',
     fontSize: wp('10%'),
-    fontWeight: 'bold'
+    fontWeight: 'bold',
   },
   content: {
     marginTop: hp('5%'),
-    alignItems: 'center'
+    alignItems: 'center',
   },
   image: {
     width: wp('90%'),
     height: hp('50%'),
-    borderRadius: wp('10%')
+    borderRadius: wp('10%'),
   },
   button: {
     width: wp('90%'),
@@ -73,6 +73,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     marginTop: hp('10%'),
-    backgroundColor: '#ff6a30'
-  }
+    backgroundColor: '#ff6a30',
+  },
 });
