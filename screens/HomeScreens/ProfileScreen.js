@@ -6,15 +6,15 @@ import {
   TextInput,
   TouchableOpacity,
   SafeAreaView,
-  Alert
+  Alert,
 } from 'react-native';
 import {
   widthPercentageToDP as wp,
-  heightPercentageToDP as hp
+  heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
 import { firebaseApp, signOut, updateProfile } from '../../config/FirebaseApp';
 import { connect } from 'react-redux';
-import { getUserInfo, userSignedOut } from '../../redux/actions';
+import { getUserInfo, userSignedOut, getAuthority } from '../../redux/actions';
 
 class ProfileScreen extends React.Component {
   state = { displayName: null, email: null, phoneNumber: null, authCode: '' };
@@ -58,15 +58,15 @@ class ProfileScreen extends React.Component {
       {
         text: 'Cancel',
         style: 'cancel',
-        onPress: () => this.setState(this.props.user)
+        onPress: () => this.setState(this.props.user),
       },
-      { text: 'Ok', onPress: () => this.updateProfile() }
+      { text: 'Ok', onPress: () => this.updateProfile() },
     ]);
   };
 
   updateProfile = async () => {
     if (firebaseApp.auth().currentUser != null) {
-      const { displayName, email } = this.state;
+      const { displayName, email, authCode } = this.state;
       const validEmailReg = /^([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z]{2,5})$/;
       const shouldUpdateAuthCode = this.props.user.authCode == this.state.authCode ? false : true;
       let errors = {};
@@ -84,20 +84,32 @@ class ProfileScreen extends React.Component {
         );
       } else {
         if (shouldUpdateAuthCode) {
-          await Alert.alert(
-            'Sign Out Required',
-            'Updating your authority code requires you to sign out.',
-            [
-              { text: 'Cancel', style: 'cancel', onPress: () => this.setState(this.props.user) },
-              {
-                text: 'Ok',
-                onPress: async () => {
-                  await updateProfile(this.state, true);
-                  this.signUserOut();
-                }
-              }
-            ]
-          );
+          const authority = await this.props.getAuthority(this.state.authCode);
+          if (
+            (!authority || authCode.match(/\S\s/) || authCode.match(/\s\S/)) &&
+            authCode.replace(/\s/g, '').length > 0
+          ) {
+            await Alert.alert(
+              'Invaled Authority Code',
+              'Make sure you entered the code correctly and try agian.',
+              [{ text: 'Ok' }]
+            );
+          } else {
+            await Alert.alert(
+              'Sign Out Required',
+              'Updating your authority code requires you to sign out.',
+              [
+                { text: 'Cancel', style: 'cancel', onPress: () => this.setState(this.props.user) },
+                {
+                  text: 'Ok',
+                  onPress: () => {
+                    updateProfile(this.state, true);
+                    this.signUserOut();
+                  },
+                },
+              ]
+            );
+          }
         } else {
           await updateProfile(this.state, false);
           await this.props.getUserInfo();
@@ -122,7 +134,7 @@ class ProfileScreen extends React.Component {
             <TextInput
               style={styles.input}
               value={displayName}
-              onChangeText={text => this.setState({ displayName: text })}
+              onChangeText={(text) => this.setState({ displayName: text })}
             />
           </View>
           <View style={styles.inputWrapper}>
@@ -130,7 +142,7 @@ class ProfileScreen extends React.Component {
             <TextInput
               style={styles.input}
               value={email}
-              onChangeText={text => this.setState({ email: text })}
+              onChangeText={(text) => this.setState({ email: text })}
             />
           </View>
           {/* <View style={styles.inputWrapper}>
@@ -148,7 +160,7 @@ class ProfileScreen extends React.Component {
             <TextInput
               style={{ ...styles.input, width: wp('45%') }}
               value={authCode}
-              onChangeText={text => this.setState({ authCode: text })}
+              onChangeText={(text) => this.setState({ authCode: text })}
               placeholder="Optional"
               placeholderTextColor="#555"
             />
@@ -179,29 +191,31 @@ const mapStateToProps = ({ user }) => {
   return { user };
 };
 
-export default connect(mapStateToProps, { getUserInfo, userSignedOut })(ProfileScreen);
+export default connect(mapStateToProps, { getUserInfo, userSignedOut, getAuthority })(
+  ProfileScreen
+);
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: 'center',
-    backgroundColor: 'black'
+    backgroundColor: 'black',
   },
   headerWrapper: {
     width: wp('100%'),
     height: hp('12%'),
     justifyContent: 'flex-end',
     backgroundColor: 'black',
-    padding: wp('1%')
+    padding: wp('1%'),
   },
   headerText: {
     color: 'white',
     fontSize: wp('10%'),
-    fontWeight: 'bold'
+    fontWeight: 'bold',
   },
   inputs: {
     marginTop: hp('5%'),
-    alignItems: 'center'
+    alignItems: 'center',
   },
   inputWrapper: {
     width: wp('90%'),
@@ -214,22 +228,22 @@ const styles = StyleSheet.create({
     borderColor: '#555',
     borderWidth: 1,
     borderRadius: 20,
-    padding: wp('2%')
+    padding: wp('2%'),
   },
   input: {
     width: wp('65%'),
     fontSize: wp('4%'),
     color: '#666',
-    textAlign: 'right'
+    textAlign: 'right',
   },
   inputLabel: {
     width: wp('20%'),
     fontSize: wp('5%'),
-    color: '#666'
+    color: '#666',
   },
   buttons: {
     marginTop: hp('10%'),
-    alignItems: 'center'
+    alignItems: 'center',
   },
   button: {
     width: wp('90%'),
@@ -238,6 +252,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     marginTop: hp('2%'),
-    backgroundColor: '#ff6a30'
-  }
+    backgroundColor: '#ff6a30',
+  },
 });
