@@ -8,6 +8,7 @@ import {
   RESET_REPORT,
   START_UPLOAD,
   UPDATE_COUNTY,
+  STOP_UPLOAD,
 } from '../actions/types';
 
 const INITIAL_STATE = {
@@ -65,6 +66,11 @@ const reportReducer = (state = INITIAL_STATE, action) => {
       return {
         ...state,
         isLoading: true,
+      };
+    case STOP_UPLOAD:
+      return {
+        ...state,
+        isLoading: false,
       };
     default:
       return state;

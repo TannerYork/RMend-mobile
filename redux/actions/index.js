@@ -8,6 +8,7 @@ import {
   UPDATE_AUTHORITY,
   RESET_REPORT,
   START_UPLOAD,
+  STOP_UPLOAD,
   SIGN_IN,
   SIGN_OUT,
   GET_USER_INFO,
@@ -74,6 +75,10 @@ export const startUpload = () => (dispatch) => {
   dispatch({ type: START_UPLOAD });
 };
 
+export const stopUpload = () => (dispatch) => {
+  dispatch({ type: STOP_UPLOAD });
+};
+
 export const getUserInfo = () => async (dispatch) => {
   const { displayName, email } = firebaseApp.auth().currentUser;
   const idTokenResult = await firebaseApp.auth().currentUser.getIdTokenResult(true);
@@ -88,15 +93,4 @@ export const userSignedIn = () => async (dispatch) => {
 
 export const userSignedOut = () => (dispatch) => {
   dispatch({ type: SIGN_OUT });
-};
-
-export const getAuthority = (authCode) => async (dispatch) => {
-  try {
-    authority = await firebaseApp.firestore().collection('authorites').doc(authCode);
-    console.log(authority);
-    return authority;
-  } catch (error) {
-    console.log(error);
-    return null;
-  }
 };

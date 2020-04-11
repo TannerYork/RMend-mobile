@@ -15,8 +15,8 @@ import {
 } from 'react-native-responsive-screen';
 import * as Location from 'expo-location';
 import * as Permissions from 'expo-permissions';
-import { firebaseApp } from '../../config/FirebaseApp';
 import { geo } from '../../config/FirebaseApp';
+import Colors from '../../constants/Colors';
 
 export default class NearbyScreen extends React.Component {
   state = { lisenter: null, reports: [], isLoaded: false };
@@ -58,7 +58,7 @@ export default class NearbyScreen extends React.Component {
   renderReports = () => {
     const reports = this.state.reports;
     return reports.map((report) => {
-      const { details, images, senderInfo } = report;
+      const { details, images } = report;
       return (
         <TouchableOpacity style={styles.reportWrapper}>
           <View style={styles.reportInfo}>
@@ -112,14 +112,17 @@ export default class NearbyScreen extends React.Component {
   };
 
   render() {
-    const isLoaded = this.state.isLoaded;
     return (
       <SafeAreaView style={styles.container}>
         <View style={styles.headerWrapper}>
-          <Text style={styles.headerText}>Reports</Text>
+          <Text style={styles.headerText}>Nearby</Text>
         </View>
-        {!isLoaded && <ActivityIndicator size="large" color="white" />}
-        {isLoaded && this.renderPage()}
+        {!this.state.isLoaded && (
+          <View style={styles.content}>
+            <ActivityIndicator size="large" color="black" style={{ marginTop: hp('35%') }} />
+          </View>
+        )}
+        {this.state.isLoaded && this.renderPage()}
       </SafeAreaView>
     );
   }

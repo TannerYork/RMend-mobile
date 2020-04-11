@@ -1,7 +1,15 @@
 import React from 'react';
 import * as Yup from 'yup';
 import { Formik } from 'formik';
-import { SafeAreaView, View, Text, TextInput, StyleSheet, TouchableOpacity } from 'react-native';
+import {
+  SafeAreaView,
+  View,
+  Text,
+  TextInput,
+  StyleSheet,
+  TouchableOpacity,
+  Alert,
+} from 'react-native';
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
@@ -11,17 +19,37 @@ import { userSignedIn } from '../../redux/actions';
 
 import Colors from '../../constants/Colors';
 import { signInWithEmailAndPassword } from '../../config/FirebaseApp';
+import LoadingOverlay from '../../components/LoadingOverlay';
 
 class SignInScreen extends React.Component {
+  state = { isLoading: false };
+
   handleSubmit = (values) => {
     if (values.email.length > 0 && values.password.length > 0) {
+      this.setState({ isLoading: true });
       signInWithEmailAndPassword(values.email, values.password)
-        .then(async () => {
-          await this.props.userSignedIn();
-          this.props.navigation.navigate('Home');
+        .then(async (result) => {
+          if (!result.error) {
+            await this.props.userSignedIn();
+            this.props.navigation.navigate('Home');
+            this.setState({ isLoading: false });
+          } else {
+            Alert.alert(
+              'Email or passowrd is incorrect',
+              'Make sure you entered your email or password correctly and try again.',
+              [{ text: 'Ok', style: 'cancel' }]
+            );
+            this.setState({ isLoading: false });
+          }
         })
         .catch((err) => {
-          alert(err.message);
+          Alert.alert(
+            'An error occurred while signing in ',
+            'Please try agian and if the error continues contatct R.Mend for assistance.',
+            [{ text: 'Ok', style: 'cancel' }]
+          );
+          this.setState({ isLoading: false });
+          console.log(err);
         });
     }
   };
@@ -29,6 +57,7 @@ class SignInScreen extends React.Component {
   render = () => {
     return (
       <SafeAreaView style={styles.container}>
+        {this.state.isLoading && <LoadingOverlay />}
         <Text style={styles.header}>R.Mend</Text>
         <Formik
           initialValues={{ email: '', password: '' }}

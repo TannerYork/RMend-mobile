@@ -1,7 +1,15 @@
 import React from 'react';
 import * as Yup from 'yup';
 import { Formik } from 'formik';
-import { SafeAreaView, View, Text, TouchableOpacity, TextInput, StyleSheet } from 'react-native';
+import {
+  SafeAreaView,
+  View,
+  Text,
+  TouchableOpacity,
+  TextInput,
+  StyleSheet,
+  Alert,
+} from 'react-native';
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
@@ -11,20 +19,36 @@ import Colors from '../../constants/Colors';
 import { createUserWithEmailAndPassword } from '../../config/FirebaseApp';
 import { connect } from 'react-redux';
 import { userSignedIn } from '../../redux/actions';
+import LoadingOverlay from '../../components/LoadingOverlay';
 
 class CreateUserScreen extends React.Component {
+  state = { isLoading: false };
+
   handleSubmit = (values) => {
     if (values.email.length > 0 && values.password.length > 0) {
+      this.setState({ isLoading: true });
       createUserWithEmailAndPassword(values.email, values.password)
         .then((results) => {
-          if (results.error) alert(results.error);
-          if (!results.error) {
+          if (results.error) {
+            Alert.alert('An error occurred while creating your account', results.error, [
+              { text: 'Ok', style: 'cancel' },
+            ]);
+            console.log(results.error);
+            this.setState({ isLoading: false });
+          } else {
+            this.setState({ isLoading: false });
             this.props.userSignedIn();
             this.props.navigation.navigate('Home');
           }
         })
         .catch((err) => {
-          alert(err.message);
+          Alert.alert(
+            'An error occurred while creating your account',
+            'Please try agian and if the error continues contact R.Mend for help.',
+            [{ text: 'Ok', style: 'cancel' }]
+          );
+          console.log(err);
+          this.setState({ isLoading: false });
         });
     }
   };
@@ -32,6 +56,7 @@ class CreateUserScreen extends React.Component {
   render = () => {
     return (
       <SafeAreaView style={styles.container}>
+        {this.state.isLoading && <LoadingOverlay />}
         <Text style={styles.header}>R.Mend</Text>
         <Formik
           initialValues={{ email: '', password: '', confirmPass: '' }}
@@ -52,6 +77,7 @@ class CreateUserScreen extends React.Component {
                   placeholder={touched.name && errors.name ? 'Name is required' : 'Enter Name'}
                   placeholderTextColor={touched.name && errors.name ? Colors.mainText : '#555'}
                   autoCapitalize="none"
+                  keyboardAppearance="dark"
                   style={styles.input}
                 />
               </View>
@@ -65,6 +91,8 @@ class CreateUserScreen extends React.Component {
                   placeholder={touched.email && errors.email ? 'Email is required' : 'Enter Email'}
                   placeholderTextColor={touched.email && errors.email ? Colors.mainText : '#555'}
                   autoCapitalize="none"
+                  keyboardType="email-address"
+                  keyboardAppearance="dark"
                   style={styles.input}
                 />
               </View>
@@ -82,6 +110,9 @@ class CreateUserScreen extends React.Component {
                     touched.password && errors.password ? Colors.mainText : '#555'
                   }
                   autoCapitalize="none"
+                  autoCompleteType="password"
+                  keyboardAppearance="dark"
+                  secureTextEntry
                   style={styles.input}
                 />
               </View>
@@ -101,6 +132,9 @@ class CreateUserScreen extends React.Component {
                     touched.confirmPass && errors.confirmPass ? Colors.mainText : '#555'
                   }
                   autoCapitalize="none"
+                  autoCompleteType="password"
+                  keyboardAppearance="dark"
+                  secureTextEntry
                   style={styles.input}
                 />
               </View>

@@ -12,12 +12,13 @@ import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
-import { firebaseApp, signOut, updateProfile } from '../../config/FirebaseApp';
+import { firebaseApp, signOut, updateProfile, getAuthority } from '../../config/FirebaseApp';
 import { connect } from 'react-redux';
-import { getUserInfo, userSignedOut, getAuthority } from '../../redux/actions';
+import { getUserInfo, userSignedOut } from '../../redux/actions';
+import LoadingOverlay from '../../components/LoadingOverlay';
 
 class ProfileScreen extends React.Component {
-  state = { displayName: null, email: null, phoneNumber: null, authCode: '' };
+  state = { displayName: null, email: null, phoneNumber: null, authCode: '', isLoading: false };
   navigationListener = null;
 
   UNSAFE_componentWillMount() {
@@ -25,8 +26,9 @@ class ProfileScreen extends React.Component {
     this.navigationListener = navigation.addListener('willFocus', async () => {
       if (firebaseApp.auth().currentUser !== null) {
         if (this.state.displayName === null) {
+          this.setState({ isLoading: true });
           await this.props.getUserInfo();
-          this.setState(this.props.user);
+          this.setState({ ...this.props.user, isLoading: false });
         }
       }
     });
@@ -36,10 +38,16 @@ class ProfileScreen extends React.Component {
     this.navigationListener.remove();
   }
 
-  signUserOut = () => {
-    signOut();
-    this.props.userSignedOut();
-    this.setState({ displayName: null, email: null, phoneNumber: null, authCode: '' });
+  signUserOut = async () => {
+    await signOut();
+    await this.props.userSignedOut();
+    this.setState({
+      displayName: null,
+      email: null,
+      phoneNumber: null,
+      authCode: '',
+      isLoading: false,
+    });
     // Auth when authentication is prompted from profile screen
     // this.props.navigation.navigate('Auth')
     this.props.navigation.navigate('SignIn');
@@ -50,7 +58,7 @@ class ProfileScreen extends React.Component {
     if (firebaseApp.auth().currentUser != null) {
       this.signUserOut();
     }
-    navigate('Auth');
+    navigate('SignIn');
   };
 
   updateProfileAlert = () => {
@@ -83,48 +91,82 @@ class ProfileScreen extends React.Component {
           [{ text: 'Ok', style: 'cancel' }]
         );
       } else {
+        this.setState({ isLoading: true });
         if (shouldUpdateAuthCode) {
-          const authority = await this.props.getAuthority(this.state.authCode);
+          const results = await getAuthority(this.state.authCode);
           if (
-            (!authority || authCode.match(/\S\s/) || authCode.match(/\s\S/)) &&
+            (results.error || authCode.match([/\S\s/, /\s\S/])) &&
             authCode.replace(/\s/g, '').length > 0
           ) {
-            await Alert.alert(
+            Alert.alert(
               'Invaled Authority Code',
               'Make sure you entered the code correctly and try agian.',
               [{ text: 'Ok' }]
             );
+            this.setState({ isLoading: false });
           } else {
             await Alert.alert(
               'Sign Out Required',
               'Updating your authority code requires you to sign out.',
               [
-                { text: 'Cancel', style: 'cancel', onPress: () => this.setState(this.props.user) },
+                {
+                  text: 'Cancel',
+                  style: 'cancel',
+                  onPress: () => {
+                    this.setState({ isLoading: false });
+                    this.setState(this.props.user);
+                  },
+                },
                 {
                   text: 'Ok',
-                  onPress: () => {
-                    updateProfile(this.state, true);
-                    this.signUserOut();
+                  onPress: async () => {
+                    var result = await updateProfile(this.state, true);
+                    if (result.error) {
+                      Alert.alert(
+                        'An error occurred updating your account',
+                        'Please try agian and if this error continues report it to R.Mend',
+                        [{ text: 'Ok' }]
+                      );
+                      console.log(error);
+                      this.setState({ isLoading: false });
+                    } else {
+                      this.signUserOut();
+                    }
                   },
                 },
               ]
             );
           }
         } else {
-          await updateProfile(this.state, false);
-          await this.props.getUserInfo();
-          this.setState(this.props.user);
+          results = await updateProfile(this.state, false);
+          if (results.error) {
+            Alert.alert(
+              'An error occurred updating your account',
+              'Please try agian and if this error continues report it to R.Mend',
+              [{ text: 'Ok' }]
+            );
+            console.log(error);
+            this.setState({ isLoading: false });
+          } else {
+            await this.props.getUserInfo();
+            this.setState({ ...this.props.user, isLoading: false });
+          }
         }
       }
     } else {
-      Alert.alert('You need to be signed in to update information', '', [{ text: 'Okay' }]);
+      Alert.alert(
+        'You need to be signed in to update information',
+        'If your think your are signed in, please sign out or reset the app to fix this issue',
+        [{ text: 'Okay' }]
+      );
     }
   };
 
   render() {
-    const { displayName, email, phoneNumber, authCode } = this.state;
+    const { displayName, email, phoneNumber, authCode, isLoading } = this.state;
     return (
       <SafeAreaView style={styles.container}>
+        {isLoading && <LoadingOverlay />}
         <View style={styles.headerWrapper}>
           <Text style={styles.headerText}>Profile</Text>
         </View>
@@ -135,6 +177,7 @@ class ProfileScreen extends React.Component {
               style={styles.input}
               value={displayName}
               onChangeText={(text) => this.setState({ displayName: text })}
+              keyboardAppearance="dark"
             />
           </View>
           <View style={styles.inputWrapper}>
@@ -143,6 +186,8 @@ class ProfileScreen extends React.Component {
               style={styles.input}
               value={email}
               onChangeText={(text) => this.setState({ email: text })}
+              keyboardAppearance="dark"
+              keyboardType="email-address"
             />
           </View>
           {/* <View style={styles.inputWrapper}>
@@ -163,6 +208,8 @@ class ProfileScreen extends React.Component {
               onChangeText={(text) => this.setState({ authCode: text })}
               placeholder="Optional"
               placeholderTextColor="#555"
+              keyboardAppearance="dark"
+              secureTextEntry
             />
           </View>
           {/* <View style={styles.inputWrapper}>
@@ -191,9 +238,7 @@ const mapStateToProps = ({ user }) => {
   return { user };
 };
 
-export default connect(mapStateToProps, { getUserInfo, userSignedOut, getAuthority })(
-  ProfileScreen
-);
+export default connect(mapStateToProps, { getUserInfo, userSignedOut })(ProfileScreen);
 
 const styles = StyleSheet.create({
   container: {
@@ -242,7 +287,7 @@ const styles = StyleSheet.create({
     color: '#666',
   },
   buttons: {
-    marginTop: hp('10%'),
+    marginTop: hp('20%'),
     alignItems: 'center',
   },
   button: {

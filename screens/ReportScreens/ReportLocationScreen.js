@@ -14,6 +14,7 @@ import Header from '../../components/Header';
 import mapStyle from '../../constants/MapStyle';
 import { updateLocation, updateCounty, resetReport } from '../../redux/actions';
 import currentAuthJSON from '../../constants/json/current_rmend_counties.json';
+import LoadingOverlay from '../../components/LoadingOverlay';
 
 class ReportLocationScreen extends React.Component {
   state = { loaded: false, latitude: null, longitude: null };
@@ -57,11 +58,7 @@ class ReportLocationScreen extends React.Component {
     const { loaded } = this.state;
     return (
       <SafeAreaView style={styles.scrollContainer}>
-        {isLoading && (
-          <View style={styles.loadingOverlay}>
-            <ActivityIndicator size="large" color="white" />
-          </View>
-        )}
+        {isLoading && <LoadingOverlay />}
         <Header
           title="Location"
           {...this.props}
@@ -120,20 +117,6 @@ export default connect(mapStateToProps, { updateLocation, resetReport, updateCou
 );
 
 const styles = StyleSheet.create({
-  loadingOverlay: {
-    width: wp('100%'),
-    height: hp('100%'),
-    justifyContent: 'center',
-    backgroundColor: 'black',
-    alignItems: 'center',
-    opacity: 0.5,
-    position: 'absolute',
-    zIndex: 1000,
-  },
-  loadingIcon: {
-    width: wp('50%'),
-    height: wp('50%'),
-  },
   scrollContainer: {
     padding: 20,
     alignItems: 'center',

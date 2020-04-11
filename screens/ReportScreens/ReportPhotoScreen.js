@@ -15,6 +15,7 @@ import Header from '../../components/Header';
 import InfoMessage from '../../components/InfoMessage';
 import { addImage, removeImage, resetReport } from '../../redux/actions';
 const imagesPlaceholder = '../../assets/images/placeholder-dark.jpg';
+import LoadingOverlay from '../../components/LoadingOverlay';
 
 class ReportScreen extends React.Component {
   state = { images: [], imageCount: 0, ready: false };
@@ -84,11 +85,7 @@ class ReportScreen extends React.Component {
     const { navigation, images, removeImage, isLoading } = this.props;
     return (
       <SafeAreaView style={styles.container}>
-        {isLoading && (
-          <View style={styles.loadingOverlay}>
-            <ActivityIndicator size="large" color="white" />
-          </View>
-        )}
+        {isLoading && <LoadingOverlay />}
         <Header
           title="Photos"
           {...this.props}
@@ -149,20 +146,6 @@ const mapStateToProps = ({ report }) => {
 export default connect(mapStateToProps, { addImage, removeImage, resetReport })(ReportScreen);
 
 const styles = StyleSheet.create({
-  loadingOverlay: {
-    width: wp('100%'),
-    height: hp('100%'),
-    justifyContent: 'center',
-    backgroundColor: 'black',
-    alignItems: 'center',
-    opacity: 0.5,
-    position: 'absolute',
-    zIndex: 1000,
-  },
-  loadingIcon: {
-    width: wp('50%'),
-    height: wp('50%'),
-  },
   container: {
     height: Dimensions.get('window').height,
     paddingTop: 20,

@@ -7,6 +7,7 @@ export const UPDATE_COUNTY = 'UPDATE_COUNTY';
 export const UPDATE_AUTHORITY = 'UPDATE_AUTHORITY';
 export const RESET_REPORT = 'RESET_REPORT';
 export const START_UPLOAD = 'START_UPLOAD';
+export const STOP_UPLOAD = 'STOP_UPLOAD';
 export const END_UPLAOD = 'END_UPLOAD';
 export const SIGN_IN = 'SIGN_IN';
 export const SIGN_OUT = 'SIGN_OUT';

@@ -9,158 +9,181 @@ export const firebaseApp = firebase.initializeApp(FIREBASE_DEV_CONFIG);
 export const geo = geofirex.init(firebase);
 
 export const createUserWithEmailAndPassword = async (email, password, userName) => {
-    try {
-        const user = await firebaseApp.auth().createUserWithEmailAndPassword(email, password);
-        await user.user.updateProfile({ displayName: userName });
-        await firestore
-            .collection('users')
-            .doc(user.user.uid)
-            .update({ displayName: userName });
-        return { result: true };
-    } catch (err) {
-        return { error: err.message };
-    }
+  try {
+    const user = await firebaseApp.auth().createUserWithEmailAndPassword(email, password);
+    await user.user.updateProfile({ displayName: userName });
+    await firebaseApp
+      .firestore()
+      .collection('users')
+      .doc(user.user.uid)
+      .update({ displayName: userName });
+    return { result: 'Successfully Created New User' };
+  } catch (err) {
+    return { error: err.message };
+  }
 };
 
 export const signInWithEmailAndPassword = async (email, password) => {
-    try {
-        await firebaseApp.auth().signInWithEmailAndPassword(email, password);
-        return { result: true };
-    } catch (err) {
-        return { error: err.message };
-    }
+  try {
+    await firebaseApp.auth().signInWithEmailAndPassword(email, password);
+    return { result: 'Successfully Signed User In' };
+  } catch (err) {
+    return { error: err.message };
+  }
 };
 
-export const signOut = () => {
-    firebaseApp.auth().signOut();
+export const signOut = async () => {
+  try {
+    await firebaseApp.auth().signOut();
+    return { result: 'Successfully Signed Out' };
+  } catch (err) {
+    return { error: err.message };
+  }
 };
 
 async function getBlobAsync(uri) {
-    // Why are we using XMLHttpRequest? See:
-    // https://github.com/expo/expo/issues/2402#issuecomment-443726662
-    const blob = await new Promise((resolve, reject) => {
-        const xhr = new XMLHttpRequest();
-        xhr.onload = function() {
-            resolve(xhr.response);
-        };
-        xhr.onerror = function(e) {
-            reject(new TypeError('Network request failed'));
-        };
-        xhr.responseType = 'blob';
-        xhr.open('GET', uri, true);
-        xhr.send(null);
-    });
-    return blob;
+  // Why are we using XMLHttpRequest? See:
+  // https://github.com/expo/expo/issues/2402#issuecomment-443726662
+  const blob = await new Promise((resolve, reject) => {
+    const xhr = new XMLHttpRequest();
+    xhr.onload = function () {
+      resolve(xhr.response);
+    };
+    xhr.onerror = function (e) {
+      reject(new TypeError('Network request failed'));
+    };
+    xhr.responseType = 'blob';
+    xhr.open('GET', uri, true);
+    xhr.send(null);
+  });
+  return blob;
 }
 
 export const updateProfile = async ({ displayName, email, authCode }, shouldUpdateAuthCode) => {
-    const { currentUser } = firebaseApp.auth();
-    try {
-        await currentUser.updateProfile({ displayName });
-        await currentUser.updateEmail(email);
-        if (shouldUpdateAuthCode) {
-            await updateAuthCode(authCode);
-        }
+  const { currentUser } = firebaseApp.auth();
+  try {
+    await currentUser.updateProfile({ displayName });
+    await currentUser.updateEmail(email);
 
-        const user = await firebaseApp
-            .firestore()
-            .collection('users')
-            .doc(currentUser.uid);
-
-        if (user) {
-            await user.update({ displayName, email, authCode });
-        }
-    } catch (error) {
-        console.log(error);
+    if (shouldUpdateAuthCode) {
+      await updateAuthCode(authCode);
     }
+
+    const user = await firebaseApp.firestore().collection('users').doc(currentUser.uid);
+    if (user) {
+      await user.update({ displayName, email, authCode });
+    }
+
+    return { result: 'Profile Successfully Updated' };
+  } catch (err) {
+    return { error: err.message };
+  }
 };
 
 export const createReport = async ({
-    images,
-    details,
-    senderInfo,
-    location: { latitude, longitude },
-    authority: { authCode, name, type }
+  images,
+  details,
+  senderInfo,
+  location: { latitude, longitude },
+  authority: { authCode, name, type },
 }) => {
-    const date = new Date();
-    const timestamp = date.toDateString();
-    const geoPoint = geo.point(latitude, longitude);
-    const data = {
-        location: { latitude, longitude },
-        timestamp: timestamp,
-        details: { ...details, authority: name },
-        senderInfo,
-        authCode,
-        geoData: geoPoint.data
-    };
+  const date = new Date();
+  const timestamp = date.toDateString();
+  const geoPoint = geo.point(latitude, longitude);
+  const data = {
+    location: { latitude, longitude },
+    timestamp: timestamp,
+    details: { ...details, authority: name },
+    senderInfo,
+    authCode,
+    geoData: geoPoint.data,
+  };
 
-    try {
-        const messageRef = await firebaseApp
-            .firestore()
-            .collection('reports')
-            .add(data);
-        for (var i = 0; i < images.length; i++) {
-            // Upload images to Cloud Storage
-            const blob = await getBlobAsync(images[i]);
-            const filePath = `reports/${messageRef.id}/${messageRef.id}-initial-${i}`;
-            const fileSnapshot = await firebaseApp
-                .storage()
-                .ref(filePath)
-                .put(blob);
-            blob.close();
+  try {
+    const messageRef = await firebaseApp.firestore().collection('reports').add(data);
+    for (var i = 0; i < images.length; i++) {
+      // Upload images to Cloud Storage
+      const blob = await getBlobAsync(images[i]);
+      const filePath = `reports/${messageRef.id}/${messageRef.id}-initial-${i}`;
+      const fileSnapshot = await firebaseApp.storage().ref(filePath).put(blob);
+      blob.close();
 
-            // Generate a public URL for the file
-            const url = await fileSnapshot.ref.getDownloadURL();
-            // Update the chat message placeholder with the real image
-            messageRef.update({
-                id: messageRef.id,
-                images: firebase.firestore.FieldValue.arrayUnion({
-                    id: messageRef.id,
-                    imageUrl: url,
-                    imageUri: fileSnapshot.metadata.fullPath
-                })
-            });
-        }
-    } catch (error) {
-        console.log(error);
+      // Generate a public URL for the file
+      const url = await fileSnapshot.ref.getDownloadURL();
+      // Update the chat message placeholder with the real image
+      messageRef.update({
+        id: messageRef.id,
+        images: firebase.firestore.FieldValue.arrayUnion({
+          id: messageRef.id,
+          imageUrl: url,
+          imageUri: fileSnapshot.metadata.fullPath,
+        }),
+      });
     }
+    return { result: 'Report Successfuly Uploaded' };
+  } catch (err) {
+    return { error: err.message };
+  }
 };
 
-export const updateAuthCode = async newAuthCode => {
+export const updateAuthCode = async (newAuthCode) => {
+  try {
     const updateUserAuthCode = await firebaseApp.functions().httpsCallable('updateUserAuthCode');
     const results = await updateUserAuthCode({ authCode: newAuthCode });
-    if (results.error) {
-        console.log(results.error.message, results.error.stack);
-        alert(results.error.message);
-    }
+    return results;
+  } catch (err) {
+    return { error: err.message };
+  }
 };
 
-export const makeAdminFrom = async userId => {
+export const makeAdminFrom = async (userId) => {
+  try {
     const makeUserAdmin = await firebaseApp.functions().httpsCallable('makeUserAdmin');
     const results = await makeUserAdmin({ userId });
-    if (results.error) {
-        console.log(results.error.message, results.error.stack);
-        alert(results.error.message);
-    } else {
-        alert(results.result);
-    }
+    return results;
+  } catch (err) {
+    return { error: err.message };
+  }
 };
 
-export const getIssueGroups = async county => {
-    try {
-        const querySnapshot = await firebaseApp
-            .firestore()
-            .collection('counties')
-            .doc(county)
-            .collection('issue-groups')
-            .get();
-        issueGroups = [];
-        querySnapshot.forEach(doc => {
-            issueGroups.push(doc.data());
-        });
-        return issueGroups;
-    } catch (error) {
-        console.log(error);
-        return [];
+export const getIssueGroups = async (county) => {
+  try {
+    const querySnapshot = await firebaseApp
+      .firestore()
+      .collection('counties')
+      .doc(county)
+      .collection('issue-groups')
+      .get();
+    issueGroups = [];
+    querySnapshot.forEach((doc) => {
+      issueGroups.push(doc.data());
+    });
+    return issueGroups;
+  } catch (err) {
+    return { error: err.message };
+  }
+};
+
+export const getAuthority = async (authCode) => {
+  try {
+    var querySnapshot = await firebaseApp
+      .firestore()
+      .collection('authorities')
+      .where('authCode', '==', authCode)
+      .get();
+
+    const reports = [];
+    querySnapshot.forEach((doc) => {
+      reports.push(doc.data());
+    });
+
+    if (reports.length == 0 || reports.length > 1) {
+      throw Error("Couldn't find authority from the given authority code.");
+    } else {
+      return { result: reports[0] };
     }
+  } catch (err) {
+    console.log(err);
+    return { error: err.message };
+  }
 };

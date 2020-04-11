@@ -19,6 +19,7 @@ import { updateDetails, resetReport } from '../../redux/actions';
 import { MaterialIcons, Entypo } from '@expo/vector-icons';
 import Header from '../../components/Header';
 import Colors from '../../constants/Colors';
+import LoadingOverlay from '../../components/LoadingOverlay';
 
 class ReportDetailsScreen extends React.Component {
   state = { county: '', issueGroups: [] };
@@ -63,11 +64,7 @@ class ReportDetailsScreen extends React.Component {
     const { issueGroups } = this.state;
     return (
       <SafeAreaView style={styles.container}>
-        {isLoading && (
-          <View style={styles.loadingOverlay}>
-            <ActivityIndicator size="large" color="white" />
-          </View>
-        )}
+        {isLoading && <LoadingOverlay />}
         <Header
           title="Details"
           {...this.props}
@@ -124,6 +121,7 @@ class ReportDetailsScreen extends React.Component {
           }
           placeholder="Enter a description of the incident"
           placeholderTextColor="#666"
+          keyboardAppearance="dark"
           multiline
         />
       </SafeAreaView>
@@ -141,20 +139,6 @@ const mapStateToProps = ({ report }) => {
 export default connect(mapStateToProps, { updateDetails, resetReport })(ReportDetailsScreen);
 
 const styles = StyleSheet.create({
-  loadingOverlay: {
-    width: wp('100%'),
-    height: hp('100%'),
-    justifyContent: 'center',
-    backgroundColor: 'black',
-    alignItems: 'center',
-    opacity: 0.5,
-    position: 'absolute',
-    zIndex: 1000,
-  },
-  loadingIcon: {
-    width: wp('50%'),
-    height: wp('50%'),
-  },
   container: {
     padding: 20,
     alignItems: 'center',
