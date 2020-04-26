@@ -16,10 +16,11 @@ import {
 import * as Location from 'expo-location';
 import * as Permissions from 'expo-permissions';
 import { geo } from '../../config/FirebaseApp';
+import { get } from 'geofirex';
 import Colors from '../../constants/Colors';
 
 export default class NearbyScreen extends React.Component {
-  state = { lisenter: null, reports: [], isLoaded: false };
+  state = { reports: [], isLoaded: false, refreshing: false };
 
   componentDidMount() {
     this._getReportsAsync();
@@ -33,12 +34,17 @@ export default class NearbyScreen extends React.Component {
       const reports = geo.collection('reports');
       const center = geo.point(latitude, longitude);
       const query = await reports.within(center, 2, 'geoData');
-      const lisenter = query.subscribe((reports) => {
-        this.setState({ reports, lisenter, isLoaded: true });
-      });
+      const nearby = await get(query);
+      this.setState({ reports: nearby, isLoaded: true });
     }
   };
 
+  handleRefresh = async () => {
+    this.setState({ refreshing: true });
+    await setTimeout(() => {}, 3000);
+    await this._getReportsAsync();
+    this.setState({ refreshing: false });
+  };
   // componentDidMount() {
   //     var lisenter = firebaseApp
   //       .firestore()
@@ -76,39 +82,41 @@ export default class NearbyScreen extends React.Component {
   renderPage = () => {
     let reports = this.state.reports;
     const { navigate } = this.props.navigation;
-    if (reports.length == 0) {
-      return (
-        <View style={styles.content}>
-          <Image
-            style={styles.emptyImage}
-            source={require('../../assets/images/group_of_field_workers.png')}
-          />
-          <Text style={styles.emptyText}>Couldn't find any nearby reports at this time</Text>
-        </View>
-      );
-    } else {
-      return (
-        <FlatList
-          contentContainerStyle={styles.list}
-          data={reports}
-          renderItem={(item) => {
-            const { details, images } = item.item;
-            return (
-              <TouchableOpacity
-                style={styles.reportInfo}
-                onPress={() => navigate('ReportInfo', { report: item.item })}
-              >
-                <Image source={{ uri: images[0].imageUrl }} style={styles.reportImage} />
-                <View>
-                  <Text style={styles.reportType}>{details.type}</Text>
-                  <Text style={styles.reportAuth}>{details.authority}</Text>
-                </View>
-              </TouchableOpacity>
-            );
-          }}
-        />
-      );
-    }
+    return (
+      <FlatList
+        style={{ marginTop: '22%' }}
+        contentContainerStyle={styles.list}
+        data={reports}
+        refreshing={this.state.refreshing}
+        onRefresh={this.handleRefresh}
+        renderItem={(item) => {
+          const { details, images } = item.item;
+          return (
+            <TouchableOpacity
+              style={styles.reportInfo}
+              onPress={() => navigate('ReportInfo', { report: item.item })}
+            >
+              <Image source={{ uri: images[0].imageUrl }} style={styles.reportImage} />
+              <View>
+                <Text style={styles.reportType}>{details.type}</Text>
+                <Text style={styles.reportAuth}>{details.authority}</Text>
+              </View>
+            </TouchableOpacity>
+          );
+        }}
+        ListEmptyComponent={() => {
+          return (
+            <View style={styles.emptyContainer}>
+              <Image
+                style={styles.emptyImage}
+                source={require('../../assets/images/group_of_field_workers.png')}
+              />
+              <Text style={styles.emptyText}>Couldn't find any nearby reports at this time</Text>
+            </View>
+          );
+        }}
+      />
+    );
   };
 
   render() {
@@ -117,12 +125,7 @@ export default class NearbyScreen extends React.Component {
         <View style={styles.headerWrapper}>
           <Text style={styles.headerText}>Nearby</Text>
         </View>
-        {!this.state.isLoaded && (
-          <View style={styles.content}>
-            <ActivityIndicator size="large" color="black" style={{ marginTop: hp('35%') }} />
-          </View>
-        )}
-        {this.state.isLoaded && this.renderPage()}
+        {this.renderPage()}
       </SafeAreaView>
     );
   }
@@ -150,28 +153,21 @@ const styles = StyleSheet.create({
     fontSize: wp('10%'),
     fontWeight: 'bold',
   },
-  content: {
-    minHeight: hp('100%'),
-    width: wp('97%'),
+  emptyContainer: {
     alignItems: 'center',
-    marginTop: hp('14%'),
+    marginTop: hp('10%'),
   },
   emptyImage: {
     height: hp('40%'),
     width: hp('40%'),
     borderRadius: wp('50%'),
-    marginTop: hp('15%'),
   },
   emptyText: {
     marginTop: hp('5%'),
     fontSize: wp('4%'),
     color: '#888',
   },
-  emptyButton: {
-    marginTop: hp('3%'),
-  },
   list: {
-    marginTop: hp('12%'),
     paddingBottom: hp('20%'),
     width: wp('100%'),
     alignItems: 'center',

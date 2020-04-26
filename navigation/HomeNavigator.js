@@ -4,7 +4,7 @@ import { Entypo, AntDesign } from '@expo/vector-icons';
 import { createBottomTabNavigator } from 'react-navigation-tabs';
 import {
   widthPercentageToDP as wp,
-  heightPercentageToDP as hp
+  heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
 import { createStackNavigator } from 'react-navigation-stack';
 
@@ -13,6 +13,7 @@ import NearbyScreen from '../screens/HomeScreens/NearbyScreen';
 import PhotoScreen from '../screens/HomeScreens/PhotoScreen';
 import ProfileScreen from '../screens/HomeScreens/ProfileScreen';
 import ReportInfoScreen from '../screens/HomeScreens/ReportInfoScreen';
+import MainReportNavigator from './ReportNavigator';
 
 const HomeNavigator = createBottomTabNavigator(
   {
@@ -26,13 +27,13 @@ const HomeNavigator = createBottomTabNavigator(
               height: wp('10%'),
               borderRadius: 42,
               justifyContent: 'center',
-              alignItems: 'center'
+              alignItems: 'center',
             }}
           >
             <AntDesign name="filetext1" size={wp('6%')} color={focused ? '#FFF' : '#666'} />
           </View>
-        )
-      }
+        ),
+      },
     },
     Photo: {
       screen: PhotoScreen,
@@ -45,13 +46,13 @@ const HomeNavigator = createBottomTabNavigator(
               borderRadius: wp('8%'),
               justifyContent: 'center',
               alignItems: 'center',
-              backgroundColor: focused ? '#ff6a30' : '#111'
+              backgroundColor: focused ? '#ff6a30' : '#111',
             }}
           >
             <Entypo name="camera" size={wp('7%')} color={focused ? '#FFF' : '#666'} />
           </View>
-        )
-      }
+        ),
+      },
     },
     Profile: {
       screen: ProfileScreen,
@@ -63,7 +64,7 @@ const HomeNavigator = createBottomTabNavigator(
               height: wp('10%'),
               borderRadius: 42,
               justifyContent: 'center',
-              alignItems: 'center'
+              alignItems: 'center',
             }}
           >
             <AntDesign name="smileo" size={wp('6%')} color={focused ? '#FFF' : '#666'} />
@@ -74,9 +75,9 @@ const HomeNavigator = createBottomTabNavigator(
           if (firebaseApp.auth().currentUser === null) {
             navigation.navigate('Auth');
           }
-        }
-      }
-    }
+        },
+      },
+    },
   },
   {
     initialRouteName: 'Photo',
@@ -85,29 +86,30 @@ const HomeNavigator = createBottomTabNavigator(
       style: {
         borderTopWidth: 0.3,
         height: hp('6%'),
-        backgroundColor: '#111'
-      }
+        backgroundColor: '#111',
+      },
     },
     defaultNavigationOptions: {
       tabBarLabel: () => {
         return null;
-      }
-    }
+      },
+    },
   }
 );
 
 const MainHomeNavigator = createStackNavigator(
   {
     Home: HomeNavigator,
-    ReportInfo: ReportInfoScreen
+    ReportInfo: ReportInfoScreen,
+    Report: MainReportNavigator,
   },
   {
     initialRoute: 'Home',
     mode: 'modal',
     defaultNavigationOptions: {
       headerShown: false,
-      gesturesEnabled: false
-    }
+      gesturesEnabled: false,
+    },
   }
 );
 
