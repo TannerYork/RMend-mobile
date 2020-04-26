@@ -72,73 +72,90 @@ class ProfileScreen extends React.Component {
     ]);
   };
 
+  validate = async () => {
+    const { displayName, email, authCode, phoneNumber } = this.state;
+    const validEmailReg = /^([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z]{2,5})$/;
+    const shouldUpdateAuthCode = this.props.user.authCode == this.state.authCode ? false : true;
+    let errors = {};
+    if (!displayName) {
+      errors.displayName = 'Name is required';
+      Alert.alert('Full Name is Required', 'Make sure you entered your full name and try agian.', [
+        { text: 'Ok' },
+      ]);
+    } else if (!email || email.match(validEmailReg) == null) {
+      errors.email = 'Email is required';
+      Alert.alert(
+        'Invaled Email Address',
+        'Make sure you entered your email correctly and try agian.',
+        [{ text: 'Ok' }]
+      );
+    } else if (
+      phoneNumber &&
+      !phoneNumber.match(/^(\+\d{1,2}\s)?\(?\d{3}\)?[\s.-]?\d{3}[\s.-]?\d{4}$/)
+    ) {
+      errors.phone = 'Invaled Phone Number';
+      Alert.alert(
+        'Invaled Phone Number',
+        'Make sure you entered the number in a proper format (2705908539) and try agian.',
+        [{ text: 'Ok' }]
+      );
+    } else if (shouldUpdateAuthCode) {
+      const results = await getAuthority(this.state.authCode);
+      if (
+        (results.error || authCode.match([/\S\s/, /\s\S/])) &&
+        authCode.replace(/\s/g, '').length > 0
+      ) {
+        errors.authCode = 'Invaled Authority Code';
+        Alert.alert(
+          'Invaled Authority Code',
+          'Make sure you entered the code correctly and try agian.',
+          [{ text: 'Ok' }]
+        );
+      }
+    }
+    return errors;
+  };
+
   updateProfile = async () => {
     if (firebaseApp.auth().currentUser != null) {
-      const { displayName, email, authCode } = this.state;
-      const validEmailReg = /^([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z]{2,5})$/;
+      const errors = await this.validate();
       const shouldUpdateAuthCode = this.props.user.authCode == this.state.authCode ? false : true;
-      let errors = {};
-      if (!displayName) {
-        errors.displayName = 'Name is required';
-      }
-      if (!email || email.match(validEmailReg) == null) {
-        errors.email = 'Email is required';
-      }
-      if (Object.values(errors).length > 0) {
-        Alert.alert(
-          'A Required Field Is Missing',
-          'Check that your have filled out the name and email, and that you have entered a valid email.',
-          [{ text: 'Ok', style: 'cancel' }]
-        );
-      } else {
+      if (Object.values(errors).length == 0) {
         this.setState({ isLoading: true });
         if (shouldUpdateAuthCode) {
-          const results = await getAuthority(this.state.authCode);
-          if (
-            (results.error || authCode.match([/\S\s/, /\s\S/])) &&
-            authCode.replace(/\s/g, '').length > 0
-          ) {
-            Alert.alert(
-              'Invaled Authority Code',
-              'Make sure you entered the code correctly and try agian.',
-              [{ text: 'Ok' }]
-            );
-            this.setState({ isLoading: false });
-          } else {
-            await Alert.alert(
-              'Sign Out Required',
-              'Updating your authority code requires you to sign out.',
-              [
-                {
-                  text: 'Cancel',
-                  style: 'cancel',
-                  onPress: () => {
+          await Alert.alert(
+            'Sign Out Required',
+            'Updating your authority code requires you to sign out.',
+            [
+              {
+                text: 'Cancel',
+                style: 'cancel',
+                onPress: () => {
+                  this.setState({ isLoading: false });
+                  this.setState(this.props.user);
+                },
+              },
+              {
+                text: 'Ok',
+                onPress: async () => {
+                  var result = await updateProfile(this.state, true);
+                  if (result.error) {
+                    Alert.alert(
+                      'An error occurred updating your account',
+                      'Please try agian and if this error continues report it to R.Mend',
+                      [{ text: 'Ok' }]
+                    );
+                    console.log(error);
                     this.setState({ isLoading: false });
-                    this.setState(this.props.user);
-                  },
+                  } else {
+                    this.signUserOut();
+                  }
                 },
-                {
-                  text: 'Ok',
-                  onPress: async () => {
-                    var result = await updateProfile(this.state, true);
-                    if (result.error) {
-                      Alert.alert(
-                        'An error occurred updating your account',
-                        'Please try agian and if this error continues report it to R.Mend',
-                        [{ text: 'Ok' }]
-                      );
-                      console.log(error);
-                      this.setState({ isLoading: false });
-                    } else {
-                      this.signUserOut();
-                    }
-                  },
-                },
-              ]
-            );
-          }
+              },
+            ]
+          );
         } else {
-          results = await updateProfile(this.state, false);
+          const results = await updateProfile(this.state, false);
           if (results.error) {
             Alert.alert(
               'An error occurred updating your account',
@@ -195,9 +212,11 @@ class ProfileScreen extends React.Component {
             <TextInput
               style={styles.input}
               value={phoneNumber}
-              onChangeText={text => this.setState({ phoneNumber: text })}
+              onChangeText={(text) => this.setState({ phoneNumber: text })}
               placeholder="Optional"
               placeholderTextColor="#555"
+              keyboardAppearance="dark"
+              keyboardType="phone-pad"
             />
           </View> */}
           <View style={styles.inputWrapper}>

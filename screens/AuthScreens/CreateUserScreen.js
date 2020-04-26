@@ -27,7 +27,7 @@ class CreateUserScreen extends React.Component {
   handleSubmit = (values) => {
     if (values.email.length > 0 && values.password.length > 0) {
       this.setState({ isLoading: true });
-      createUserWithEmailAndPassword(values.email, values.password)
+      createUserWithEmailAndPassword(values.email, values.password, values.name)
         .then((results) => {
           if (results.error) {
             Alert.alert('An error occurred while creating your account', results.error, [
@@ -37,8 +37,7 @@ class CreateUserScreen extends React.Component {
             this.setState({ isLoading: false });
           } else {
             this.setState({ isLoading: false });
-            this.props.userSignedIn();
-            this.props.navigation.navigate('Home');
+            this.props.navigation.navigate('SignIn');
           }
         })
         .catch((err) => {

@@ -8,16 +8,11 @@ import { FIREBASE_DEV_CONFIG } from './keys';
 export const firebaseApp = firebase.initializeApp(FIREBASE_DEV_CONFIG);
 export const geo = geofirex.init(firebase);
 
-export const createUserWithEmailAndPassword = async (email, password, userName) => {
+export const createUserWithEmailAndPassword = async (email, password, displayName) => {
   try {
-    const user = await firebaseApp.auth().createUserWithEmailAndPassword(email, password);
-    await user.user.updateProfile({ displayName: userName });
-    await firebaseApp
-      .firestore()
-      .collection('users')
-      .doc(user.user.uid)
-      .update({ displayName: userName });
-    return { result: 'Successfully Created New User' };
+    const createNewUser = await firebaseApp.functions().httpsCallable('createNewUser');
+    const results = await createNewUser({ email, password, displayName });
+    return results;
   } catch (err) {
     return { error: err.message };
   }
@@ -59,7 +54,10 @@ async function getBlobAsync(uri) {
   return blob;
 }
 
-export const updateProfile = async ({ displayName, email, authCode }, shouldUpdateAuthCode) => {
+export const updateProfile = async (
+  { displayName, email, authCode, phoneNumber },
+  shouldUpdateAuthCode
+) => {
   const { currentUser } = firebaseApp.auth();
   try {
     await currentUser.updateProfile({ displayName });
@@ -68,6 +66,11 @@ export const updateProfile = async ({ displayName, email, authCode }, shouldUpda
     if (shouldUpdateAuthCode) {
       await updateAuthCode(authCode);
     }
+
+    // if (phoneNumber) {
+    //   formatted_phone = '+1' + phoneNumber.replace(/\D/g, '');
+    //   currentUser.updatePhoneNumber(formatted_phone);
+    // }
 
     const user = await firebaseApp.firestore().collection('users').doc(currentUser.uid);
     if (user) {

@@ -4,7 +4,7 @@ const INITIAL_STATE = {
   isSignedIn: false,
   displayName: null,
   email: null,
-  phoneNumber: '',
+  phoneNumber: null,
   authCode: null,
 };
 
